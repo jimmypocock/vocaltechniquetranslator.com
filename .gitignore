@@ -52,3 +52,16 @@ out/
 local/
 dev/
 test-output/
+
+# CDK and AWS Files
+cdk.out/
+lib/
+*.js
+!jest.config.js
+*.d.ts
+.cdk.staging/
+cdk.context.json
+
+# AWS Credentials (NEVER commit these)
+.aws/
+aws-exports.js
