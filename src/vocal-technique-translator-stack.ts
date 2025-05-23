@@ -39,8 +39,6 @@ export class VocalTechniqueTranslatorStack extends cdk.Stack {
     // S3 bucket for hosting static website
     const websiteBucket = new s3.Bucket(this, 'WebsiteBucket', {
       bucketName: `${props.domainName}-website`,
-      websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'index.html',
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,

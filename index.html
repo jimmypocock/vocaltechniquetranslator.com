@@ -277,13 +277,13 @@ You'll marry a music man"></textarea>
         // Exception dictionary for common words
         this.exceptionWords = {
           // Articles & pronouns
-          'the': { 1: 'the', 4: 'dhuh', 8: 'da' },
+          'the': { 1: 'the', 4: 'dhuh', 8: 'duh' },
           'a': { 1: 'a', 4: 'uh', 8: 'uh' },
           'an': { 1: 'an', 4: 'uhn', 8: 'uhn' },
           'and': { 1: 'and', 4: 'and', 8: 'and' },
           'of': { 1: 'of', 4: 'uhv', 8: 'uhv' },
           'to': { 1: 'to', 4: 'tuh', 8: 'tuh' },
-          'for': { 1: 'for', 4: 'fohr', 8: 'fohr' },
+          'for': { 1: 'for', 4: 'fohr', 8: 'foh' },
           'with': { 1: 'with', 4: 'wihth', 8: 'wihth' },
           'from': { 1: 'from', 4: 'fruhm', 8: 'fruhm' },
           'in': { 1: 'in', 4: 'ihn', 8: 'ihn' },
@@ -309,6 +309,12 @@ You'll marry a music man"></textarea>
           'there': { 1: 'there', 4: 'thehr', 8: 'dehr' },
           'their': { 1: 'their', 4: 'thehr', 8: 'dehr' },
           'they': { 1: 'they', 4: 'theh', 8: 'deh' },
+          'them': { 1: 'them', 4: 'them', 8: 'dem' },
+          'then': { 1: 'then', 4: 'then', 8: 'den' },
+          'this': { 1: 'this', 4: 'this', 8: 'dis' },
+          'that': { 1: 'that', 4: 'that', 8: 'dat' },
+          'these': { 1: 'these', 4: 'theez', 8: 'deez' },
+          'those': { 1: 'those', 4: 'thohz', 8: 'dohz' },
           'what': { 1: 'what', 4: 'waht', 8: 'waht' },
           'where': { 1: 'where', 4: 'wehr', 8: 'wehr' },
           'when': { 1: 'when', 4: 'wehn', 8: 'wehn' },
@@ -322,7 +328,7 @@ You'll marry a music man"></textarea>
           'band': { 1: 'band', 4: 'bahnd', 8: 'band' },
           'pretty': { 1: 'pretty', 4: 'prih-tee', 8: 'preh-teh' },
           'pirate': { 1: 'pirate', 4: 'pah-ruht', 8: 'pah-ruht' },
-          'smile': { 1: 'smile', 4: 'smehl', 8: 'smehl' },
+          'smile': { 1: 'smile', 4: 'smehl', 8: 'zmel' },
           'eyed': { 1: 'eyed', 4: 'ahed', 8: 'aed' },
           'marry': { 1: 'marry', 4: 'mahr-ee', 8: 'mahr-eh' },
           'music': { 1: 'music', 4: 'myoo-sik', 8: 'myuh-suhk' },
@@ -330,9 +336,42 @@ You'll marry a music man"></textarea>
           'seen': { 1: 'seen', 4: 'sehn', 8: 'sehn' },
           'her': { 1: 'her', 4: 'hehr', 8: 'hehr' },
           'dancing': { 1: 'dancing', 4: 'dahn-sing', 8: 'dahn-sehn' },
-          'sand': { 1: 'sand', 4: 'sahnd', 8: 'sand' },
+          'sand': { 1: 'sand', 4: 'sahnd', 8: 'sahnd' },
           'ballerina': { 1: 'ballerina', 4: 'bahl-luhr-eenah', 8: 'bahl-luh-reh-nah' },
           'mustve': { 1: 'mustve', 4: 'muht-ve', 8: 'muht-ve' },
+
+          // New additions from user examples
+          'i': { 1: 'i', 4: 'ah', 8: 'ae' },
+          'everything': { 1: 'everything', 4: 'eh-ver-ee-thing', 8: 'eh-ver-eh-dang' },
+          'childhood': { 1: 'childhood', 4: 'chah-ld-hood', 8: 'cheld-hud' },
+          'memories': { 1: 'memories', 4: 'meh-mor-ees', 8: 'meh-mor-ehs' },
+          'got': { 1: 'got', 4: 'gaht', 8: 'god' },
+          'shes': { 1: 'shes', 4: 'shehz', 8: 'zhehz' },
+          'seems': { 1: 'seems', 4: 'seemz', 8: 'sems' },
+          'face': { 1: 'face', 4: 'fess', 8: 'vez' },
+          'special': { 1: 'special', 4: 'speh-shul', 8: 'beh-zhul' },
+          'place': { 1: 'place', 4: 'pless', 8: 'blez' },
+          'break': { 1: 'break', 4: 'brehk', 8: 'breg' },
+          'down': { 1: 'down', 4: 'dawn', 8: 'dahn' },
+          'too': { 1: 'too', 4: 'too', 8: 'tuh' },
+
+          // Words with multi-character consonants
+          'think': { 1: 'think', 4: 'thingk', 8: 'dingk' },
+          'thing': { 1: 'thing', 4: 'thing', 8: 'ding' },
+          'through': { 1: 'through', 4: 'throo', 8: 'droo' },
+          'thanks': { 1: 'thanks', 4: 'thangks', 8: 'dangks' },
+          'she': { 1: 'she', 4: 'shee', 8: 'zhee' },
+          'show': { 1: 'show', 4: 'shoh', 8: 'zhoh' },
+          'should': { 1: 'should', 4: 'shood', 8: 'zhood' },
+          'shine': { 1: 'shine', 4: 'shehn', 8: 'zhehn' },
+          'stop': { 1: 'stop', 4: 'stahp', 8: 'dahp' },
+          'start': { 1: 'start', 4: 'stahrt', 8: 'dahrt' },
+          'stand': { 1: 'stand', 4: 'stahnd', 8: 'dahnd' },
+          'still': { 1: 'still', 4: 'stihl', 8: 'dihl' },
+          'speak': { 1: 'speak', 4: 'speek', 8: 'beek' },
+          'spend': { 1: 'spend', 4: 'spehnd', 8: 'behnd' },
+          'small': { 1: 'small', 4: 'smahl', 8: 'mahl' },
+          'smart': { 1: 'smart', 4: 'smahrt', 8: 'mahrt' },
 
           // Contractions
           'youll': { 1: 'youll', 4: 'yoo-ll', 8: 'yah-ll' },
@@ -362,6 +401,7 @@ You'll marry a music man"></textarea>
           'ʌ': { 1: 'uh', 4: 'ah', 8: 'ah' },       // but → baht
           'ɑ': { 1: 'ah', 4: 'ah', 8: 'ah' },       // bot → baht
           'ɔ': { 1: 'aw', 4: 'oh', 8: 'ah' },       // bought → baht
+          'y': { 1: 'y', 4: 'eh', 8: 'e' },         // y as vowel → eh/e
           'o': { 1: 'o', 4: 'oh', 8: 'ah' },        // boat → baht
           'ʊ': { 1: 'oo', 4: 'uh', 8: 'ah' },       // book → bahk
           'u': { 1: 'oo', 4: 'oo', 8: 'ah' },       // boot → baht
@@ -396,6 +436,42 @@ You'll marry a music man"></textarea>
             syllableInitial: { 1: 'f', 4: 'v', 8: 'v' },
             intervocalic: { 1: 'f', 4: 'v', 8: 'v' },
             syllableFinal: { 1: 'f', 4: 'v', 8: 'v' }
+          },
+          's': {
+            syllableInitial: { 1: 's', 4: 's', 8: 'z' },
+            intervocalic: { 1: 's', 4: 'z', 8: 'z' },
+            syllableFinal: { 1: 's', 4: 's', 8: 'z' },
+            beforeConsonant: { 1: 's', 4: 's', 8: 'z' }
+          },
+          'g': {
+            syllableInitial: { 1: 'g', 4: 'g', 8: 'g' },
+            intervocalic: { 1: 'g', 4: 'g', 8: 'g' },
+            syllableFinal: { 1: 'g', 4: 'g', 8: 'g' }
+          },
+          'b': {
+            syllableInitial: { 1: 'b', 4: 'b', 8: 'b' },
+            intervocalic: { 1: 'b', 4: 'b', 8: 'b' },
+            syllableFinal: { 1: 'b', 4: 'b', 8: 'b' }
+          },
+          'd': {
+            syllableInitial: { 1: 'd', 4: 'd', 8: 'd' },
+            intervocalic: { 1: 'd', 4: 'd', 8: 'd' },
+            syllableFinal: { 1: 'd', 4: 'd', 8: '' }
+          },
+          'j': {
+            syllableInitial: { 1: 'j', 4: 'j', 8: 'zh' },
+            intervocalic: { 1: 'j', 4: 'zh', 8: 'zh' },
+            syllableFinal: { 1: 'j', 4: 'zh', 8: 'zh' }
+          },
+          'v': {
+            syllableInitial: { 1: 'v', 4: 'v', 8: 'v' },
+            intervocalic: { 1: 'v', 4: 'v', 8: 'v' },
+            syllableFinal: { 1: 'v', 4: 'v', 8: 'v' }
+          },
+          'z': {
+            syllableInitial: { 1: 'z', 4: 'z', 8: 'z' },
+            intervocalic: { 1: 'z', 4: 'z', 8: 'z' },
+            syllableFinal: { 1: 'z', 4: 'z', 8: 'z' }
           }
         };
 
@@ -425,17 +501,32 @@ You'll marry a music man"></textarea>
           }
         };
 
-        // Common phonetic patterns
+        // Common phonetic patterns with intensity-based transformations
         this.phoneticPatterns = {
-          'ph': 'f',
-          'gh': '', // usually silent in modern English
-          'ch': 'ch',
-          'th': 'th',
-          'sh': 'sh',
-          'wh': 'w',
-          'ck': 'k',
-          'dge': 'j',
-          'tch': 'ch'
+          'ph': { 1: 'f', 4: 'f', 8: 'f' },
+          'gh': { 1: '', 4: '', 8: '' }, // usually silent in modern English
+          'ch': { 1: 'ch', 4: 'ch', 8: 'ch' },
+          'th': { 1: 'th', 4: 'th', 8: 'd' }, // TH→D at highest intensity
+          'sh': { 1: 'sh', 4: 'sh', 8: 'zh' }, // SH→ZH at highest intensity
+          'wh': { 1: 'w', 4: 'w', 8: 'w' },
+          'ck': { 1: 'k', 4: 'k', 8: 'g' },
+          'dge': { 1: 'j', 4: 'j', 8: 'zh' },
+          'tch': { 1: 'ch', 4: 'ch', 8: 'ch' }
+        };
+
+        // Initial consonant cluster transformations
+        this.initialClusters = {
+          'sc': { 1: 'sc', 4: 'sc', 8: 'z' },   // SC→S (already handled in silent patterns)
+          'sp': { 1: 'sp', 4: 'sp', 8: 'zb' },   // SP→B at highest intensity
+          'st': { 1: 'st', 4: 'st', 8: 'zd' },   // ST→D at highest intensity
+          'sw': { 1: 'sw', 4: 'sw', 8: 'zw' },   // SW→W at highest intensity
+          'sn': { 1: 'sn', 4: 'sn', 8: 'zn' },   // SN→N at highest intensity
+          'sl': { 1: 'sl', 4: 'sl', 8: 'zl' },   // SL→L at highest intensity
+          'sk': { 1: 'sk', 4: 'sk', 8: 'zg' },   // SK→G at highest intensity
+          'sm': { 1: 'sm', 4: 'sm', 8: 'zm' },   // SM→ZM at highest intensity
+          'spr': { 1: 'spr', 4: 'spr', 8: 'zbr' }, // SPR→ZBR at highest intensity
+          'str': { 1: 'str', 4: 'str', 8: 'zdr' }, // STR→ZDR at highest intensity
+          'scr': { 1: 'scr', 4: 'scr', 8: 'zgr' }  // SCR→ZGR at highest intensity
         };
 
         // Vowel patterns with context
@@ -565,13 +656,25 @@ You'll marry a music man"></textarea>
       }
 
       // Convert common letter patterns to phonemes with error handling
-      normalizePhonetics(word) {
+      normalizePhonetics(word, intensity) {
         if (!word) return '';
         let normalized = word.toLowerCase();
+        const level = this.getIntensityLevel(intensity || this.currentIntensity || 5);
 
-        // Apply phonetic pattern replacements
-        for (const [pattern, replacement] of Object.entries(this.phoneticPatterns)) {
+        // Handle initial consonant clusters first (before other transformations)
+        // Only check at beginning of word
+        for (const [cluster, transformations] of Object.entries(this.initialClusters)) {
+          if (normalized.startsWith(cluster)) {
+            const replacement = transformations[level] || transformations[1] || cluster;
+            normalized = replacement + normalized.slice(cluster.length);
+            break; // Only one initial cluster can match
+          }
+        }
+
+        // Apply phonetic pattern replacements with intensity
+        for (const [pattern, transformations] of Object.entries(this.phoneticPatterns)) {
           try {
+            const replacement = transformations[level] || transformations[1] || '';
             normalized = normalized.replace(new RegExp(pattern, 'g'), replacement);
           } catch (e) {
             // Skip problematic patterns
@@ -587,7 +690,7 @@ You'll marry a music man"></textarea>
           'wr': 'r',      // write, wrong
           'gn': 'n',      // sign, design
           'bt$': 't',     // debt, doubt
-          'sc': 's',      // scene, science
+          'sc': 's',      // scene, science (if not caught by initial cluster)
           'ps': 's',      // psalm, psychology
           'rh': 'r'       // rhyme, rhythm
         };
@@ -691,8 +794,37 @@ You'll marry a music man"></textarea>
         if (!morpheme || morpheme.length === 0) return '';
 
         try {
-          // Normalize phonetic patterns first
-          const normalized = this.normalizePhonetics(morpheme);
+          // Apply suffix pattern transformations based on intensity
+          let processedMorpheme = morpheme;
+          const intensityLevel = this.getIntensityLevel(intensity);
+
+          // -ce ending transformation
+          if (processedMorpheme.endsWith('ce')) {
+            if (intensityLevel >= 4) {
+              processedMorpheme = processedMorpheme.slice(0, -2) + 'ss';
+            }
+          }
+
+          // -y ending transformation (when it makes EE sound)
+          if (processedMorpheme.endsWith('y')) {
+            if (intensityLevel >= 4) {
+              // Check if preceded by consonant (making EE sound)
+              const beforeY = processedMorpheme[processedMorpheme.length - 2];
+              if (beforeY && !'aeiou'.includes(beforeY.toLowerCase())) {
+                processedMorpheme = processedMorpheme.slice(0, -1) + 'eh';
+              }
+            }
+          }
+
+          // -ies ending transformation
+          if (processedMorpheme.endsWith('ies')) {
+            if (intensityLevel >= 4) {
+              processedMorpheme = processedMorpheme.slice(0, -3) + 'ehs';
+            }
+          }
+
+          // Normalize phonetic patterns first with intensity
+          const normalized = this.normalizePhonetics(processedMorpheme, intensity);
 
           // Syllabify the morpheme
           const syllables = this.syllabify(normalized);
@@ -741,7 +873,33 @@ You'll marry a music man"></textarea>
                 if ('aeiouAEIOU'.includes(char)) {
                   // Single vowel
                   syllableResult += this.transformVowelPhoneme(char.toLowerCase(), intensity);
-                } else if ('bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ'.includes(char)) {
+                } else if (char.toLowerCase() === 'y') {
+                  // Y can be vowel or consonant - check context
+                  const nextChar = i < syllable.length - 1 ? syllable[i + 1] : '';
+                  const prevChar = i > 0 ? syllable[i - 1] : '';
+
+                  // Y acts as vowel when preceded by consonant or at word end
+                  if ((prevChar && 'bcdfghjklmnpqrstvwxz'.includes(prevChar.toLowerCase())) ||
+                      (i === syllable.length - 1) ||
+                      (nextChar && 'bcdfghjklmnpqrstvwxz'.includes(nextChar.toLowerCase()))) {
+                    // Treat as vowel making EE sound
+                    const intensityLevel = this.getIntensityLevel(intensity);
+                    if (intensityLevel >= 4) {
+                      // At end of word or before vowel: EH
+                      // Before consonant: E
+                      if (i === syllable.length - 1 || 'aeiou'.includes(nextChar.toLowerCase())) {
+                        syllableResult += 'eh';
+                      } else {
+                        syllableResult += 'e';
+                      }
+                    } else {
+                      syllableResult += char;
+                    }
+                  } else {
+                    // Treat as consonant
+                    syllableResult += char;
+                  }
+                } else if ('bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ'.includes(char)) {
                   // Consonant with context
                   const transformed = this.transformConsonantInContext(
                     char.toLowerCase(),

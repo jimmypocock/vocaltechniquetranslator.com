@@ -1,5 +1,7 @@
 # Vocal Technique Translator
 
+**Live Site**: [www.vocaltechniquetranslator.com](https://www.vocaltechniquetranslator.com)
+
 ## Overview
 
 The Vocal Technique Translator transforms song lyrics into phonetic representations that help singers maintain proper vocal technique while performing. The system emphasizes open throat positions and smooth vocal flow while maintaining **lyric readability** for practical performance use.
@@ -691,3 +693,8 @@ VocalTranslator Class
 ```
 
 This updated system provides professional-grade vocal technique assistance while maintaining the practical readability that singers need for actual performance use.
+
+
+## Deployment
+
+For deployment instructions to AWS, see [DEPLOYMENT.md](./DEPLOYMENT.md).

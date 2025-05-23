@@ -44,6 +44,9 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
+# Clean up any existing .d.ts files that cause build errors
+rm -f lib/*.d.ts
+
 # Build TypeScript
 echo "🔨 Building CDK app..."
 npm run build
