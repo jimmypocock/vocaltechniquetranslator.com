@@ -1,24 +1,28 @@
 {
-  "name": "vocal-technique-translator-infrastructure",
-  "version": "1.0.0",
-  "description": "CDK infrastructure for Vocal Technique Translator",
-  "main": "lib/index.js",
+  "name": "vocal-technique-translator",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "cdk": "cdk",
-    "deploy": "./deploy.sh",
-    "destroy": "cdk destroy --all",
-    "diff": "npm run build && cdk diff",
-    "synth": "npm run build && cdk synth"
-  },
-  "devDependencies": {
-    "@types/node": "20.11.5",
-    "aws-cdk": "2.118.0",
-    "typescript": "~5.3.3"
+    "build": "next build",
+    "deploy": "./deploy.sh --nextjs",
+    "dev": "next dev --turbopack",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.118.0",
-    "constructs": "^10.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "15.1.8"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.8",
+    "@eslint/eslintrc": "^3"
   }
 }

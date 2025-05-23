@@ -2,6 +2,63 @@
 
 **Live Site**: [www.vocaltechniquetranslator.com](https://www.vocaltechniquetranslator.com)
 
+## Project Structure
+
+This is a NextJS application with TypeScript that can be deployed to AWS using CDK. The project also includes the original single-file HTML version for reference.
+
+```
+VocalTechniqueTranslator/
+├── app/                    # NextJS pages (App Router)
+├── components/             # React components
+├── lib/                    # Application logic and data
+├── public/                 # Static assets
+├── cdk/                    # AWS CDK infrastructure
+├── index.html             # Original single-file version
+└── deploy.sh              # Deployment script
+```
+
+## Quick Start
+
+### Running Locally
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Open http://localhost:3000
+```
+
+### Original HTML Version
+```bash
+# Simply open index.html in a web browser
+open index.html
+```
+
+### Deploying to AWS
+
+```bash
+# Deploy NextJS version (builds automatically)
+./deploy.sh --nextjs
+
+# Deploy original HTML version
+./deploy.sh
+
+# Deploy with custom AWS profile
+./deploy.sh --profile your-profile-name --nextjs
+
+# First-time deployment (create certificate)
+./deploy.sh -c createCertificate=true
+```
+
+The deploy script automatically:
+- Builds the NextJS app when using `--nextjs` flag
+- Installs dependencies if needed
+- Deploys to S3 and CloudFront
+- Invalidates CloudFront cache
+
 ## Overview
 
 The Vocal Technique Translator transforms song lyrics into phonetic representations that help singers maintain proper vocal technique while performing. The system emphasizes open throat positions and smooth vocal flow while maintaining **lyric readability** for practical performance use.

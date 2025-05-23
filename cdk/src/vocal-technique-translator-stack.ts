@@ -124,10 +124,18 @@ export class VocalTechniqueTranslatorStack extends cdk.Stack {
     });
 
     // Deploy site contents to S3
+    // Check if NextJS build exists, otherwise deploy index.html
+    const fs = require('fs');
+    const path = require('path');
+    const nextBuildPath = path.join(__dirname, '../../out');
+    const isNextJSBuild = fs.existsSync(nextBuildPath);
+    
     new s3deploy.BucketDeployment(this, 'DeployWebsite', {
-      sources: [s3deploy.Source.asset('.', {
-        exclude: ['*', '!index.html'],
-      })],
+      sources: isNextJSBuild 
+        ? [s3deploy.Source.asset('../out')]      // NextJS static export
+        : [s3deploy.Source.asset('..', {         // Original index.html
+            exclude: ['*', '!index.html'],
+          })],
       destinationBucket: websiteBucket,
       distribution,
       distributionPaths: ['/*'],

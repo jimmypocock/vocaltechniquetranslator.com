@@ -55,10 +55,10 @@ test-output/
 
 # CDK and AWS Files
 cdk.out/
-lib/
-*.js
-!jest.config.js
-*.d.ts
+cdk/lib/
+cdk/**/*.js
+cdk/**/*.d.ts
+!cdk/jest.config.js
 .cdk.staging/
 cdk.context.json
 

@@ -1,0 +1,24 @@
+{
+  "name": "vocal-technique-translator-infrastructure",
+  "version": "1.0.0",
+  "description": "CDK infrastructure for Vocal Technique Translator",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "deploy": "./deploy.sh",
+    "destroy": "cdk destroy --all",
+    "diff": "npm run build && cdk diff",
+    "synth": "npm run build && cdk synth"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.5",
+    "aws-cdk": "2.118.0",
+    "typescript": "~5.3.3"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.118.0",
+    "constructs": "^10.0.0"
+  }
+}

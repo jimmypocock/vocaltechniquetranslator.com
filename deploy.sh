@@ -8,6 +8,14 @@ if [ -f .env ]; then
     export $(cat .env | grep -v '^#' | xargs)
 fi
 
+# Determine if we're deploying the NextJS app
+BUILD_NEXTJS=false
+for arg in "$@"; do
+    if [[ $arg == "--nextjs" ]]; then
+        BUILD_NEXTJS=true
+    fi
+done
+
 # Extract profile from arguments if provided
 PROFILE_ARG=""
 for arg in "$@"; do
@@ -38,9 +46,17 @@ fi
 echo "📋 Using AWS Account: $(aws sts get-caller-identity $PROFILE_ARG --query Account --output text)"
 echo "👤 Profile: ${AWS_PROFILE:-default}"
 
-# Install dependencies if needed
+# Build NextJS app if requested
+if [ "$BUILD_NEXTJS" = true ]; then
+    echo "🏗️  Building NextJS application..."
+    npm install
+    npm run build
+fi
+
+# Install CDK dependencies if needed
+cd cdk
 if [ ! -d "node_modules" ]; then
-    echo "📦 Installing dependencies..."
+    echo "📦 Installing CDK dependencies..."
     npm install
 fi
 
@@ -67,12 +83,23 @@ if [ -n "$CERTIFICATE_ARN" ] && [[ ! "$*" =~ "certificateArn" ]] && [[ ! "$*" =~
     CERT_ARG="-c certificateArn=$CERTIFICATE_ARN"
 fi
 
+# Filter out --nextjs from CDK arguments
+CDK_ARGS=()
+for arg in "$@"; do
+    if [[ $arg != "--nextjs" ]]; then
+        CDK_ARGS+=("$arg")
+    fi
+done
+
 # Pass through any additional arguments (like -c createCertificate=true)
-if [ $# -eq 0 ]; then
+if [ ${#CDK_ARGS[@]} -eq 0 ]; then
     npx cdk deploy --all --require-approval never $CERT_ARG
 else
-    npx cdk deploy --all --require-approval never "$@" $CERT_ARG
+    npx cdk deploy --all --require-approval never "${CDK_ARGS[@]}" $CERT_ARG
 fi
+
+# Return to root directory
+cd ..
 
 echo "✅ Deployment complete!"
 
