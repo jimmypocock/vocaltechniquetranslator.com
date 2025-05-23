@@ -41,16 +41,29 @@ open index.html
 
 ```bash
 # Deploy NextJS version (builds automatically)
-./deploy.sh --nextjs
+npm run deploy
 
 # Deploy original HTML version
-./deploy.sh
+npm run deploy:html
 
 # Deploy with custom AWS profile
 ./deploy.sh --profile your-profile-name --nextjs
 
 # First-time deployment (create certificate)
 ./deploy.sh -c createCertificate=true
+```
+
+### Other Useful Commands
+
+```bash
+# Build NextJS for production
+npm run build
+
+# Build CDK TypeScript
+npm run build:cdk
+
+# Test CDK synthesis
+npm run cdk:synth
 ```
 
 The deploy script automatically:
