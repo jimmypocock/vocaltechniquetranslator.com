@@ -4,7 +4,7 @@
 
 ## Project Structure
 
-This is a NextJS application with TypeScript that can be deployed to AWS using CDK. The project also includes the original single-file HTML version for reference.
+This is a NextJS application with TypeScript that can be deployed to AWS using CDK.
 
 ```
 VocalTechniqueTranslator/
@@ -13,8 +13,11 @@ VocalTechniqueTranslator/
 ├── lib/                    # Application logic and data
 ├── public/                 # Static assets
 ├── cdk/                    # AWS CDK infrastructure
-├── index.html             # Original single-file version
-└── deploy.sh              # Deployment script
+│   ├── src/                # CDK TypeScript source
+│   └── lib/                # CDK compiled output
+├── scripts/                # Deployment and maintenance scripts
+├── .env                    # Environment variables (certificate ARN, AWS profile)
+└── *.md                    # Documentation files
 ```
 
 ## Quick Start
@@ -31,29 +34,73 @@ npm run dev
 # Open http://localhost:3000
 ```
 
-### Original HTML Version
+### Environment Setup
+
 ```bash
-# Simply open index.html in a web browser
-open index.html
+# Copy example environment file
+cp .env.example .env
+
+# Edit .env with your values:
+# - CERTIFICATE_ARN (after first deployment)
+# - AWS_PROFILE (your AWS profile name)
+# - NEXT_PUBLIC_GA_MEASUREMENT_ID (optional, for Google Analytics)
 ```
 
-### Deploying to AWS
+## Deployment Commands
+
+### Quick Start Deployment
 
 ```bash
-# Deploy NextJS version (builds automatically)
+# Deploy the application (most common command)
 npm run deploy
 
-# Deploy original HTML version
-npm run deploy:html
-
-# Deploy with custom AWS profile
-./deploy.sh --profile your-profile-name --nextjs
-
-# First-time deployment (create certificate)
-./deploy.sh -c createCertificate=true
+# Deploy everything including monitoring
+npm run deploy:all -- -c notificationEmail=your-email@example.com
 ```
 
-### Other Useful Commands
+### Individual Stack Deployment
+
+```bash
+# Deploy certificate (first time only)
+npm run deploy:cert
+
+# Deploy WAF rules
+npm run deploy:waf
+
+# Deploy monitoring with email alerts
+npm run deploy:monitoring -- -c notificationEmail=your-email@example.com
+```
+
+### Maintenance Mode
+
+```bash
+# Enable maintenance mode (shows maintenance page)
+npm run maintenance:on
+
+# Update maintenance message
+npm run maintenance:update "Upgrading database" "2 hours"
+
+# Disable maintenance mode (redeploy site)
+npm run maintenance:off
+```
+
+### Stack Management
+
+```bash
+# Check status of all stacks
+npm run status:all
+
+# Monitor stack progress
+npm run status
+
+# Remove WAF protection (careful!)
+npm run destroy:waf
+
+# Remove monitoring
+npm run destroy:monitoring
+```
+
+### Build Commands
 
 ```bash
 # Build NextJS for production
@@ -65,12 +112,6 @@ npm run build:cdk
 # Test CDK synthesis
 npm run cdk:synth
 ```
-
-The deploy script automatically:
-- Builds the NextJS app when using `--nextjs` flag
-- Installs dependencies if needed
-- Deploys to S3 and CloudFront
-- Invalidates CloudFront cache
 
 ## Overview
 
@@ -765,6 +806,95 @@ VocalTranslator Class
 This updated system provides professional-grade vocal technique assistance while maintaining the practical readability that singers need for actual performance use.
 
 
-## Deployment
+## AWS Architecture
 
-For deployment instructions to AWS, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+The application uses a modern, decoupled architecture with seven independent CloudFormation stacks:
+
+### Stack Structure
+
+1. **Foundation Stack** (`VTT-Foundation`)
+   - S3 bucket for website content
+   - S3 bucket for CloudFront logs
+   - Lifecycle policies and versioning
+
+2. **Certificate Stack** (`VTT-Certificate`)
+   - ACM SSL/TLS certificate
+   - DNS validation
+   - One-time setup
+
+3. **Edge Functions Stack** (`VTT-EdgeFunctions`)
+   - CloudFront Functions for URL redirects
+   - Security headers injection
+   - Global edge computing
+
+4. **WAF Stack** (`VTT-WAF`)
+   - Rate limiting (2000 requests/5min)
+   - Common attack protection
+   - Optional geo-blocking
+
+5. **CDN Stack** (`VTT-CDN`)
+   - CloudFront distribution
+   - Origin Access Identity
+   - Cache behaviors
+
+6. **App Stack** (`VTT-App`)
+   - Application deployment
+   - Content synchronization
+   - Cache invalidation
+
+7. **Monitoring Stack** (`VTT-Monitoring`)
+   - CloudWatch dashboards
+   - Billing alerts ($10, $50, $100)
+   - Error rate monitoring
+   - SNS notifications
+
+### Stack Dependencies
+
+```
+Foundation ─┐
+Certificate ─┼─→ CDN ─→ App ─→ Monitoring
+Edge Funcs ─┤
+WAF ────────┘
+```
+
+### Benefits of Decoupled Architecture
+
+- **Independent Updates**: Change security rules without touching the app
+- **Faster Deployments**: Update only what changed
+- **Better Reliability**: Failures isolated to single stack
+- **Team Ownership**: Different teams can own different stacks
+- **Cost Optimization**: Remove expensive features (like WAF) independently
+
+## Troubleshooting
+
+### Stack Stuck in UPDATE_IN_PROGRESS
+
+If your stack is stuck updating:
+
+1. Check status: `npm run status:all`
+2. View AWS Console → CloudFormation for detailed errors
+3. If certificate deletion is failing, see [RECOVERY.md](./RECOVERY.md)
+
+### 403 Forbidden Errors
+
+- Wait 15-20 minutes after deployment (CloudFront propagation)
+- Check DNS records are correctly pointed to CloudFront
+- Run maintenance mode to verify S3/CloudFront connectivity
+
+### Common Issues
+
+- **Certificate validation**: Ensure CNAME records are added to DNS
+- **WAF blocking**: Check WAF logs if legitimate traffic is blocked
+- **Billing alerts**: Confirm SNS subscription email
+
+## Additional Documentation
+
+- [DEPLOYMENT-QUICKSTART.md](./docs/DEPLOYMENT-QUICKSTART.md) - 🚀 **Start here!** Quick deployment guide
+- [CLEAN-INSTALL-GUIDE.md](./docs/CLEAN-INSTALL-GUIDE.md) - Fresh installation from scratch
+- [DEPLOYMENT.md](./docs/DEPLOYMENT.md) - Detailed deployment guide with all options
+- [MONITORING-GUIDE.md](./docs/MONITORING-GUIDE.md) - 📊 How to use CloudWatch monitoring and alerts
+- [RECOVERY.md](./docs/RECOVERY.md) - Stack recovery procedures
+- [ARCHITECTURE.md](./cdk/src/ARCHITECTURE.md) - AWS stack architecture
+- [DECOUPLING-GUIDE.md](./docs/DECOUPLING-GUIDE.md) - When and how to decouple stacks
+- [CLOUDFRONT-TESTING.md](./docs/CLOUDFRONT-TESTING.md) - Testing CloudFront before DNS switch
+- [CLAUDE.md](./CLAUDE.md) - AI assistant instructions

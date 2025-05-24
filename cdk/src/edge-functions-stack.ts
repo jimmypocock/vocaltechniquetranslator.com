@@ -1,0 +1,114 @@
+import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+
+export interface EdgeFunctionsStackProps extends StackProps {
+  domainName: string;
+}
+
+export class EdgeFunctionsStack extends Stack {
+  public readonly redirectFunction: cloudfront.Function;
+  public readonly securityHeadersFunction: cloudfront.Function;
+
+  constructor(scope: Construct, id: string, props: EdgeFunctionsStackProps) {
+    super(scope, id, props);
+
+    // Lambda@Edge function for redirects
+    this.redirectFunction = new cloudfront.Function(this, 'RedirectFunction', {
+      code: cloudfront.FunctionCode.fromInline(`
+        function handler(event) {
+          var request = event.request;
+          var headers = request.headers;
+          var host = headers.host.value;
+          
+          // Redirect CloudFront URL to www domain
+          if (host.includes('cloudfront.net')) {
+            var response = {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: {
+                location: { value: 'https://www.${props.domainName}' + request.uri }
+              }
+            };
+            return response;
+          }
+          
+          // Redirect non-www to www
+          if (host === '${props.domainName}') {
+            var response = {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: {
+                location: { value: 'https://www.${props.domainName}' + request.uri }
+              }
+            };
+            return response;
+          }
+          
+          return request;
+        }
+      `),
+      comment: 'Handles redirects for Vocal Technique Translator',
+    });
+
+    // Security Headers Function
+    this.securityHeadersFunction = new cloudfront.Function(this, 'SecurityHeadersFunction', {
+      code: cloudfront.FunctionCode.fromInline(`
+        function handler(event) {
+          var response = event.response;
+          var headers = response.headers;
+          
+          // Security headers
+          headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload' };
+          headers['x-content-type-options'] = { value: 'nosniff' };
+          headers['x-frame-options'] = { value: 'DENY' };
+          headers['x-xss-protection'] = { value: '1; mode=block' };
+          headers['referrer-policy'] = { value: 'strict-origin-when-cross-origin' };
+          headers['permissions-policy'] = { value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()' };
+          headers['content-security-policy'] = { 
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';" 
+          };
+          
+          return response;
+        }
+      `),
+      comment: 'Adds security headers to responses',
+    });
+
+    // Default Document Function (handles subdirectory index.html)
+    const defaultDocumentFunction = new cloudfront.Function(this, 'DefaultDocumentFunction', {
+      code: cloudfront.FunctionCode.fromInline(`
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          
+          // Check if URI ends with '/'
+          if (uri.endsWith('/')) {
+            request.uri += 'index.html';
+          }
+          
+          // Check if URI is a directory (no file extension)
+          else if (!uri.includes('.')) {
+            request.uri += '/index.html';
+          }
+          
+          return request;
+        }
+      `),
+      comment: 'Handles default document for subdirectories',
+    });
+
+    // Outputs
+    new CfnOutput(this, 'RedirectFunctionArn', {
+      value: this.redirectFunction.functionArn,
+      description: 'Redirect Function ARN',
+      exportName: `${this.stackName}-RedirectFunctionArn`,
+    });
+
+    new CfnOutput(this, 'SecurityHeadersFunctionArn', {
+      value: this.securityHeadersFunction.functionArn,
+      description: 'Security Headers Function ARN',
+      exportName: `${this.stackName}-SecurityHeadersFunctionArn`,
+    });
+  }
+}
