@@ -3,18 +3,18 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { VocalTranslator } from '@/lib/vocal-translator';
-import IntensitySlider from './IntensitySlider';
 import TechniqueInfo from './TechniqueInfo';
 import Examples from './Examples';
 import FormattedLyrics from './FormattedLyrics';
 import { AdBanner, AdUnit } from './AdSense';
 
 export default function VocalTranslatorApp() {
-  const [intensity, setIntensity] = useState(8);
+  const [intensity, setIntensity] = useState(4);
   const [inputLyrics, setInputLyrics] = useState('');
   const [outputLyrics, setOutputLyrics] = useState('');
   const [translator] = useState(() => new VocalTranslator());
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isUppercase, setIsUppercase] = useState(false);
   const outputTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const translateLyrics = useCallback(() => {
@@ -41,13 +41,16 @@ export default function VocalTranslatorApp() {
   const handleCopy = async () => {
     if (!outputLyrics) return;
     
+    const textToCopy = isUppercase ? outputLyrics.toUpperCase() : outputLyrics;
+    
     try {
-      await navigator.clipboard.writeText(outputLyrics);
+      await navigator.clipboard.writeText(textToCopy);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch {
       // Fallback for older browsers
       if (outputTextareaRef.current) {
+        outputTextareaRef.current.value = textToCopy;
         outputTextareaRef.current.select();
         document.execCommand('copy');
         setCopySuccess(true);
@@ -76,9 +79,6 @@ export default function VocalTranslatorApp() {
         testMode={!process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
       />
 
-      <div className="controls flex gap-5 mb-5 items-center flex-wrap">
-        <IntensitySlider value={intensity} onChange={setIntensity} />
-      </div>
 
       <div className="input-section mb-5">
         <div className="section-title text-xl font-semibold text-gray-800 mb-3">
@@ -136,7 +136,12 @@ export default function VocalTranslatorApp() {
         <div className="relative">
           <div className="phonetic-text min-h-[180px] p-4 border-2 border-gray-200 rounded-xl bg-gray-50 font-semibold text-gray-800">
             {outputLyrics ? (
-              <FormattedLyrics lyrics={outputLyrics} intensity={intensity} />
+              <FormattedLyrics 
+                lyrics={outputLyrics} 
+                intensity={intensity}
+                onUppercaseChange={setIsUppercase}
+                onIntensityChange={setIntensity}
+              />
             ) : (
               <p className="text-gray-400 font-normal">Your translated lyrics will appear here...</p>
             )}

@@ -429,6 +429,33 @@ export class VocalTranslator {
     return result;
   }
 
+  // Helper function to apply the same capitalization pattern from original to transformed text
+  private preserveCapitalization(original: string, transformed: string): string {
+    if (original.length === 0 || transformed.length === 0) return transformed;
+    
+    let result = '';
+    for (let i = 0; i < transformed.length; i++) {
+      if (i < original.length) {
+        // If original character at this position is uppercase, make transformed uppercase
+        if (original[i] === original[i].toUpperCase() && original[i] !== original[i].toLowerCase()) {
+          result += transformed[i].toUpperCase();
+        } else {
+          result += transformed[i].toLowerCase();
+        }
+      } else {
+        // If transformed is longer than original, keep lowercase for extra characters
+        result += transformed[i].toLowerCase();
+      }
+    }
+    
+    // Special case: if entire original word is uppercase, make entire result uppercase
+    if (original === original.toUpperCase() && original !== original.toLowerCase()) {
+      return transformed.toUpperCase();
+    }
+    
+    return result;
+  }
+
   translateWord(word: string, intensity: number): string {
     if (!word || word.trim() === '') return word;
 
@@ -440,12 +467,14 @@ export class VocalTranslator {
       if (exceptionWords && exceptionWords[originalWord]) {
         const level = this.getIntensityLevel(intensity);
         const exception = exceptionWords[originalWord];
-        return (exception[level] || exception[1] || originalWord).toUpperCase();
+        const transformed = exception[level] || exception[1] || originalWord;
+        return this.preserveCapitalization(word, transformed);
       }
 
       // 2. For very short words, use simple processing
       if (originalWord.length <= 2) {
-        return this.simpleTransform(originalWord, intensity).toUpperCase();
+        const transformed = this.simpleTransform(originalWord, intensity);
+        return this.preserveCapitalization(word, transformed);
       }
 
       // 3. Morphological analysis
@@ -480,12 +509,13 @@ export class VocalTranslator {
 
       // Clean up result and return
       const finalResult = result || originalWord;
-      return finalResult.toUpperCase();
+      return this.preserveCapitalization(word, finalResult);
 
     } catch (error) {
       // If anything fails, fall back to simple transformation
       console.warn('Word transformation failed, using fallback:', error);
-      return this.simpleTransform(word, intensity).toUpperCase();
+      const transformed = this.simpleTransform(word, intensity);
+      return this.preserveCapitalization(word, transformed);
     }
   }
 
