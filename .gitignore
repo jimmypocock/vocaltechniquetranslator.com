@@ -83,3 +83,6 @@ aws-exports.js
 local/
 dev/
 test-output/
+
+# Private
+.private/

@@ -26,7 +26,11 @@
     "destroy:monitoring": "./scripts/destroy-monitoring.sh",
     "maintenance:on": "./scripts/maintenance-mode.sh on",
     "maintenance:off": "./scripts/maintenance-mode.sh off",
-    "maintenance:update": "./scripts/maintenance-mode.sh update"
+    "maintenance:update": "./scripts/maintenance-mode.sh update",
+    "todo": "./scripts/update-todos.sh show",
+    "todo:add": "./scripts/update-todos.sh add",
+    "todo:complete": "./scripts/update-todos.sh complete",
+    "todo:progress": "./scripts/update-todos.sh progress"
   },
   "dependencies": {
     "next": "^15.3.2",
