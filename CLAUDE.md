@@ -76,3 +76,8 @@ The system uses a "Readable Technique" approach:
 - Memory usage <2MB for full application
 - Single HTML file deployment (~45KB)
 - No external dependencies or build process required
+
+## Important Development Notes
+- **Environment Variables**: This project uses `.env` file (NOT `.env.local`) for configuration
+- The `.env` file contains AWS credentials, Google Analytics ID, and AdSense configuration
+- Always update `.env` file for new environment variables, not `.env.local`

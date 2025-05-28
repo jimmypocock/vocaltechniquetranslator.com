@@ -32,15 +32,32 @@
 
 ### P1 - Important
 
+#### Content & Documentation for AdSense Approval
+
+- [ ] **[Documentation]** Create an About page explaining the tool's purpose and creator background `[VTT-032]`
+- [ ] **[Documentation]** Create a detailed "How to Use" guide with screenshots/examples `[VTT-033]`
+- [ ] **[Documentation]** Write 3-5 blog articles about vocal techniques (can use AI assistance) `[VTT-034]`
+- [ ] **[Documentation]** Create an FAQ section about vocal techniques and the tool `[VTT-035]`
+- [ ] **[Monetization]** Create a sitemap.xml and submit to Google Search Console `[VTT-036]`
+- [ ] **[Monetization]** Reach out to music educators/vocal coaches for testimonials `[VTT-037]`
+- [ ] **[Monetization]** Get backlinks from music/education sites (reach out to contacts) `[VTT-038]`
+
 - [ ] **[Features]** Allow users to adjust size of text areas `[VTT-026]`
 - [ ] **[Features]** Add visual progress tracking with practice streaks `[VTT-018]`
 - [ ] **[Features]** Implement simple favorites system using local storage `[VTT-017]`
-- [ ] **[Features]** Add playback speed controls (0.5x to 1.25x) `[VTT-016]`
 - [ ] **[UI/UX]** Add print-friendly CSS styles `[VTT-015]`
 - [ ] **[Infrastructure]** Create a mobile app for VTT with React Native `[VTT-010]`
 - [ ] **[Infrastructure]** Create a deployment pipeline from a specific branch in GH `[VTT-004]`
-- [ ] **[Documentation]** Create a "how it works" page instead of the thing at the bottom `[VTT-005]`
+- [x] **[Documentation]** Create a "how it works" page instead of the thing at the bottom `[VTT-005]` ✓ Covered by VTT-033
 - [ ] **[UI/UX]** Take the logos you made and see if AI can make them prettier, then add to site UI `[VTT-006]`
+
+#### AdSense Setup Tasks
+
+- [ ] **[Monetization]** Create AdSense account and submit site for review `[VTT-027]`
+- [ ] **[Monetization]** Create ad units in AdSense dashboard (Header, Content, Footer) `[VTT-028]`
+- [ ] **[Monetization]** Update .env with AdSense publisher ID and ad slot IDs `[VTT-029]`
+- [ ] **[Monetization]** Deploy and test consent flow in production `[VTT-030]`
+- [ ] **[Monetization]** Monitor AdSense performance and optimize placements `[VTT-031]`
 
 ### P2 - Nice to Have
 
@@ -51,7 +68,7 @@
 - [ ] **[UI/UX]** Fix zoom-safe interface elements `[VTT-021]`
 - [ ] **[Features]** Add quick search filters `[VTT-020]`
 - [ ] **[UI/UX]** Replace generic error messages with helpful instructions `[VTT-019]`
-- [ ] **[Monetization]** Implement Google AdSense `[VTT-007]`
+- [x] **[Monetization]** Implement Google AdSense `[VTT-007]` ✓ Components created, waiting for account setup
 - [ ] **[Features]** Create a way to submit recommendations that can be easily reviewed by Claude `[VTT-008]`
 
 ### P3 - Future

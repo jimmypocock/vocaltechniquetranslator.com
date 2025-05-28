@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import AdSenseScript from "@/components/AdSense/AdSenseScript";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: "Vocal Technique Translator",
@@ -14,9 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <head>
         <GoogleAnalytics />
+        <AdSenseScript />
+      </head>
+      <body>
         {children}
+        <CookieConsent />
       </body>
     </html>
   );

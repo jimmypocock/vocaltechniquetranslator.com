@@ -66,7 +66,7 @@ export class EdgeFunctionsStack extends Stack {
           headers['referrer-policy'] = { value: 'strict-origin-when-cross-origin' };
           headers['permissions-policy'] = { value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()' };
           headers['content-security-policy'] = { 
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';" 
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.googleadservices.com https://*.google-analytics.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.googleapis.com; img-src 'self' data: https: blob: *.google.com *.googleusercontent.com *.googlesyndication.com *.doubleclick.net *.gstatic.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.googlesyndication.com https://*.googleadservices.com https://*.adtrafficquality.google; frame-src 'self' blob: data: https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com https://*.adtrafficquality.google; fenced-frame-src * blob: data:; frame-ancestors 'none';" 
           };
           
           return response;
