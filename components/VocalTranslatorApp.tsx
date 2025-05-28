@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { VocalTranslator } from '@/lib/vocal-translator';
 import IntensitySlider from './IntensitySlider';
 import TechniqueInfo from './TechniqueInfo';
 import Examples from './Examples';
+import FormattedLyrics from './FormattedLyrics';
 import { AdBanner, AdUnit } from './AdSense';
 
 export default function VocalTranslatorApp() {
@@ -13,6 +14,8 @@ export default function VocalTranslatorApp() {
   const [inputLyrics, setInputLyrics] = useState('');
   const [outputLyrics, setOutputLyrics] = useState('');
   const [translator] = useState(() => new VocalTranslator());
+  const [copySuccess, setCopySuccess] = useState(false);
+  const outputTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const translateLyrics = useCallback(() => {
     if (!inputLyrics.trim()) {
@@ -35,13 +38,31 @@ export default function VocalTranslatorApp() {
     };
   }, [inputLyrics, intensity, translateLyrics]);
 
+  const handleCopy = async () => {
+    if (!outputLyrics) return;
+    
+    try {
+      await navigator.clipboard.writeText(outputLyrics);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      if (outputTextareaRef.current) {
+        outputTextareaRef.current.select();
+        document.execCommand('copy');
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+      }
+    }
+  };
+
   return (
     <div className="container bg-white/95 rounded-[20px] p-[30px] shadow-[0_20px_40px_rgba(0,0,0,0.1)] backdrop-blur-[10px] w-full max-w-[1000px]">
       <div className="header text-center mb-[30px]">
-        <h1 className="text-[#333] text-[2.5em] mb-[10px] bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">
+        <h1 className="mb-3 bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">
           🎵 Vocal Technique Translator
         </h1>
-        <p className="text-[#666] text-[1.1em]">
+        <p className="text-gray-600 text-lg md:text-xl">
           Transform lyrics for optimal vocal technique and open throat positioning
         </p>
       </div>
@@ -60,12 +81,12 @@ export default function VocalTranslatorApp() {
       </div>
 
       <div className="input-section mb-5">
-        <div className="section-title text-[1.2em] font-semibold text-[#333] mb-[10px]">
+        <div className="section-title text-xl font-semibold text-gray-800 mb-3">
           Original Lyrics
         </div>
         <textarea
           id="lyricsInput"
-          className="w-full min-h-[150px] p-[15px] border-2 border-[#e0e0e0] rounded-[10px] text-base leading-[1.6] font-inherit transition-colors focus:outline-none focus:border-[#667eea]"
+          className="w-full min-h-[180px] p-4 border-2 border-gray-200 rounded-xl text-lg leading-relaxed transition-all duration-200 focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-500 focus:ring-opacity-20"
           placeholder={`Enter your song lyrics here...\n\nExample:\nBlue jean baby, L.A. lady\nSeamstress for the band\nPretty-eyed, pirate smile\nYou'll marry a music man`}
           value={inputLyrics}
           onChange={(e) => setInputLyrics(e.target.value)}
@@ -82,17 +103,53 @@ export default function VocalTranslatorApp() {
         />
       </div>
 
-      <div className="output-section mb-5">
-        <div className="section-title text-[1.2em] font-semibold text-[#333] mb-[10px]">
-          Translated for Vocal Technique
+      <div className="output-section mb-5 relative">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="section-title text-xl font-semibold text-gray-800">
+            Translated for Vocal Technique
+          </h2>
+          {outputLyrics && (
+            <button
+              onClick={handleCopy}
+              className="btn-primary px-4 py-2 text-sm flex items-center gap-2"
+              title="Copy to clipboard"
+              aria-label="Copy translated lyrics"
+            >
+              {copySuccess ? (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Copy
+                </>
+              )}
+            </button>
+          )}
         </div>
-        <textarea
-          id="lyricsOutput"
-          className="output-textarea w-full min-h-[150px] p-[15px] border-2 border-[#e0e0e0] rounded-[10px] text-base leading-[1.6] bg-[#f8f9fa] font-['Courier_New',monospace] font-bold text-[#333]"
-          placeholder="Your translated lyrics will appear here..."
-          value={outputLyrics}
-          readOnly
-        />
+        <div className="relative">
+          <div className="phonetic-text min-h-[180px] p-4 border-2 border-gray-200 rounded-xl bg-gray-50 font-semibold text-gray-800">
+            {outputLyrics ? (
+              <FormattedLyrics lyrics={outputLyrics} intensity={intensity} />
+            ) : (
+              <p className="text-gray-400 font-normal">Your translated lyrics will appear here...</p>
+            )}
+          </div>
+          {/* Hidden textarea for copy functionality */}
+          <textarea
+            ref={outputTextareaRef}
+            value={outputLyrics}
+            readOnly
+            className="sr-only"
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       <Examples />
