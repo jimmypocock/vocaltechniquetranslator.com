@@ -61,7 +61,7 @@ export default function GeniusStyleLayout() {
   const testMode = !process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 
   return (
-    <div className="min-h-screen">
+    <div className="app-wrapper">
       {/* Top Video Ad */}
       <div className="glass-card border-b border-gray-200/20 dark:border-gray-700/20 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 py-4">

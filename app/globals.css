@@ -80,48 +80,70 @@
   box-sizing: border-box;
 }
 
-/* Prevent any element from causing horizontal scroll */
-* {
-  max-width: 100%;
-}
+/* Debug: Find elements causing overflow
+   Uncomment to see all element boundaries */
+/* * {
+  outline: 1px solid red !important;
+} */
 
-/* Ensure main content container doesn't overflow */
-#__next {
-  overflow-x: hidden;
-  position: relative;
-}
 
 html {
-  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: scroll; /* Force scrollbar to always show */
+  /* Remove scrollbar gutter */
+  scrollbar-gutter: stable both-edges;
+  /* Set background color to match body gradient start */
+  background-color: #ffffff;
+}
+
+[data-theme="dark"] html {
+  background-color: #0a0a0a;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: var(--font-ui);
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--text-primary);
   min-height: 100vh;
+  /* Use calc to account for scrollbar */
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  position: relative;
-  overflow-x: hidden;
   background: var(--gradient-bg);
-  /* transition: background 0.3s ease, color 0.3s ease; */ /* Reduced transitions for performance */
+  /* Ensure background covers entire viewport */
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  /* Extend background to cover scrollbar area */
+  margin-right: calc(100vw - 100%);
 }
 
-/* Ensure root html element also prevents horizontal scroll */
-html {
-  overflow-x: hidden;
-  width: 100%;
+/* Next.js specific wrapper div fixes */
+body > div:first-child,
+div#__next,
+div#__next > div {
+  min-height: 100vh;
 }
 
-/* Ensure Next.js root div doesn't cause overflow */
-#__next {
-  overflow-x: hidden;
+/* Main app wrapper to handle overflow */
+.app-wrapper {
+  min-height: 100vh;
   width: 100%;
-  min-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Prevent horizontal scroll on root */
+:root {
+  overflow-x: hidden;
 }
 
 
@@ -131,11 +153,13 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background: var(--gradient-bg);
   z-index: -10;
+  pointer-events: none;
 }
+
 
 /* Floating orbs */
 .gradient-orb {
@@ -247,23 +271,42 @@ body::before {
   animation: gradient 3s ease infinite;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - style to match background */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  background-color: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  background: var(--bg-primary);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) var(--bg-primary);
+}
+
+[data-theme="dark"] * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) var(--bg-primary);
 }
 
 /* Textarea resize handle */
@@ -336,6 +379,7 @@ h2 {
 h3 {
   @apply text-xl md:text-2xl font-semibold;
 }
+
 
 /* Card backgrounds for gradient compatibility */
 .glass-card {
