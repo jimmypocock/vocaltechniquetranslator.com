@@ -8,8 +8,8 @@ interface AdBannerProps {
 
 export default function AdBanner({ adSlot, className = '', testMode = false }: AdBannerProps) {
   return (
-    <div className={`w-full overflow-hidden ${className}`}>
-      <div className="mx-auto max-w-screen-xl px-4">
+    <div className={`w-full overflow-hidden ad-container ${className}`}>
+      <div className="mx-auto max-w-screen-xl px-4 py-2">
         {/* Desktop: Leaderboard (728x90) */}
         <div className="hidden lg:block">
           <AdUnit

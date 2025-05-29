@@ -14,17 +14,17 @@ export default function CompactIntensitySelector({ value, onChange }: CompactInt
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm font-medium text-gray-600">Intensity:</span>
-      <div className="inline-flex rounded-lg border border-gray-200 p-0.5 bg-gray-50">
+      <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Intensity:</span>
+      <div className="inline-flex rounded-lg p-0.5 backdrop-blur-sm bg-white/20 dark:bg-black/20 border border-white/20 dark:border-white/10">
         {intensityLevels.map((level) => (
           <button
             key={level.value}
             onClick={() => onChange(level.value)}
             className={`
-              px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200
+              px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 transform
               ${value === level.value 
-                ? 'bg-purple-600 text-white shadow-sm' 
-                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md' 
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/30 dark:hover:bg-white/10'
               }
             `}
             title={level.description}

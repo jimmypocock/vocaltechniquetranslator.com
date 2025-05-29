@@ -1,3 +1,4 @@
+// DELETE IF NOT USED
 export default function TechniqueInfo() {
   const techniques = [
     "Conservative transformations maintain lyric readability",
@@ -15,8 +16,8 @@ export default function TechniqueInfo() {
       </h3>
       <ul className="list-none pl-0">
         {techniques.map((technique, index) => (
-          <li 
-            key={index} 
+          <li
+            key={index}
             className="mb-1 pl-5 relative before:content-['♪'] before:absolute before:left-0 before:text-[#2196f3]"
           >
             {technique}

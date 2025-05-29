@@ -10,7 +10,7 @@ declare global {
 
 interface AdUnitProps {
   adSlot: string;
-  adFormat?: 'auto' | 'fluid' | 'rectangle' | 'vertical' | 'horizontal';
+  adFormat?: 'auto' | 'fluid' | 'rectangle' | 'vertical' | 'horizontal' | 'video';
   style?: React.CSSProperties;
   className?: string;
   fullWidthResponsive?: boolean;
@@ -53,22 +53,30 @@ export default function AdUnit({
         }}
       >
         <div className="text-center p-4">
-          <p className="font-semibold">Ad Placeholder</p>
+          <p className="font-semibold">
+            {adFormat === 'video' ? '📹 Video Ad Placeholder' : 'Ad Placeholder'}
+          </p>
           <p className="text-sm">Slot: {adSlot}</p>
           <p className="text-xs mt-1">
             {!adClient ? 'No AdSense Client ID' : 'Development Mode'}
           </p>
+          {adFormat === 'video' && (
+            <p className="text-xs mt-2 text-gray-500">
+              Video ads typically have higher revenue
+            </p>
+          )}
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`ad-container ${className}`}>
+    <div className={`ad-container overflow-hidden ${className}`}>
       <ins
         className="adsbygoogle"
         style={{
           display: 'block',
+          maxWidth: '100%',
           ...style
         }}
         data-ad-client={adClient}
