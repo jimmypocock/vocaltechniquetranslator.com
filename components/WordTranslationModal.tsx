@@ -12,6 +12,7 @@ interface WordTranslationModalProps {
 
 export default function WordTranslationModal({ word, isOpen, onClose }: WordTranslationModalProps) {
   const [translations, setTranslations] = useState<Record<string, string>>({})
+  const [syllables, setSyllables] = useState<string>('')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -27,9 +28,13 @@ export default function WordTranslationModal({ word, isOpen, onClose }: WordTran
         'Original': word,
         '🌱 Minimal': translator.translateWord(word, 1),
         '🌿 Moderate': translator.translateWord(word, 5),
-        '🌳 Full': translator.translateWord(word, 9)
+        '🌳 Maximum': translator.translateWord(word, 9)
       }
       setTranslations(levels)
+
+      // Generate syllables
+      const wordSyllables = translator.syllabify(word)
+      setSyllables(wordSyllables.join(' • '))
     }
   }, [word, isOpen])
 
@@ -61,14 +66,14 @@ export default function WordTranslationModal({ word, isOpen, onClose }: WordTran
   const modalContent = (
     <>
       {/* Full viewport backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9999]"
         onClick={onClose}
         style={{ animation: 'fadeIn 0.15s ease-out forwards' }}
       />
-      
+
       {/* Modal card */}
-      <div 
+      <div
         className="fixed z-[10000] bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 min-w-[320px] max-w-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{ animation: 'fadeIn 0.15s ease-out forwards' }}
       >
@@ -89,17 +94,30 @@ export default function WordTranslationModal({ word, isOpen, onClose }: WordTran
 
         <div className="space-y-3">
           {Object.entries(translations).map(([level, translation]) => (
-            <div key={level} className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                {level}:
-              </span>
-              <span className={`text-base font-mono ${
-                level === 'Original' 
-                  ? 'text-gray-900 dark:text-gray-100' 
-                  : 'text-purple-600 dark:text-purple-400 font-semibold'
-              }`}>
-                {translation}
-              </span>
+            <div key={level}>
+              <div className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {level}:
+                </span>
+                <span className={`text-base font-mono ${
+                  level === 'Original'
+                    ? 'text-gray-900 dark:text-gray-100'
+                    : 'text-purple-600 dark:text-purple-400 font-semibold'
+                }`}>
+                  {translation}
+                </span>
+              </div>
+              {/* Add syllables after Original word */}
+              {level === 'Original' && syllables && (
+                <div className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Syllables:
+                  </span>
+                  <span className="text-base font-mono text-gray-700 dark:text-gray-300">
+                    {syllables}
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>

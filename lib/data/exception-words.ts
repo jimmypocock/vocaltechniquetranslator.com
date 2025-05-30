@@ -1,6 +1,10 @@
 import { ExceptionWord } from '@/lib/types/vocal-translator';
 
 export const exceptionWords: ExceptionWord = {
+  // Special words with custom handling
+  'meet': { 1: 'meet', 4: 'meht', 8: 'mahd' },
+  'beautiful': { 1: 'beau-ti-ful', 4: 'byoo-teh-fool', 8: 'behoo-dah-fahl' },
+  
   // Articles & pronouns
   'the': { 1: 'the', 4: 'dhuh', 8: 'duh' },
   'a': { 1: 'a', 4: 'uh', 8: 'uh' },
@@ -47,22 +51,22 @@ export const exceptionWords: ExceptionWord = {
   // Specific to the example lyrics
   'blue': { 1: 'blue', 4: 'bluh', 8: 'bluh' },
   'jean': { 1: 'jean', 4: 'jahn', 8: 'jahn' },
-  'baby': { 1: 'baby', 4: 'bah-bay', 8: 'bah-bae' },
-  'lady': { 1: 'lady', 4: 'lah-dee', 8: 'lahd-eh' },
-  'seamstress': { 1: 'seamstress', 4: 'sehm-stress', 8: 'sehm-stress' },
+  'baby': { 1: 'ba-by', 4: 'bah-bay', 8: 'bah-bae' },
+  'lady': { 1: 'la-dy', 4: 'lah-dee', 8: 'lahd-eh' },
+  'seamstress': { 1: 'seam-stress', 4: 'sehm-stress', 8: 'sehm-stress' },
   'band': { 1: 'band', 4: 'bahnd', 8: 'band' },
-  'pretty': { 1: 'pretty', 4: 'prih-tee', 8: 'preh-teh' },
-  'pirate': { 1: 'pirate', 4: 'pah-ruht', 8: 'pah-ruht' },
+  'pretty': { 1: 'pret-ty', 4: 'prih-tee', 8: 'preh-teh' },
+  'pirate': { 1: 'pir-ate', 4: 'pah-ruht', 8: 'pah-ruht' },
   'smile': { 1: 'smile', 4: 'smehl', 8: 'zmel' },
   'eyed': { 1: 'eyed', 4: 'ahed', 8: 'aed' },
-  'marry': { 1: 'marry', 4: 'mahr-ee', 8: 'mahr-eh' },
-  'music': { 1: 'music', 4: 'myoo-sik', 8: 'myuh-suhk' },
+  'marry': { 1: 'mar-ry', 4: 'mahr-ee', 8: 'mahr-eh' },
+  'music': { 1: 'mu-sic', 4: 'myoo-sik', 8: 'myuh-suhk' },
   'man': { 1: 'man', 4: 'mahn', 8: 'mahn' },
   'seen': { 1: 'seen', 4: 'sehn', 8: 'sehn' },
   'her': { 1: 'her', 4: 'hehr', 8: 'hehr' },
-  'dancing': { 1: 'dancing', 4: 'dahn-sing', 8: 'dahn-sehn' },
+  'dancing': { 1: 'dan-cing', 4: 'dahn-sing', 8: 'dahn-sehn' },
   'sand': { 1: 'sand', 4: 'sahnd', 8: 'sahnd' },
-  'ballerina': { 1: 'ballerina', 4: 'bahl-luhr-eenah', 8: 'bahl-luh-reh-nah' },
+  'ballerina': { 1: 'bal-ler-i-na', 4: 'bahl-luhr-eenah', 8: 'bahl-luh-reh-nah' },
   'mustve': { 1: 'mustve', 4: 'muht-ve', 8: 'muht-ve' },
 
   // New additions from user examples
@@ -96,6 +100,18 @@ export const exceptionWords: ExceptionWord = {
   'spend': { 1: 'spend', 4: 'spehnd', 8: 'behnd' },
   'small': { 1: 'small', 4: 'smahl', 8: 'mahl' },
   'smart': { 1: 'smart', 4: 'smahrt', 8: 'mahrt' },
+
+  // Greek-origin words where 'ch' = /k/ sound
+  'chorus': { 1: 'cho-rus', 4: 'koh-ruz', 8: 'kah-rahz' },
+  'chemistry': { 1: 'chem-is-try', 4: 'kehm-ihs-tree', 8: 'kahm-ahs-drae' },
+  'chrome': { 1: 'chrome', 4: 'krohm', 8: 'krahm' },
+  'chaos': { 1: 'cha-os', 4: 'kah-ahs', 8: 'kah-ahs' },
+  'character': { 1: 'char-ac-ter', 4: 'kahr-ahk-tehr', 8: 'kahr-ahg-dahr' },
+  'chronical': { 1: 'chron-i-cal', 4: 'krahn-ih-kahl', 8: 'krahn-ah-gahl' },
+  'echo': { 1: 'e-cho', 4: 'eh-koh', 8: 'ah-gah' },
+  
+  // Single syllable words with special patterns
+  'takes': { 1: 'takes', 4: 'taegz', 8: 'dahgz' },
 
   // Contractions
   'well': { 1: 'well', 4: 'weh-ll', 8: 'weh-ll' },

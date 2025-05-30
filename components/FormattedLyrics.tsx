@@ -112,7 +112,7 @@ export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onU
     return displayLines.map((line, index) => {
       // Handle empty lines for verse separation
       if (line.trim() === '') {
-        return <div key={index} className="mb-4" aria-hidden="true" />;
+        return <div key={index} className="mb-8" aria-hidden="true" />;
       }
 
       return (
@@ -148,7 +148,7 @@ export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onU
       </div>
 
       {isExpanded && (
-        <div className="mt-3 px-3 py-2 bg-gray-50/50 dark:bg-gray-800/30 rounded-md border border-gray-200/50 dark:border-gray-700/50">
+        <div className="mt-6 px-3 py-2 bg-gray-50/50 dark:bg-gray-800/30 rounded-md border border-gray-200/50 dark:border-gray-700/50">
           <p className="text-xs text-gray-500 dark:text-gray-500">
             💡 Click any word to see all transformation levels
           </p>

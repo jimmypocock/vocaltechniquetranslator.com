@@ -4,32 +4,44 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-The Vocal Technique Translator is a single-file web application that transforms song lyrics into phonetic representations to help singers maintain proper vocal technique. The project emphasizes readability while providing vocal benefits through strategic vowel modifications and consonant softening.
+The Vocal Technique Translator is a Next.js web application that transforms song lyrics into phonetic representations to help singers maintain proper vocal technique. The project uses a syllable-based approach where words are split into syllables before transformation, ensuring natural break points for singing.
 
 ## Architecture
 
-This is a self-contained HTML application with embedded CSS and JavaScript:
+This is a modern Next.js application with TypeScript:
 
-- **Single File Structure**: All code is contained in `index.html` 
-- **No Dependencies**: Uses vanilla JavaScript with no external libraries
-- **Client-Side Only**: All processing happens in the browser
-- **Exception-Driven**: Core functionality relies on a comprehensive exception dictionary for common words
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript for type safety
+- **Styling**: Tailwind CSS with custom color palette
+- **Deployment**: AWS CDK infrastructure
+- **Processing**: Client-side transformation for privacy
 
 ### Key Components
 
-- **VocalTranslator Class**: Main transformation engine with linguistic intelligence
-- **Exception Dictionary**: 650+ pre-defined word transformations across intensity levels
-- **Morphological Analysis**: Handles prefixes, suffixes, and compound words
-- **Syllable Detection**: Intelligent syllable boundary identification
-- **Context-Sensitive Rules**: Different transformations based on phonetic context
+- **VocalTranslator Class** (`lib/vocal-translator.ts`): Main transformation engine
+- **SyllableSplitter Class** (`lib/utils/syllable-splitter.ts`): Advanced syllable detection with linguistic rules
+- **Exception Dictionary** (`lib/data/exception-words.ts`): 650+ pre-defined word transformations
+- **Phonetic Patterns** (`lib/data/phonetic-patterns.ts`): Rule-based transformations for vowels, consonants, and clusters
+- **UI Components**: React components for interactive translation interface
 
 ## Core Transformation Philosophy
 
-The system uses a "Readable Technique" approach:
-1. **Readability First**: Transformations maintain word recognition
-2. **Conservative Scaling**: Intensity levels 1-3 minimal, 4-5 conservative, 6-7 moderate, 8-10 full technique
-3. **Exception Priority**: Common words use pre-defined phonetic representations
-4. **Strategic Enhancement**: Target specific vocal challenges without overwhelming changes
+The system uses a "Syllable-Based Technique" approach:
+
+### Transformation Flow
+1. **Syllable Splitting First**: Words are split into syllables BEFORE any transformation
+2. **Independent Processing**: Each syllable is transformed independently based on its own context
+3. **Progressive Intensity**: 
+   - Levels 1-3 (Minimal): Original syllables with hyphens, no phonetic changes
+   - Levels 4-7 (Moderate): Medium transformation per syllable with hyphens
+   - Levels 8-10 (Full): Maximum transformation per syllable with hyphens
+
+### Rule Hierarchy
+1. **Exception Dictionary**: Pre-defined transformations for common words (highest priority)
+2. **Suffix Patterns**: Common endings like -tion → shuhn/shahn
+3. **Phonetic Patterns**: Consonant clusters (nds → nz), vowel teams, etc.
+4. **CVCe Detection**: Silent 'e' patterns handled specially (love → lahv, not lahveh)
+5. **Context Rules**: Consonant and vowel transformations based on position
 
 ## Key Features to Maintain
 
@@ -40,16 +52,17 @@ The system uses a "Readable Technique" approach:
 - Song-specific vocabulary with natural phonetic representations
 
 ### Intelligent Processing
-- Morphological analysis for prefixes/suffixes
-- Context-sensitive consonant transformations
-- Position-aware syllable breaks (only at intensity 8+ for 6+ character words)
-- Phoneme-based vowel modifications
+- **Syllable Detection**: Advanced algorithm handles CVCe patterns, vowel teams, consonant blends
+- **Context-Sensitive Transformations**: Consonants transform differently at syllable start/middle/end
+- **Pattern Recognition**: Automatic handling of suffixes (-tion, -ment), prefixes, and clusters
+- **CVCe Awareness**: Special vowel handling in silent 'e' contexts (home → hum at moderate)
 
-### Conservative Transformation Rules
-- Single-pass processing prevents over-transformation
-- Position tracking system avoids double modifications
-- Intensity-gated features (consonant softening only at level 8+)
-- Fallback mechanisms for edge cases
+### Transformation Rules
+- **Always Show Syllables**: Multi-syllable words always display with hyphens
+- **Progressive Changes**: Each intensity level builds on the previous
+- **Consonant Clusters**: Simplify for easier singing (hands → hanz)
+- **Suffix Recognition**: Common endings transform predictably (-tion → shuhn)
+- **Silent E Handling**: No extra vowel sounds added (love → lahv, not lahveh)
 
 ## Development Guidelines
 

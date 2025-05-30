@@ -37,7 +37,6 @@ export default function AdBanner({ adSlot, className = '', testMode = false }: A
           <AdUnit
             adSlot={adSlot}
             adFormat="auto"
-            fullWidthResponsive={true}
             testMode={testMode}
           />
         </div>

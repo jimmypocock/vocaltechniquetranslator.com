@@ -85,14 +85,14 @@ export default function HowItWorksPage() {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">What Is Vocal Translation?</h2>
                   <p className="text-base text-muted-foreground mb-4">
-                    Vocal translation is a technique that transforms regular English lyrics into phonetic representations 
-                    that are easier and healthier to sing. It&apos;s like having a vocal coach whisper in your ear exactly 
+                    Vocal translation is a technique that transforms regular English lyrics into phonetic representations
+                    that are easier and healthier to sing. It&apos;s like having a vocal coach whisper in your ear exactly
                     how to pronounce each word for optimal vocal performance.
                   </p>
                   <div className="bg-muted/10 border border-muted/20 rounded-lg p-6 mb-6">
                     <h3 className="font-semibold mb-2">The Core Principle</h3>
                     <p className="text-sm text-muted-foreground">
-                      Instead of fighting against difficult sounds, we transform them into singer-friendly alternatives 
+                      Instead of fighting against difficult sounds, we transform them into singer-friendly alternatives
                       while maintaining the essence and recognizability of the original lyrics.
                     </p>
                   </div>
@@ -138,23 +138,23 @@ export default function HowItWorksPage() {
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
-                      <div className="w-20 text-sm font-semibold text-muted-foreground">🌱 Minimal</div>
+                      <div className="w-20 text-sm font-semibold text-muted-foreground">Minimal</div>
                       <div className="flex-1">
-                        <div className="font-semibold">Subtle Adjustments</div>
+                        <div className="font-semibold">🌱 Subtle Adjustments</div>
                         <div className="text-sm text-muted-foreground">Light modifications that maintain most of the original pronunciation. Perfect for beginners or easy songs.</div>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <div className="w-20 text-sm font-semibold text-muted-foreground">🌿 Moderate</div>
+                      <div className="w-20 text-sm font-semibold text-muted-foreground">Moderate</div>
                       <div className="flex-1">
-                        <div className="font-semibold">Balanced Technique</div>
+                        <div className="font-semibold">🌿 Balanced Technique</div>
                         <div className="text-sm text-muted-foreground">A sweet spot that improves vocal health without sacrificing too much clarity. Ideal for most singing situations.</div>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <div className="w-20 text-sm font-semibold text-muted-foreground">🌳 Full</div>
+                      <div className="w-20 text-sm font-semibold text-muted-foreground">Maximum</div>
                       <div className="flex-1">
-                        <div className="font-semibold">Maximum Transformation</div>
+                        <div className="font-semibold">🌳 Full Transformation</div>
                         <div className="text-sm text-muted-foreground">Complete vocal technique with syllable separation and all modifications. Best for challenging songs or professional performance.</div>
                       </div>
                     </div>
@@ -312,7 +312,7 @@ export default function HowItWorksPage() {
                         <div className="text-primary">ah will awl-ways luhv yoo</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">🌳 Full:</div>
+                        <div className="text-muted-foreground">🌳 Maximum:</div>
                         <div className="text-primary">AH weel AWL-wehz LUHV YAH</div>
                       </div>
                     </div>
@@ -330,7 +330,7 @@ export default function HowItWorksPage() {
                         <div className="text-primary">dohnt stahp buh-lee-ving</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">🌳 Full:</div>
+                        <div className="text-muted-foreground">🌳 Maximum:</div>
                         <div className="text-primary">DOHN ZDAHP buh-LEE-veeng</div>
                       </div>
                     </div>
@@ -348,7 +348,7 @@ export default function HowItWorksPage() {
                         <div className="text-primary">suhm-wehr oh-ver thuh rehn-boh</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">🌳 Full:</div>
+                        <div className="text-muted-foreground">🌳 Maximum:</div>
                         <div className="text-primary">SUHM-wehr OH-vuh duh REHN-boh</div>
                       </div>
                     </div>
@@ -397,7 +397,7 @@ export default function HowItWorksPage() {
                       Start Conservative
                     </h3>
                     <p className="text-base text-muted-foreground">
-                      Begin with Moderate intensity (🌿). This gives you noticeable improvements without overwhelming changes. 
+                      Begin with Moderate intensity (🌿). This gives you noticeable improvements without overwhelming changes.
                       You can always increase to Full intensity (🌳) as you get comfortable.
                     </p>
                   </div>
@@ -408,7 +408,7 @@ export default function HowItWorksPage() {
                       Focus on Diphthongs
                     </h3>
                     <p className="text-base text-muted-foreground">
-                      Words with &quot;I&quot; sounds (like, time, night) and &quot;AY&quot; sounds (say, way, day) are the most challenging. 
+                      Words with &quot;I&quot; sounds (like, time, night) and &quot;AY&quot; sounds (say, way, day) are the most challenging.
                       Practice holding the first vowel sound for 80-90% of the note duration.
                     </p>
                   </div>
@@ -419,7 +419,7 @@ export default function HowItWorksPage() {
                       Adjust for Pitch
                     </h3>
                     <p className="text-base text-muted-foreground">
-                      Higher notes need more open vowels. When singing above your comfortable range, increase the intensity 
+                      Higher notes need more open vowels. When singing above your comfortable range, increase the intensity
                       level or manually open the vowels more than indicated.
                     </p>
                   </div>
@@ -430,7 +430,7 @@ export default function HowItWorksPage() {
                       Keep It Musical
                     </h3>
                     <p className="text-base text-muted-foreground">
-                      The transformations are guidelines, not rules. Always prioritize musicality and emotional expression. 
+                      The transformations are guidelines, not rules. Always prioritize musicality and emotional expression.
                       If a transformation doesn&apos;t feel right, trust your instincts.
                     </p>
                   </div>
@@ -455,8 +455,8 @@ export default function HowItWorksPage() {
                   <p className="text-lg text-muted-foreground mb-4">
                     Ready to transform your singing?
                   </p>
-                  <Link 
-                    href="/" 
+                  <Link
+                    href="/"
                     className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
                   >
                     Try the Vocal Translator
@@ -473,7 +473,7 @@ export default function HowItWorksPage() {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">Keyboard Shortcuts</h2>
                   <p className="text-base text-muted-foreground mb-4">
-                    Navigate the Vocal Translator faster with these handy keyboard shortcuts. 
+                    Navigate the Vocal Translator faster with these handy keyboard shortcuts.
                     Press <kbd className="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">?</kbd> at any time to see this list.
                   </p>
                 </section>
@@ -551,7 +551,7 @@ export default function HowItWorksPage() {
                       Pro Tip: Efficiency First
                     </h3>
                     <p className="text-base text-muted-foreground">
-                      These shortcuts are designed to keep your hands on the keyboard while working with lyrics. 
+                      These shortcuts are designed to keep your hands on the keyboard while working with lyrics.
                       The most useful ones are the intensity controls (1, 2, 3) and the quick copy (Ctrl+Enter).
                     </p>
                   </div>
