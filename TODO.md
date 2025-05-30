@@ -22,27 +22,29 @@
 
 ### P0 - Critical
 
+- [ ] **[Features]** Use Canva to come up with a full brand kit for Vocal Technique Translator. `[VTT-040]`
+- [ ] **[Features]** Contruct full lyrical logic for redeployment. `[VTT-039]`
 - [x] **[Features]** Add basic keyboard shortcuts (spacebar for play/pause, R for repeat) `[VTT-014]`
 - [ ] **[UI/UX]** Improve button contrast and size to 44px minimum touch targets `[VTT-013]`
 - [x] **[Features]** Implement copy button for IPA transcriptions `[VTT-012]`
 - [x] **[UI/UX]** Add dark mode toggle `[VTT-011]`
-- [ ] **[UI/UX]** Make font size and type more legible `[VTT-001]`
-- [ ] **[UI/UX]** Structure words so they're easier to read `[VTT-002]`
-- [ ] **[Features]** Add a copy button to the generated text `[VTT-003]`
+- [x] **[UI/UX]** Make font size and type more legible `[VTT-001]`
+- [x] **[UI/UX]** Structure words so they're easier to read `[VTT-002]`
+- [x] **[Features]** Add a copy button to the generated text `[VTT-003]`
 
 ### P1 - Important
 
 #### Content & Documentation for AdSense Approval
 
 - [ ] **[Documentation]** Create an About page explaining the tool's purpose and creator background `[VTT-032]`
-- [ ] **[Documentation]** Create a detailed "How to Use" guide with screenshots/examples `[VTT-033]`
+- [x] **[Documentation]** Create a detailed "How to Use" guide with screenshots/examples `[VTT-033]`
 - [ ] **[Documentation]** Write 3-5 blog articles about vocal techniques (can use AI assistance) `[VTT-034]`
 - [ ] **[Documentation]** Create an FAQ section about vocal techniques and the tool `[VTT-035]`
 - [ ] **[Monetization]** Create a sitemap.xml and submit to Google Search Console `[VTT-036]`
 - [ ] **[Monetization]** Reach out to music educators/vocal coaches for testimonials `[VTT-037]`
 - [ ] **[Monetization]** Get backlinks from music/education sites (reach out to contacts) `[VTT-038]`
 
-- [ ] **[Features]** Allow users to adjust size of text areas `[VTT-026]`
+- [x] **[Features]** Allow users to adjust size of text areas `[VTT-026]`
 - [ ] **[Features]** Add visual progress tracking with practice streaks `[VTT-018]`
 - [ ] **[Features]** Implement simple favorites system using local storage `[VTT-017]`
 - [ ] **[UI/UX]** Add print-friendly CSS styles `[VTT-015]`

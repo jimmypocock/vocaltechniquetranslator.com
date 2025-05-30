@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { AdBanner, AdUnit } from './AdSense';
+import { useAdsVisibility } from '@/hooks/useAdsVisibility';
 
 interface ResponsiveAdLayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface ResponsiveAdLayoutProps {
 
 export default function ResponsiveAdLayout({ children }: ResponsiveAdLayoutProps) {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+  const shouldShowAds = useAdsVisibility();
 
   useEffect(() => {
     const updateScreenSize = () => {
@@ -39,20 +41,22 @@ export default function ResponsiveAdLayout({ children }: ResponsiveAdLayoutProps
   return (
     <div className="min-h-screen">
       {/* Top Banner - All screens */}
-      <div className="w-full bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <AdBanner
-            adSlot={adSlots.header}
-            className="mx-auto"
-            testMode={testMode}
-          />
+      {shouldShowAds && (
+        <div className="w-full bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 py-3">
+            <AdBanner
+              adSlot={adSlots.header}
+              className="mx-auto"
+              testMode={testMode}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content Area */}
       <div className="flex flex-col lg:flex-row max-w-7xl mx-auto w-full overflow-x-hidden">
         {/* Desktop Sidebar Ad - Left side */}
-        {screenSize === 'desktop' && (
+        {screenSize === 'desktop' && shouldShowAds && (
           <aside className="hidden lg:block w-64 flex-shrink-0 p-4">
             <div className="sticky top-20">
               <AdUnit
@@ -71,7 +75,7 @@ export default function ResponsiveAdLayout({ children }: ResponsiveAdLayoutProps
           {children}
 
           {/* Mobile/Tablet: Content Ad after main content */}
-          {screenSize !== 'desktop' && (
+          {screenSize !== 'desktop' && shouldShowAds && (
             <div className="mt-8 -mx-4 px-4 py-4 bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
               <AdUnit
                 adSlot={adSlots.content}
@@ -84,7 +88,7 @@ export default function ResponsiveAdLayout({ children }: ResponsiveAdLayoutProps
         </main>
 
         {/* Desktop Sidebar Ad - Right side */}
-        {screenSize === 'desktop' && (
+        {screenSize === 'desktop' && shouldShowAds && (
           <aside className="hidden lg:block w-64 flex-shrink-0 p-4">
             <div className="sticky top-20">
               <AdUnit
@@ -102,11 +106,13 @@ export default function ResponsiveAdLayout({ children }: ResponsiveAdLayoutProps
       {/* Footer Ad - All screens */}
       <footer className="mt-16 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <AdBanner
-            adSlot={adSlots.footer}
-            className="mb-6"
-            testMode={testMode}
-          />
+          {shouldShowAds && (
+            <AdBanner
+              adSlot={adSlots.footer}
+              className="mb-6"
+              testMode={testMode}
+            />
+          )}
           
           {/* Footer links */}
           <div className="text-center space-y-2">

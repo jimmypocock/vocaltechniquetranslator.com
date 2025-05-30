@@ -9,6 +9,7 @@ import FormattedLyrics from './FormattedLyrics';
 import { AdUnit } from './AdSense';
 import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { useAdsVisibility } from '@/hooks/useAdsVisibility';
 
 export default function GeniusStyleLayout() {
   const [intensity, setIntensity] = useState(9); // Default to Full (was 8)
@@ -21,6 +22,7 @@ export default function GeniusStyleLayout() {
   const outputTextareaRef = useRef<HTMLTextAreaElement>(null);
   const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
+  const shouldShowAds = useAdsVisibility();
 
   const translateLyrics = useCallback(() => {
     if (!inputLyrics.trim()) {
@@ -128,17 +130,19 @@ export default function GeniusStyleLayout() {
   return (
     <div className="app-wrapper">
       {/* Top Video Ad */}
-      <div className="glass-card border-b border-gray-200/20 dark:border-gray-700/20 backdrop-blur-lg">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <AdUnit
-            adSlot={process.env.NEXT_PUBLIC_AD_SLOT_HEADER || "1234567890"}
-            adFormat="video"
-            style={{ minHeight: '250px', maxWidth: '970px' }}
-            className="mx-auto"
-            testMode={testMode}
-          />
+      {shouldShowAds && (
+        <div className="glass-card border-b border-gray-200/20 dark:border-gray-700/20 backdrop-blur-lg">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <AdUnit
+              adSlot={process.env.NEXT_PUBLIC_AD_SLOT_HEADER || "1234567890"}
+              adFormat="video"
+              style={{ minHeight: '250px', maxWidth: '970px' }}
+              className="mx-auto"
+              testMode={testMode}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -184,9 +188,9 @@ export default function GeniusStyleLayout() {
         {/* <TechniqueInfo /> */}
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Left Column - Original Lyrics (2/3 width) */}
-          <div className="lg:col-span-2">
+        <div className={`grid grid-cols-1 ${shouldShowAds ? 'lg:grid-cols-3' : ''} gap-6 mb-8`}>
+          {/* Left Column - Original Lyrics (2/3 width when ads shown, full width when hidden) */}
+          <div className={shouldShowAds ? "lg:col-span-2" : ""}>
             <section className="glass-card p-6 h-full">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                 <span className="w-1 h-6 bg-purple-500 rounded-full mr-3"></span>
@@ -204,17 +208,19 @@ export default function GeniusStyleLayout() {
           </div>
 
           {/* Right Column - Side Ad (1/3 width) */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-4">
-              <AdUnit
-                adSlot={process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR || "2345678901"}
-                adFormat="video"
-                style={{ minHeight: '400px', width: '100%' }}
-                className="mx-auto"
-                testMode={testMode}
-              />
+          {shouldShowAds && (
+            <div className="lg:col-span-1">
+              <div className="sticky top-4">
+                <AdUnit
+                  adSlot={process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR || "2345678901"}
+                  adFormat="video"
+                  style={{ minHeight: '400px', width: '100%' }}
+                  className="mx-auto"
+                  testMode={testMode}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Full Width Output Section */}
@@ -286,12 +292,14 @@ export default function GeniusStyleLayout() {
       {/* Bottom Ad */}
       <div className="glass-card border-t border-gray-200/20 dark:border-gray-700/20 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <AdUnit
-            adSlot={process.env.NEXT_PUBLIC_AD_SLOT_FOOTER || "3456789012"}
-            adFormat="horizontal"
-            className="mx-auto mb-6"
-            testMode={testMode}
-          />
+          {shouldShowAds && (
+            <AdUnit
+              adSlot={process.env.NEXT_PUBLIC_AD_SLOT_FOOTER || "3456789012"}
+              adFormat="horizontal"
+              className="mx-auto mb-6"
+              testMode={testMode}
+            />
+          )}
 
           {/* Footer */}
           <div className="text-center space-y-2">
@@ -299,6 +307,10 @@ export default function GeniusStyleLayout() {
               © {new Date().getFullYear()} Vocal Technique Translator. All rights reserved.
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
+              <a href="/about" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                About
+              </a>
+              <span className="mx-2 text-gray-400 dark:text-gray-500">•</span>
               <a href="/how-it-works" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 How It Works
               </a>
