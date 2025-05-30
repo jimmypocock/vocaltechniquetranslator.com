@@ -22,10 +22,10 @@
 
 ### P0 - Critical
 
-- [ ] **[Features]** Add basic keyboard shortcuts (spacebar for play/pause, R for repeat) `[VTT-014]`
+- [x] **[Features]** Add basic keyboard shortcuts (spacebar for play/pause, R for repeat) `[VTT-014]`
 - [ ] **[UI/UX]** Improve button contrast and size to 44px minimum touch targets `[VTT-013]`
-- [ ] **[Features]** Implement copy button for IPA transcriptions `[VTT-012]`
-- [ ] **[UI/UX]** Add dark mode toggle `[VTT-011]`
+- [x] **[Features]** Implement copy button for IPA transcriptions `[VTT-012]`
+- [x] **[UI/UX]** Add dark mode toggle `[VTT-011]`
 - [ ] **[UI/UX]** Make font size and type more legible `[VTT-001]`
 - [ ] **[UI/UX]** Structure words so they're easier to read `[VTT-002]`
 - [ ] **[Features]** Add a copy button to the generated text `[VTT-003]`

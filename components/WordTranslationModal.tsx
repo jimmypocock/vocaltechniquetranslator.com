@@ -25,9 +25,9 @@ export default function WordTranslationModal({ word, isOpen, onClose }: WordTran
       // Generate translations at different intensity levels
       const levels = {
         'Original': word,
-        'Minimal (1-3)': translator.translateWord(word, 2),
-        'Moderate (4-7)': translator.translateWord(word, 5),
-        'Full (8-10)': translator.translateWord(word, 9)
+        '🌱 Minimal': translator.translateWord(word, 1),
+        '🌿 Moderate': translator.translateWord(word, 5),
+        '🌳 Full': translator.translateWord(word, 9)
       }
       setTranslations(levels)
     }

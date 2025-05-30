@@ -21,9 +21,9 @@ export default function CompactIntensitySelector({ value, onChange }: CompactInt
             key={level.value}
             onClick={() => onChange(level.value)}
             className={`
-              px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 transform
-              ${value === level.value 
-                ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md' 
+              px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-100 transform
+              ${value === level.value
+                ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md'
                 : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/30 dark:hover:bg-white/10'
               }
             `}

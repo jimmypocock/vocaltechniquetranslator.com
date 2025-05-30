@@ -17,19 +17,21 @@ export default function HowItWorksPage() {
             Back to Translator
           </Link>
 
-          <h1 className="text-4xl font-bold mb-2">How the Vocal Translator Works</h1>
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+            How the Vocal Translator Works
+          </h1>
           <p className="text-xl text-muted-foreground mb-8">
             Transform lyrics into singer-friendly phonetics using advanced linguistic analysis
           </p>
 
           {/* Tab Navigation */}
-          <div className="flex space-x-1 mb-8 bg-muted/20 rounded-lg p-1">
+          <div className="flex space-x-1 mb-8 bg-purple-100/50 dark:bg-purple-900/20 rounded-lg p-1 border border-purple-200/50 dark:border-purple-800/50">
             <button
               onClick={() => setActiveTab('overview')}
               className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'overview'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
               }`}
             >
               Overview
@@ -38,8 +40,8 @@ export default function HowItWorksPage() {
               onClick={() => setActiveTab('technique')}
               className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'technique'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
               }`}
             >
               The Technique
@@ -48,8 +50,8 @@ export default function HowItWorksPage() {
               onClick={() => setActiveTab('examples')}
               className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'examples'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
               }`}
             >
               Examples
@@ -58,11 +60,21 @@ export default function HowItWorksPage() {
               onClick={() => setActiveTab('tips')}
               className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'tips'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
               }`}
             >
               Pro Tips
+            </button>
+            <button
+              onClick={() => setActiveTab('shortcuts')}
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                activeTab === 'shortcuts'
+                  ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
+              }`}
+            >
+              Shortcuts
             </button>
           </div>
 
@@ -122,28 +134,28 @@ export default function HowItWorksPage() {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">Intensity Levels Explained</h2>
                   <p className="text-base text-muted-foreground mb-4">
-                    The intensity slider gives you control over how much transformation to apply:
+                    Choose from three intensity levels to control how much transformation to apply:
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
-                      <div className="w-16 text-sm font-semibold text-muted-foreground">1-3</div>
+                      <div className="w-20 text-sm font-semibold text-muted-foreground">🌱 Minimal</div>
                       <div className="flex-1">
-                        <div className="font-semibold">Minimal Changes</div>
-                        <div className="text-sm text-muted-foreground">Subtle adjustments, mostly maintaining original pronunciation</div>
+                        <div className="font-semibold">Subtle Adjustments</div>
+                        <div className="text-sm text-muted-foreground">Light modifications that maintain most of the original pronunciation. Perfect for beginners or easy songs.</div>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <div className="w-16 text-sm font-semibold text-muted-foreground">4-7</div>
+                      <div className="w-20 text-sm font-semibold text-muted-foreground">🌿 Moderate</div>
                       <div className="flex-1">
-                        <div className="font-semibold">Moderate Technique</div>
-                        <div className="text-sm text-muted-foreground">Balanced approach with noticeable but natural modifications</div>
+                        <div className="font-semibold">Balanced Technique</div>
+                        <div className="text-sm text-muted-foreground">A sweet spot that improves vocal health without sacrificing too much clarity. Ideal for most singing situations.</div>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <div className="w-16 text-sm font-semibold text-muted-foreground">8-10</div>
+                      <div className="w-20 text-sm font-semibold text-muted-foreground">🌳 Full</div>
                       <div className="flex-1">
-                        <div className="font-semibold">Full Transformation</div>
-                        <div className="text-sm text-muted-foreground">Maximum vocal technique with syllable separation and advanced modifications</div>
+                        <div className="font-semibold">Maximum Transformation</div>
+                        <div className="text-sm text-muted-foreground">Complete vocal technique with syllable separation and all modifications. Best for challenging songs or professional performance.</div>
                       </div>
                     </div>
                   </div>
@@ -292,15 +304,15 @@ export default function HowItWorksPage() {
                     <h3 className="text-lg font-semibold mb-3">&quot;I will always love you&quot;</h3>
                     <div className="space-y-2 font-mono text-sm">
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 1-3:</div>
+                        <div className="text-muted-foreground">🌱 Minimal:</div>
                         <div className="text-primary">I will always love you</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 4-7:</div>
+                        <div className="text-muted-foreground">🌿 Moderate:</div>
                         <div className="text-primary">ah will awl-ways luhv yoo</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 8-10:</div>
+                        <div className="text-muted-foreground">🌳 Full:</div>
                         <div className="text-primary">AH weel AWL-wehz LUHV YAH</div>
                       </div>
                     </div>
@@ -310,15 +322,15 @@ export default function HowItWorksPage() {
                     <h3 className="text-lg font-semibold mb-3">&quot;Don&apos;t stop believing&quot;</h3>
                     <div className="space-y-2 font-mono text-sm">
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 1-3:</div>
+                        <div className="text-muted-foreground">🌱 Minimal:</div>
                         <div className="text-primary">don&apos;t stop believing</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 4-7:</div>
+                        <div className="text-muted-foreground">🌿 Moderate:</div>
                         <div className="text-primary">dohnt stahp buh-lee-ving</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 8-10:</div>
+                        <div className="text-muted-foreground">🌳 Full:</div>
                         <div className="text-primary">DOHN ZDAHP buh-LEE-veeng</div>
                       </div>
                     </div>
@@ -328,15 +340,15 @@ export default function HowItWorksPage() {
                     <h3 className="text-lg font-semibold mb-3">&quot;Somewhere over the rainbow&quot;</h3>
                     <div className="space-y-2 font-mono text-sm">
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 1-3:</div>
+                        <div className="text-muted-foreground">🌱 Minimal:</div>
                         <div className="text-primary">somewhere over the rainbow</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 4-7:</div>
+                        <div className="text-muted-foreground">🌿 Moderate:</div>
                         <div className="text-primary">suhm-wehr oh-ver thuh rehn-boh</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="text-muted-foreground">Intensity 8-10:</div>
+                        <div className="text-muted-foreground">🌳 Full:</div>
                         <div className="text-primary">SUHM-wehr OH-vuh duh REHN-boh</div>
                       </div>
                     </div>
@@ -385,8 +397,8 @@ export default function HowItWorksPage() {
                       Start Conservative
                     </h3>
                     <p className="text-base text-muted-foreground">
-                      Begin with intensity levels 4-6. This gives you noticeable improvements without overwhelming changes. 
-                      You can always increase the intensity as you get comfortable.
+                      Begin with Moderate intensity (🌿). This gives you noticeable improvements without overwhelming changes. 
+                      You can always increase to Full intensity (🌳) as you get comfortable.
                     </p>
                   </div>
 
@@ -452,6 +464,97 @@ export default function HowItWorksPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </Link>
+                </section>
+              </>
+            )}
+
+            {activeTab === 'shortcuts' && (
+              <>
+                <section>
+                  <h2 className="text-2xl font-semibold mb-4">Keyboard Shortcuts</h2>
+                  <p className="text-base text-muted-foreground mb-4">
+                    Navigate the Vocal Translator faster with these handy keyboard shortcuts. 
+                    Press <kbd className="px-2 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">?</kbd> at any time to see this list.
+                  </p>
+                </section>
+
+                <section className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">Navigation & Input</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">Ctrl+K</kbd>
+                        <span className="text-sm text-muted-foreground">Focus on lyrics input</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">Ctrl+Enter</kbd>
+                        <span className="text-sm text-muted-foreground">Copy translated lyrics</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">H</kbd>
+                        <span className="text-sm text-muted-foreground">Go to How It Works</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">View Controls</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">V</kbd>
+                        <span className="text-sm text-muted-foreground">Toggle continuous ↔ word-by-word view</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">U</kbd>
+                        <span className="text-sm text-muted-foreground">Toggle uppercase</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">Intensity Levels</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">1</kbd>
+                        <span className="text-sm text-muted-foreground">Set to Minimal intensity</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">2</kbd>
+                        <span className="text-sm text-muted-foreground">Set to Moderate intensity</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">3</kbd>
+                        <span className="text-sm text-muted-foreground">Set to Full intensity</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">Help & Info</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">?</kbd>
+                        <span className="text-sm text-muted-foreground">Show keyboard shortcuts</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 px-3 bg-muted/10 rounded-lg">
+                        <kbd className="text-sm font-mono">Esc</kbd>
+                        <span className="text-sm text-muted-foreground">Close modals</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="mt-8">
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold mb-3 flex items-center">
+                      <span className="text-2xl mr-3">💡</span>
+                      Pro Tip: Efficiency First
+                    </h3>
+                    <p className="text-base text-muted-foreground">
+                      These shortcuts are designed to keep your hands on the keyboard while working with lyrics. 
+                      The most useful ones are the intensity controls (1, 2, 3) and the quick copy (Ctrl+Enter).
+                    </p>
+                  </div>
                 </section>
               </>
             )}
