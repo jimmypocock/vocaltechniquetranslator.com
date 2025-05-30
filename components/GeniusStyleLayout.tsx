@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { VocalTranslator } from '@/lib/vocal-translator';
 // import TechniqueInfo from './TechniqueInfo';
 // import Examples from './Examples';
@@ -149,7 +150,14 @@ export default function GeniusStyleLayout() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
-            <span className="text-4xl mr-3">🎤</span>
+            <Image
+              src="/images/logo.svg"
+              alt="Vocal Technique Translator Logo"
+              width={48}
+              height={48}
+              className="mr-1"
+              priority
+            />
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
               Vocal Technique Translator
             </h1>

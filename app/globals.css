@@ -29,17 +29,17 @@
   --border-color: #e0e2e9;
   --border-focus: #6366f1;
 
-  /* 
+  /*
    * OFFICIAL BRAND COLOR PALETTE
    * These are the canonical colors for the Vocal Technique Translator brand.
    * Please use these colors consistently throughout the application.
-   * 
+   *
    * Primary: #6366f1 (Indigo/Purple) - Main brand color, used for primary actions and branding
-   * Secondary: #2196f3 (Blue) - Secondary actions, links, and complementary elements  
+   * Secondary: #2196f3 (Blue) - Secondary actions, links, and complementary elements
    * Accent: #ec4899 (Pink) - Highlights, special features, and emphasis
    * Neutral: #9ca3af (Gray-400) - Base neutral for text, borders, and backgrounds
    */
-  
+
   /* Brand colors */
   --primary: #6366f1;      /* Primary brand color */
   --primary-hover: #4f46e5;
@@ -71,7 +71,7 @@
   --border-focus: #6366f1;
 
   /* Brand colors (same in dark mode for consistency) */
-  --primary: #6366f1;      /* Primary brand color */
+  --primary: #6366f1;      /* Primary brand color */ /* Actual primary: #9436eb */
   --primary-hover: #4f46e5;
   --secondary: #2196f3;    /* Secondary brand color */
   --accent: #ec4899;       /* Accent brand color */

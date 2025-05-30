@@ -34,7 +34,7 @@
 
 ### P1 - Important
 
-- [ ] **[Logic]** Translate: lonely `[VTT-041]`
+- [x] **[Logic]** Translate: lonely `[VTT-041]` ✓ 2025-05-30
 
 #### Content & Documentation for AdSense Approval
 
