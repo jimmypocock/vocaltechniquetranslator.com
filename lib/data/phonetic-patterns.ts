@@ -114,7 +114,8 @@ export const morphemePatterns: MorphemePatterns = {
     'ful': { 1: 'ful', 4: 'fool', 8: 'fahl' },
     'less': { 1: 'less', 4: 'lehs', 8: 'lahs' },
     'able': { 1: 'able', 4: 'uhbuhl', 8: 'ahbahl' },
-    'ible': { 1: 'ible', 4: 'uhbuhl', 8: 'ahbahl' }
+    'ible': { 1: 'ible', 4: 'uhbuhl', 8: 'ahbahl' },
+    'ies': { 1: 'ies', 4: 'aez', 8: 'ahz' }
   },
   prefixes: {
     'un': { 1: 'un', 4: 'uhn', 8: 'ahn' },

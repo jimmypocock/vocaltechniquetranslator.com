@@ -4,6 +4,7 @@ export const exceptionWords: ExceptionWord = {
   // Special words with custom handling
   'meet': { 1: 'meet', 4: 'meht', 8: 'mahd' },
   'beautiful': { 1: 'beau-ti-ful', 4: 'byoo-teh-fool', 8: 'behoo-dah-fahl' },
+  'eyes': { 1: 'eyes', 4: 'aez', 8: 'ahz' },
   
   // Articles & pronouns
   'the': { 1: 'the', 4: 'dhuh', 8: 'duh' },

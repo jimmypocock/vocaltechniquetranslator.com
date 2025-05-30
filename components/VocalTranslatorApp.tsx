@@ -38,9 +38,9 @@ export default function VocalTranslatorApp() {
 
   const handleCopy = async () => {
     if (!outputLyrics) return;
-    
+
     const textToCopy = isUppercase ? outputLyrics.toUpperCase() : outputLyrics;
-    
+
     try {
       await navigator.clipboard.writeText(textToCopy);
       setCopySuccess(true);
@@ -80,7 +80,7 @@ export default function VocalTranslatorApp() {
           <textarea
             id="lyricsInput"
             className="w-full min-h-[200px] p-4 text-base leading-relaxed resize-y rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-            placeholder={`Enter your song lyrics here...\n\nExample:\nBlue jean baby, L.A. lady\nSeamstress for the band\nPretty-eyed, pirate smile\nYou'll marry a music man`}
+            placeholder={`Enter your song lyrics here...`}
             value={inputLyrics}
             onChange={(e) => setInputLyrics(e.target.value)}
           />
@@ -120,8 +120,8 @@ export default function VocalTranslatorApp() {
           <div className="relative">
             <div className="phonetic-text min-h-[200px] p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 font-medium text-gray-900 dark:text-white">
               {outputLyrics ? (
-                <FormattedLyrics 
-                  lyrics={outputLyrics} 
+                <FormattedLyrics
+                  lyrics={outputLyrics}
                   intensity={intensity}
                   onUppercaseChange={setIsUppercase}
                   onIntensityChange={setIntensity}
