@@ -25,7 +25,7 @@ export const vowelPhonemes: VowelPhoneme = {
   'ɔ': { 1: 'aw', 4: 'oh', 8: 'ah' },       // bought → baht
   'y': { 1: 'y', 4: 'eh', 8: 'e' },         // y as vowel → eh/e
   'o': { 1: 'o', 4: 'oh', 8: 'ah' },        // boat → baht
-  'o_cvce': { 1: 'o', 4: 'u', 8: 'ah' },    // home → hum → hahm (CVCe context)
+  'o_cvce': { 1: 'o', 4: 'oh', 8: 'ah' },    // lone → lohn → lahn (CVCe context)
   'ʊ': { 1: 'oo', 4: 'uh', 8: 'ah' },       // book → bahk
   'u': { 1: 'oo', 4: 'oo', 8: 'ah' },       // boot → baht
 
@@ -106,7 +106,7 @@ export const morphemePatterns: MorphemePatterns = {
     'ed': { 1: 'ed', 4: 'd', 8: 'd' },
     'er': { 1: 'er', 4: 'uhr', 8: 'ahr' },
     'est': { 1: 'est', 4: 'ehst', 8: 'ahst' },
-    'ly': { 1: 'ly', 4: 'lee', 8: 'lae' },
+    'ly': { 1: 'ly', 4: 'leh', 8: 'leh' },
     'tion': { 1: 'tion', 4: 'shun', 8: 'shahn' },
     'sion': { 1: 'sion', 4: 'zhuhn', 8: 'zhahn' },
     'ness': { 1: 'ness', 4: 'nehs', 8: 'nahs' },

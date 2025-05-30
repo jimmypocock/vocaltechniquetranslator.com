@@ -77,6 +77,7 @@ export const exceptionWords: ExceptionWord = {
   'anywhere': { 1: 'a-ny-where', 4: 'eh-neh-wehr', 8: 'ah-nah-wahr' },
   'emotion': { 1: 'e-mo-tion', 4: 'eh-moh-shun', 8: 'eh-mah-shahn' },
   'believin': { 1: 'be-lie-vin', 4: 'beh-lee-vehn', 8: 'bah-leh-vahn' },
+  'lonely': { 1: 'lone-ly', 4: 'lohn-leh', 8: 'lahn-leh' },
   'childhood': { 1: 'childhood', 4: 'chah-ld-hood', 8: 'cheld-hud' },
   'memories': { 1: 'memories', 4: 'meh-mor-ees', 8: 'meh-mor-ehs' },
   'got': { 1: 'got', 4: 'gaht', 8: 'god' },
