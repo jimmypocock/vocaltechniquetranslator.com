@@ -107,7 +107,7 @@ export const morphemePatterns: MorphemePatterns = {
     'er': { 1: 'er', 4: 'uhr', 8: 'ahr' },
     'est': { 1: 'est', 4: 'ehst', 8: 'ahst' },
     'ly': { 1: 'ly', 4: 'lee', 8: 'lae' },
-    'tion': { 1: 'tion', 4: 'shuhn', 8: 'shahn' },
+    'tion': { 1: 'tion', 4: 'shun', 8: 'shahn' },
     'sion': { 1: 'sion', 4: 'zhuhn', 8: 'zhahn' },
     'ness': { 1: 'ness', 4: 'nehs', 8: 'nahs' },
     'ment': { 1: 'ment', 4: 'mehnt', 8: 'mahnt' },
@@ -115,14 +115,16 @@ export const morphemePatterns: MorphemePatterns = {
     'less': { 1: 'less', 4: 'lehs', 8: 'lahs' },
     'able': { 1: 'able', 4: 'uhbuhl', 8: 'ahbahl' },
     'ible': { 1: 'ible', 4: 'uhbuhl', 8: 'ahbahl' },
-    'ies': { 1: 'ies', 4: 'aez', 8: 'ahz' }
+    'ies': { 1: 'ies', 4: 'aez', 8: 'ahz' },
+    'in\'': { 1: 'in\'', 4: 'ehn\'', 8: 'ahn\'' }
   },
   prefixes: {
     'un': { 1: 'un', 4: 'uhn', 8: 'ahn' },
     're': { 1: 're', 4: 'ree', 8: 'rae' },
     'pre': { 1: 'pre', 4: 'pree', 8: 'brae' },
     'dis': { 1: 'dis', 4: 'dihs', 8: 'dahs' },
-    'over': { 1: 'over', 4: 'oh-vuhr', 8: 'ah-vahr' }
+    'over': { 1: 'over', 4: 'oh-vuhr', 8: 'ah-vahr' },
+    'any': { 1: 'a-ny', 4: 'eh-neh', 8: 'ah-nah' }
   }
 };
 
@@ -146,7 +148,10 @@ export const phoneticPatterns: PhoneticPattern = {
   'mps': { 1: 'mps', 4: 'ms', 8: 'ms' }, // simplify at moderate/full
   'nks': { 1: 'nks', 4: 'ngs', 8: 'ngs' }, // simplify at moderate/full
   'sts': { 1: 'sts', 4: 'ss', 8: 's' }, // progressive simplification
-  'sks': { 1: 'sks', 4: 'sks', 8: 'ss' } // simplify at full
+  'sks': { 1: 'sks', 4: 'sks', 8: 'ss' }, // simplify at full
+  'st$': { 1: 'st', 4: 'zt', 8: 'zd' }, // final st cluster: most, rest, etc.
+  'ill$': { 1: 'ill', 4: 'ehl', 8: 'ahl' }, // final ill pattern: fill, hill, bill
+  'where$': { 1: 'where', 4: 'wehr', 8: 'wahr' } // where ending: somewhere, nowhere
 };
 
 // Initial consonant cluster transformations

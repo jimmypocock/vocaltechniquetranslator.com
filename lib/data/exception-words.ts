@@ -28,7 +28,7 @@ export const exceptionWords: ExceptionWord = {
   'was': { 1: 'was', 4: 'wuhz', 8: 'wuhz' },
   'were': { 1: 'were', 4: 'wuhr', 8: 'wuhr' },
   'been': { 1: 'been', 4: 'bihn', 8: 'bihn' },
-  'will': { 1: 'will', 4: 'wihl', 8: 'wihl' },
+  'will': { 1: 'will', 4: 'wehl', 8: 'wahl' },
   'would': { 1: 'would', 4: 'wood', 8: 'wood' },
   'could': { 1: 'could', 4: 'kood', 8: 'kood' },
   'should': { 1: 'should', 4: 'shood', 8: 'shood' },
@@ -72,7 +72,11 @@ export const exceptionWords: ExceptionWord = {
 
   // New additions from user examples
   'i': { 1: 'i', 4: 'ah', 8: 'ae' },
+  'everywhere': { 1: 'ev-ery-where', 4: 'ehv-eh-ree-wehr', 8: 'ahv-ah-rah-wahr' },
   'everything': { 1: 'everything', 4: 'eh-ver-ee-thing', 8: 'eh-ver-eh-dang' },
+  'anywhere': { 1: 'a-ny-where', 4: 'eh-neh-wehr', 8: 'ah-nah-wahr' },
+  'emotion': { 1: 'e-mo-tion', 4: 'eh-moh-shun', 8: 'eh-mah-shahn' },
+  'believin': { 1: 'be-lie-vin', 4: 'beh-lee-vehn', 8: 'bah-leh-vahn' },
   'childhood': { 1: 'childhood', 4: 'chah-ld-hood', 8: 'cheld-hud' },
   'memories': { 1: 'memories', 4: 'meh-mor-ees', 8: 'meh-mor-ehs' },
   'got': { 1: 'got', 4: 'gaht', 8: 'god' },
@@ -93,7 +97,7 @@ export const exceptionWords: ExceptionWord = {
   'she': { 1: 'she', 4: 'shee', 8: 'zhee' },
   'show': { 1: 'show', 4: 'shoh', 8: 'zhoh' },
   'shine': { 1: 'shine', 4: 'shehn', 8: 'zhehn' },
-  'stop': { 1: 'stop', 4: 'stahp', 8: 'dahp' },
+  'stop': { 1: 'stop', 4: 'stahp', 8: 'zdahp' },
   'start': { 1: 'start', 4: 'stahrt', 8: 'dahrt' },
   'stand': { 1: 'stand', 4: 'stahnd', 8: 'dahnd' },
   'still': { 1: 'still', 4: 'stihl', 8: 'dihl' },
@@ -113,11 +117,16 @@ export const exceptionWords: ExceptionWord = {
   
   // Single syllable words with special patterns
   'takes': { 1: 'takes', 4: 'taegz', 8: 'dahgz' },
+  'just': { 1: 'just', 4: 'juhzt', 8: 'zhahzd' },
+  'fast': { 1: 'fast', 4: 'fazt', 8: 'fahzd' },
+  'last': { 1: 'last', 4: 'lazt', 8: 'lahzd' },
+  'first': { 1: 'first', 4: 'ferzt', 8: 'fahzd' },
+  'best': { 1: 'best', 4: 'bezt', 8: 'bahzd' },
 
   // Contractions
   'well': { 1: 'well', 4: 'weh-ll', 8: 'weh-ll' },
   'ill': { 1: 'ill', 4: 'ah-ll', 8: 'ah-ll' },
-  'cant': { 1: 'cant', 4: 'kahnt', 8: 'kahnt' },
+  'cant': { 1: 'cant', 4: 'kahnt', 8: 'gahnd' },
   'wont': { 1: 'wont', 4: 'wohnt', 8: 'wohnt' },
   'dont': { 1: 'dont', 4: 'dohnt', 8: 'dohnt' },
   'didnt': { 1: 'didnt', 4: 'dih-dnt', 8: 'dih-dnt' },

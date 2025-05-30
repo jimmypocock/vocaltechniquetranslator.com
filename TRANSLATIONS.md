@@ -238,3 +238,19 @@ Words ending in silent 'e' are detected and handled specially:
 - **Single syllable**: love, make, time → Silent 'e' ignored
 - **Multi-syllable ending in CVCe**: handsome → "ome" treated as CVCe
 - **CVCes patterns**: mates, takes → Recognized as single syllable
+
+## Notes on Claude
+
+To communicate that a translation fix is needed, use this format:
+
+```bash
+I found a translation that needs to be fixed. Here is the correct translation:
+
+Original: emotion
+Syllables: e • mo • tion
+Minimal: e-mo-tion
+Moderate: eh-moh-shun
+Maximum: eh-mah-shahn
+
+Could we build a rule from these updates to make sure we catch similar translation issues?
+```

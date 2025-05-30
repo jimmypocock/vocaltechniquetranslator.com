@@ -6,7 +6,7 @@ export default function TechniqueInfo() {
     "Exception dictionary preserves common words naturally",
     "Syllable breaks only added when beneficial for longer words",
     "Abbreviations and proper nouns handled appropriately",
-    "Intensity 1-3: Minimal changes, 4-5: Conservative, 6-7: Moderate, 8-10: Full technique"
+    "Intensity 1-3: Minimal changes, 4: Conservative, 5-7: Moderate, 8-10: Full technique"
   ];
 
   return (

@@ -85,9 +85,9 @@ export default function HowItWorksPage() {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">What Is Vocal Translation?</h2>
                   <p className="text-base text-muted-foreground mb-4">
-                    Vocal translation is a technique that transforms regular English lyrics into phonetic representations
-                    that are easier and healthier to sing. It&apos;s like having a vocal coach whisper in your ear exactly
-                    how to pronounce each word for optimal vocal performance.
+                    Vocal translation is a technique that transforms regular English lyrics using our custom phonetic system
+                    designed specifically for singers. It&apos;s like having a vocal coach whisper in your ear exactly
+                    how to pronounce each word for optimal vocal performance, without the complexity of traditional IPA.
                   </p>
                   <div className="bg-muted/10 border border-muted/20 rounded-lg p-6 mb-6">
                     <h3 className="font-semibold mb-2">The Core Principle</h3>
@@ -101,19 +101,19 @@ export default function HowItWorksPage() {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">The Science Behind It</h2>
                   <p className="text-base text-muted-foreground mb-4">
-                    Our algorithm uses multiple layers of linguistic analysis:
+                    Our algorithm uses a syllable-first approach with multiple layers of analysis:
                   </p>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="bg-muted/10 border border-muted/20 rounded-lg p-4">
-                      <h3 className="font-semibold mb-2">1. Exception Dictionary</h3>
+                      <h3 className="font-semibold mb-2">1. Syllable Splitting First</h3>
                       <p className="text-sm text-muted-foreground">
-                        Over 100 common words have hand-crafted transformations based on professional vocal technique
+                        Words are broken into syllables before any transformation, ensuring natural break points for singing
                       </p>
                     </div>
                     <div className="bg-muted/10 border border-muted/20 rounded-lg p-4">
-                      <h3 className="font-semibold mb-2">2. Morphological Analysis</h3>
+                      <h3 className="font-semibold mb-2">2. Exception Dictionary</h3>
                       <p className="text-sm text-muted-foreground">
-                        Words are broken into prefixes, roots, and suffixes for intelligent processing
+                        Over 650 common words have hand-crafted transformations based on professional vocal technique
                       </p>
                     </div>
                     <div className="bg-muted/10 border border-muted/20 rounded-lg p-4">
@@ -140,8 +140,8 @@ export default function HowItWorksPage() {
                     <div className="flex items-start space-x-3">
                       <div className="w-20 text-sm font-semibold text-muted-foreground">Minimal</div>
                       <div className="flex-1">
-                        <div className="font-semibold">🌱 Subtle Adjustments</div>
-                        <div className="text-sm text-muted-foreground">Light modifications that maintain most of the original pronunciation. Perfect for beginners or easy songs.</div>
+                        <div className="font-semibold">🌱 Syllable Foundation</div>
+                        <div className="text-sm text-muted-foreground">Words are broken into syllables with minimal phonetic changes. Perfect for beginners to practice syllable separation.</div>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -305,15 +305,15 @@ export default function HowItWorksPage() {
                     <div className="space-y-2 font-mono text-sm">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌱 Minimal:</div>
-                        <div className="text-primary">I will always love you</div>
+                        <div className="text-primary">I will al-ways love you</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌿 Moderate:</div>
-                        <div className="text-primary">ah will awl-ways luhv yoo</div>
+                        <div className="text-primary">AH wehl ahl-wehz luv yoo</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌳 Maximum:</div>
-                        <div className="text-primary">AH weel AWL-wehz LUHV YAH</div>
+                        <div className="text-primary">AE wahl ahl-waez lahv yah</div>
                       </div>
                     </div>
                   </div>
@@ -323,15 +323,15 @@ export default function HowItWorksPage() {
                     <div className="space-y-2 font-mono text-sm">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌱 Minimal:</div>
-                        <div className="text-primary">don&apos;t stop believing</div>
+                        <div className="text-primary">dont stop be-li-ev-ing</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌿 Moderate:</div>
-                        <div className="text-primary">dohnt stahp buh-lee-ving</div>
+                        <div className="text-primary">dohnt stahp beh-leh-ehv-eeng</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌳 Maximum:</div>
-                        <div className="text-primary">DOHN ZDAHP buh-LEE-veeng</div>
+                        <div className="text-primary">dohnt zdahp beh-lah-ehv-ahng</div>
                       </div>
                     </div>
                   </div>
@@ -341,15 +341,15 @@ export default function HowItWorksPage() {
                     <div className="space-y-2 font-mono text-sm">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌱 Minimal:</div>
-                        <div className="text-primary">somewhere over the rainbow</div>
+                        <div className="text-primary">Some-where o-ver the rain-bow</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌿 Moderate:</div>
-                        <div className="text-primary">suhm-wehr oh-ver thuh rehn-boh</div>
+                        <div className="text-primary">Sohm-wehr oh-vuhr dhuh rehn-bah</div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-muted-foreground">🌳 Maximum:</div>
-                        <div className="text-primary">SUHM-wehr OH-vuh duh REHN-boh</div>
+                        <div className="text-primary">Zah-wehr ah-vahr duh raen-bah</div>
                       </div>
                     </div>
                   </div>

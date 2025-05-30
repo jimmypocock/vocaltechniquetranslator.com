@@ -7,16 +7,16 @@ interface IntensitySelectorProps {
 
 const intensityLevels = [
   { value: 1, label: 'Minimal', description: 'Subtle adjustments', icon: '🌱' },
-  { value: 5, label: 'Moderate', description: 'Balanced technique', icon: '🌿' },
-  { value: 9, label: 'Maximum', description: 'Full transformation', icon: '🌳' }
+  { value: 4, label: 'Moderate', description: 'Balanced technique', icon: '🌿' },
+  { value: 8, label: 'Maximum', description: 'Full transformation', icon: '🌳' }
 ];
 
 export default function IntensitySelector({ value, onChange }: IntensitySelectorProps) {
   // Map the 1-10 scale to our 3 levels
   const getActiveLevel = (value: number) => {
     if (value <= 3) return 1;
-    if (value <= 7) return 5;
-    return 9;
+    if (value <= 7) return 4;
+    return 8;
   };
 
   const activeLevel = getActiveLevel(value);

@@ -125,8 +125,8 @@ export default function AboutPage() {
                   Have questions, suggestions, or feedback? We&apos;d love to hear from you!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a 
-                    href="mailto:[your-email]" 
+                  <a
+                    href="mailto:[jimmycpocock+VocalTechniqueTranslatorGIT@gmail.com]"
                     className="inline-flex items-center px-4 py-2 rounded-lg border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-medium transition-all duration-200 text-sm text-purple-700 dark:text-purple-300"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,8 +142,8 @@ export default function AboutPage() {
             {/* Call to Action */}
             <section className="text-center py-8 border-t border-gray-200 dark:border-gray-700">
               <h3 className="text-xl font-semibold mb-4">Ready to Transform Your Singing?</h3>
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 hover:shadow-md hover:scale-105 transition-all duration-200"
               >
                 Try the Vocal Translator

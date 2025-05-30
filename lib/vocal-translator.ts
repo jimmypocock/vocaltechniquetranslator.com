@@ -492,30 +492,77 @@ export class VocalTranslator {
 
     try {
       this.currentIntensity = intensity; // Store for context-sensitive rules
-      const originalWord = word.toLowerCase().trim();
+      
+      // Strip trailing punctuation and store it to add back later
+      // Special handling for trailing apostrophes (g-dropping) vs contractions
+      let leadingPunc = '';
+      let cleanWord = word;
+      let trailingPunc = '';
+      
+      // Extract leading non-word characters
+      const leadingMatch = word.match(/^([^\w]*)(.*)/);
+      if (leadingMatch) {
+        leadingPunc = leadingMatch[1];
+        cleanWord = leadingMatch[2];
+      }
+      
+      // Extract trailing punctuation, treating trailing apostrophes as punctuation
+      const trailingMatch = cleanWord.match(/^([\w']*\w|[\w])([^\w]*)$/);
+      if (trailingMatch) {
+        cleanWord = trailingMatch[1];
+        trailingPunc = trailingMatch[2];
+      }
+      
+      // Special case: if word ends with just apostrophe, treat it as trailing punctuation
+      if (cleanWord.endsWith("'") && cleanWord.length > 1) {
+        const withoutApostrophe = cleanWord.slice(0, -1);
+        // Only move apostrophe to trailing if it's likely g-dropping (not a contraction)
+        if (!withoutApostrophe.includes("'")) {
+          trailingPunc = "'" + trailingPunc;
+          cleanWord = withoutApostrophe;
+        }
+      }
+      
+      if (!cleanWord) return word;
+      
+      const originalWord = cleanWord.toLowerCase().trim();
 
       // 1. Check exception dictionary first (highest priority)
       if (exceptionWords && exceptionWords[originalWord]) {
         const level = this.getIntensityLevel(intensity);
         const exception = exceptionWords[originalWord];
         const transformed = exception[level] || exception[1] || originalWord;
-        return this.preserveCapitalization(word, transformed);
+        const result = this.preserveCapitalization(cleanWord, transformed);
+        return result; // No punctuation for vocal training
       }
 
       // 2. For very short words, use simple processing
       if (originalWord.length <= 2) {
         const transformed = this.simpleTransform(originalWord, intensity);
-        return this.preserveCapitalization(word, transformed);
+        const result = this.preserveCapitalization(cleanWord, transformed);
+        return result; // No punctuation for vocal training
       }
 
       // 3. For syllable-based transformation, skip morphological analysis
       // and transform the whole word as a unit
-      const transformed = this.transformMorpheme(word, intensity);
-      return this.preserveCapitalization(word, transformed);
+      const transformed = this.transformMorpheme(cleanWord, intensity);
+      const result = this.preserveCapitalization(cleanWord, transformed);
+      return result; // No punctuation for vocal training
 
     } catch (error) {
       // If anything fails, fall back to simple transformation
       console.warn('Word transformation failed, using fallback:', error);
+      // Try to extract clean word for fallback
+      const punctuationMatch = word.match(/([^\w'-]*)([\w'-]+)([^\w'-]*)$/);
+      if (punctuationMatch) {
+        const leadingPunc = punctuationMatch[1] || '';
+        const cleanWord = punctuationMatch[2] || '';
+        const trailingPunc = punctuationMatch[3] || '';
+        const transformed = this.simpleTransform(cleanWord, intensity);
+        const result = this.preserveCapitalization(cleanWord, transformed);
+        return result; // No punctuation for vocal training
+      }
+      // Last resort: use original word
       const transformed = this.simpleTransform(word, intensity);
       return this.preserveCapitalization(word, transformed);
     }

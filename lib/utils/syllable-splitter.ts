@@ -61,6 +61,8 @@ export class SyllableSplitter {
       ['vocal', ['vo', 'cal']],
       ['piano', ['pi', 'an', 'o']],
       ['guitar', ['gui', 'tar']],
+      ['believin', ['be', 'lie', 'vin\'']],
+      ['believing', ['be', 'lie', 'ving']],
       
       // Contractions (already split)
       ["you'll", ['you', 'll']],

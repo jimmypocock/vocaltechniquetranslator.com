@@ -105,12 +105,12 @@ export default function GeniusStyleLayout() {
     },
     {
       key: '2',
-      action: () => setIntensity(5),
+      action: () => setIntensity(4),
       description: 'Moderate intensity'
     },
     {
       key: '3',
-      action: () => setIntensity(9),
+      action: () => setIntensity(8),
       description: 'Full intensity'
     },
     {
@@ -204,6 +204,16 @@ export default function GeniusStyleLayout() {
                 value={inputLyrics}
                 onChange={(e) => setInputLyrics(e.target.value)}
               />
+              {outputLyrics && (
+                <div className="mt-3 text-center">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center justify-center gap-1">
+                    <svg className="w-3 h-3 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    Scroll down for translation
+                  </p>
+                </div>
+              )}
             </section>
           </div>
 
@@ -222,6 +232,96 @@ export default function GeniusStyleLayout() {
             </div>
           )}
         </div>
+
+        {/* Educational Content Section for SEO */}
+        <section className="glass-card p-6 md:p-8 mb-8">
+          <div className="mx-auto">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+              Mastering Vocal Technique
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="flex flex-col">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  What is Singing Phonetics?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 flex-1">
+                  Singing phonetics transforms how you approach vocal technique by converting challenging English sounds
+                  into singer-friendly alternatives. Our tool uses a custom phonetic system designed specifically
+                  for vocal performance, helping singers achieve better resonance and reduce strain without the complexity of traditional IPA.
+                </p>
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800 mt-auto">
+                  <h4 className="font-medium text-purple-800 dark:text-purple-200 mb-2">
+                    Why Voice Teachers Recommend Phonetic Training
+                  </h4>
+                  <ul className="text-sm text-purple-700 dark:text-purple-300 space-y-1">
+                    <li>• Improves vowel consistency across registers</li>
+                    <li>• Reduces tension from difficult consonant clusters</li>
+                    <li>• Enhances legato phrasing and breath support</li>
+                    <li>• Builds muscle memory for proper articulation</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Phonetics Exercises for Vocal Students
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 flex-1">
+                  Professional vocal training incorporates systematic phonetic practice. Start with simple
+                  transformations like converting diphthongs (\"I\" → \"AH\") and progress to complete
+                  lyrical passages for advanced technique development.
+                </p>
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-auto">
+                  <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
+                    How to Teach Phonetics to Singers
+                  </h4>
+                  <ol className="text-sm text-blue-700 dark:text-blue-300 space-y-1 list-decimal list-inside">
+                    <li>Begin with vowel substitution exercises</li>
+                    <li>Practice syllable separation on familiar songs</li>
+                    <li>Gradually increase transformation intensity</li>
+                    <li>Apply techniques to performance repertoire</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Vocal Technique Warm-ups with Phonetics
+              </h3>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <div className="text-2xl mb-2">🎵</div>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
+                    Diphthong Practice
+                  </h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    \"I\" → \"AH-ee\" for smooth transitions
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <div className="text-2xl mb-2">🗣️</div>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
+                    Consonant Flow
+                  </h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    Soften hard sounds for legato singing
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <div className="text-2xl mb-2">📚</div>
+                  <h4 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
+                    Syllable Work
+                  </h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    Break complex words into manageable parts
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Full Width Output Section */}
         <section className="glass-card p-6 md:p-8">

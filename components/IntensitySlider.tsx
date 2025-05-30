@@ -15,7 +15,7 @@ export default function IntensitySlider({ value, onChange }: IntensitySliderProp
   // Get description based on intensity level
   const getIntensityDescription = (level: number) => {
     if (level <= 3) return 'Minimal changes';
-    if (level <= 5) return 'Conservative';
+    if (level <= 4) return 'Conservative';
     if (level <= 7) return 'Moderate';
     return 'Full technique';
   };
@@ -60,7 +60,7 @@ export default function IntensitySlider({ value, onChange }: IntensitySliderProp
         
         {/* Tick marks */}
         <div className="flex justify-between mt-1 px-1">
-          {[1, 5, 10].map(num => (
+          {[1, 4, 8].map(num => (
             <span key={num} className="text-xs text-gray-500 font-medium">
               {num}
             </span>

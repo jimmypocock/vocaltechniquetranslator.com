@@ -7,7 +7,7 @@ interface Example {
 export default function Examples() {
   const examples: Example[] = [
     {
-      title: "Conservative Transformations (Intensity 4-5):",
+      title: "Conservative Transformations (Intensity 4):",
       content: '"blue jean baby" → "BLUH JAHN BAH-BAY" | "pretty smile" → "PRIH-TEE SMEHL"'
     },
     {

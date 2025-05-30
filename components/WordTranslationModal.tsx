@@ -27,8 +27,8 @@ export default function WordTranslationModal({ word, isOpen, onClose }: WordTran
       const levels = {
         'Original': word,
         '🌱 Minimal': translator.translateWord(word, 1),
-        '🌿 Moderate': translator.translateWord(word, 5),
-        '🌳 Maximum': translator.translateWord(word, 9)
+        '🌿 Moderate': translator.translateWord(word, 4),
+        '🌳 Maximum': translator.translateWord(word, 8)
       }
       setTranslations(levels)
 

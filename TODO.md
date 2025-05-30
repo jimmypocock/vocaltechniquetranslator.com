@@ -12,13 +12,13 @@
 - **UI/UX**: User interface and experience improvements
 - **Infrastructure**: Deployment, build, and tooling
 - **Features**: New functionality
+- **Logic**: Logic and translations
 - **Monetization**: Revenue generation
 - **Documentation**: Guides and explanations
 
 ---
 
 ## TODOs by Priority
-
 
 ### P0 - Critical
 
@@ -33,6 +33,8 @@
 - [x] **[Features]** Add a copy button to the generated text `[VTT-003]`
 
 ### P1 - Important
+
+- [ ] **[Logic]** Translate: lonely `[VTT-041]`
 
 #### Content & Documentation for AdSense Approval
 
