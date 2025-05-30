@@ -80,7 +80,6 @@ export default function ResponsiveAdLayout({ children }: ResponsiveAdLayoutProps
               <AdUnit
                 adSlot={adSlots.content}
                 adFormat="auto"
-                fullWidthResponsive={true}
                 testMode={testMode}
               />
             </div>

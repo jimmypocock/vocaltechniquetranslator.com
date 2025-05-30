@@ -8,7 +8,7 @@ interface IntensitySelectorProps {
 const intensityLevels = [
   { value: 1, label: 'Minimal', description: 'Subtle adjustments', icon: '🌱' },
   { value: 5, label: 'Moderate', description: 'Balanced technique', icon: '🌿' },
-  { value: 9, label: 'Full', description: 'Maximum transformation', icon: '🌳' }
+  { value: 9, label: 'Maximum', description: 'Full transformation', icon: '🌳' }
 ];
 
 export default function IntensitySelector({ value, onChange }: IntensitySelectorProps) {

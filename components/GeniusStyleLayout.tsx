@@ -12,7 +12,7 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useAdsVisibility } from '@/hooks/useAdsVisibility';
 
 export default function GeniusStyleLayout() {
-  const [intensity, setIntensity] = useState(9); // Default to Full (was 8)
+  const [intensity, setIntensity] = useState(8); // Default to Maximum
   const [inputLyrics, setInputLyrics] = useState('');
   const [outputLyrics, setOutputLyrics] = useState('');
   const [translator] = useState(() => new VocalTranslator());
@@ -194,12 +194,12 @@ export default function GeniusStyleLayout() {
             <section className="glass-card p-6 h-full">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                 <span className="w-1 h-6 bg-purple-500 rounded-full mr-3"></span>
-                Original Lyrics
+                Paste in Original Lyrics:
               </h2>
               <textarea
                 ref={inputTextareaRef}
                 id="lyricsInput"
-                className="input-field w-full min-h-[400px] p-4 text-base leading-relaxed resize-y rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-100"
+                className="input-field w-full min-h-[400px] p-4 text-sm leading-relaxed resize-y rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-100"
                 placeholder={`Enter your song lyrics here...\n\nExample:\nBlue jean baby, L.A. lady\nSeamstress for the band\nPretty-eyed, pirate smile\nYou'll marry a music man`}
                 value={inputLyrics}
                 onChange={(e) => setInputLyrics(e.target.value)}

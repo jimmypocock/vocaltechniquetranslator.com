@@ -1,26 +1,31 @@
-import { 
-  VowelPhoneme, 
-  ConsonantRules, 
-  MorphemePatterns, 
-  PhoneticPattern, 
-  InitialCluster, 
-  VowelPatterns 
+import {
+  VowelPhoneme,
+  ConsonantRules,
+  MorphemePatterns,
+  PhoneticPattern,
+  InitialCluster,
+  VowelPatterns
 } from '@/lib/types/vocal-translator';
 
 // Phoneme-based vowel transforms
 export const vowelPhonemes: VowelPhoneme = {
   // Monophthongs
-  'i': { 1: 'i', 4: 'eh', 8: 'ae' },        // bit → baet
-  'ɪ': { 1: 'ih', 4: 'eh', 8: 'ae' },       // bit → baet
+  'i': { 1: 'i', 4: 'eh', 8: 'ah' },        // bit → baht
+  'ɪ': { 1: 'i', 4: 'eh', 8: 'ah' },        // bit → baht
   'e': { 1: 'e', 4: 'eh', 8: 'eh' },        // bet → beht
   'ɛ': { 1: 'eh', 4: 'eh', 8: 'ah' },       // bet → baht
   'æ': { 1: 'a', 4: 'ah', 8: 'ah' },        // bat → baht
+  'a_akes': { 1: 'a', 4: 'ae', 8: 'ah' },   // takes → taeks → tahks (special 'akes' context)
+  'a_ates': { 1: 'a', 4: 'ae', 8: 'ah' },   // mates → maets → mahts
+  'o_otes': { 1: 'o', 4: 'oh', 8: 'ah' },   // motes → mohts → mahts
+  'o_okes': { 1: 'o', 4: 'oh', 8: 'ah' },   // tokes → tohks → tahks
   'ə': { 1: 'uh', 4: 'ah', 8: 'ah' },       // about → ahbaht
   'ʌ': { 1: 'uh', 4: 'ah', 8: 'ah' },       // but → baht
   'ɑ': { 1: 'ah', 4: 'ah', 8: 'ah' },       // bot → baht
   'ɔ': { 1: 'aw', 4: 'oh', 8: 'ah' },       // bought → baht
   'y': { 1: 'y', 4: 'eh', 8: 'e' },         // y as vowel → eh/e
   'o': { 1: 'o', 4: 'oh', 8: 'ah' },        // boat → baht
+  'o_cvce': { 1: 'o', 4: 'u', 8: 'ah' },    // home → hum → hahm (CVCe context)
   'ʊ': { 1: 'oo', 4: 'uh', 8: 'ah' },       // book → bahk
   'u': { 1: 'oo', 4: 'oo', 8: 'ah' },       // boot → baht
 
@@ -43,7 +48,8 @@ export const consonantRules: ConsonantRules = {
   'k': {
     syllableInitial: { 1: 'k', 4: 'g', 8: 'g' },
     intervocalic: { 1: 'k', 4: 'g', 8: 'g' },
-    syllableFinal: { 1: 'k', 4: 'g', 8: 'g' }
+    syllableFinal: { 1: 'k', 4: 'g', 8: 'g' },
+    beforeConsonant: { 1: 'k', 4: 'g', 8: 'g' }
   },
   'p': {
     syllableInitial: { 1: 'p', 4: 'b', 8: 'b' },
@@ -58,7 +64,7 @@ export const consonantRules: ConsonantRules = {
   's': {
     syllableInitial: { 1: 's', 4: 's', 8: 'z' },
     intervocalic: { 1: 's', 4: 'z', 8: 'z' },
-    syllableFinal: { 1: 's', 4: 's', 8: 'z' },
+    syllableFinal: { 1: 's', 4: 'z', 8: 'z' },
     beforeConsonant: { 1: 's', 4: 's', 8: 'z' }
   },
   'g': {
@@ -129,7 +135,17 @@ export const phoneticPatterns: PhoneticPattern = {
   'wh': { 1: 'w', 4: 'w', 8: 'w' },
   'ck': { 1: 'k', 4: 'k', 8: 'g' },
   'dge': { 1: 'j', 4: 'j', 8: 'zh' },
-  'tch': { 1: 'ch', 4: 'ch', 8: 'ch' }
+  'tch': { 1: 'ch', 4: 'ch', 8: 'ch' },
+
+  // Consonant clusters
+  'nds': { 1: 'nds', 4: 'nz', 8: 'nz' }, // simplify at moderate/full
+  'nts': { 1: 'nts', 4: 'ns', 8: 'ns' }, // simplify at moderate/full
+  'lds': { 1: 'lds', 4: 'lz', 8: 'lz' }, // simplify at moderate/full
+  'rds': { 1: 'rds', 4: 'rz', 8: 'rz' }, // simplify at moderate/full
+  'mps': { 1: 'mps', 4: 'ms', 8: 'ms' }, // simplify at moderate/full
+  'nks': { 1: 'nks', 4: 'ngs', 8: 'ngs' }, // simplify at moderate/full
+  'sts': { 1: 'sts', 4: 'ss', 8: 's' }, // progressive simplification
+  'sks': { 1: 'sks', 4: 'sks', 8: 'ss' } // simplify at full
 };
 
 // Initial consonant cluster transformations

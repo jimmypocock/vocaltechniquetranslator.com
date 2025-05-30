@@ -13,7 +13,6 @@ interface AdUnitProps {
   adFormat?: 'auto' | 'fluid' | 'rectangle' | 'vertical' | 'horizontal' | 'video';
   style?: React.CSSProperties;
   className?: string;
-  fullWidthResponsive?: boolean;
   testMode?: boolean;
 }
 
@@ -22,7 +21,6 @@ export default function AdUnit({
   adFormat = 'auto',
   style,
   className = '',
-  fullWidthResponsive = true,
   testMode = false
 }: AdUnitProps) {
   const showAds = process.env.NEXT_PUBLIC_SHOW_ADS === 'true';
