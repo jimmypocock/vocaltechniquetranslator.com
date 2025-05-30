@@ -77,6 +77,26 @@ The system uses a "Readable Technique" approach:
 - Single HTML file deployment (~45KB)
 - No external dependencies or build process required
 
+## Brand Color Palette
+
+The Vocal Technique Translator uses a carefully curated color palette. These colors should be used consistently throughout the application:
+
+### Official Brand Colors
+- **Primary**: `#6366f1` (Indigo/Purple) - Main brand color for primary actions, buttons, and key UI elements
+- **Secondary**: `#2196f3` (Blue) - Secondary actions, links, and complementary elements
+- **Accent**: `#ec4899` (Pink) - Highlights, special features, and emphasis
+- **Neutral**: `#9ca3af` (Gray-400) - Base neutral for text, borders, and backgrounds
+
+### Usage Guidelines
+- These colors are defined as CSS variables in `app/globals.css`
+- Use `var(--primary)`, `var(--secondary)`, `var(--accent)`, and `var(--neutral)` in CSS
+- For Tailwind classes, use the corresponding color families:
+  - Primary: `purple-500`, `purple-600`, `purple-700`
+  - Secondary: `blue-500`, `blue-600`
+  - Accent: `pink-500`
+  - Neutral: `gray-400`
+- Maintain color consistency across light and dark themes
+
 ## Important Development Notes
 - **Environment Variables**: This project uses `.env` file (NOT `.env.local`) for configuration
 - The `.env` file contains AWS credentials, Google Analytics ID, and AdSense configuration
