@@ -277,7 +277,7 @@ export default function GeniusStyleLayout() {
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 flex-1">
                   Professional vocal training incorporates systematic phonetic practice. Start with simple
-                  transformations like converting diphthongs (\"I\" → \"AH\") and progress to complete
+                  transformations like converting diphthongs (&quot;I&quot; → &quot;AH&quot;) and progress to complete
                   lyrical passages for advanced technique development.
                 </p>
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-auto">
@@ -305,7 +305,7 @@ export default function GeniusStyleLayout() {
                     Diphthong Practice
                   </h4>
                   <p className="text-xs text-gray-600 dark:text-gray-400">
-                    \"I\" → \"AH-ee\" for smooth transitions
+                    &quot;I&quot; → &quot;AH-ee&quot; for smooth transitions
                   </p>
                 </div>
                 <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">

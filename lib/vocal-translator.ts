@@ -493,16 +493,12 @@ export class VocalTranslator {
     try {
       this.currentIntensity = intensity; // Store for context-sensitive rules
       
-      // Strip trailing punctuation and store it to add back later
-      // Special handling for trailing apostrophes (g-dropping) vs contractions
-      let leadingPunc = '';
+      // Strip punctuation for vocal training (punctuation is not needed for singing technique)
       let cleanWord = word;
-      let trailingPunc = '';
       
       // Extract leading non-word characters
       const leadingMatch = word.match(/^([^\w]*)(.*)/);
       if (leadingMatch) {
-        leadingPunc = leadingMatch[1];
         cleanWord = leadingMatch[2];
       }
       
@@ -510,7 +506,6 @@ export class VocalTranslator {
       const trailingMatch = cleanWord.match(/^([\w']*\w|[\w])([^\w]*)$/);
       if (trailingMatch) {
         cleanWord = trailingMatch[1];
-        trailingPunc = trailingMatch[2];
       }
       
       // Special case: if word ends with just apostrophe, treat it as trailing punctuation
@@ -518,7 +513,6 @@ export class VocalTranslator {
         const withoutApostrophe = cleanWord.slice(0, -1);
         // Only move apostrophe to trailing if it's likely g-dropping (not a contraction)
         if (!withoutApostrophe.includes("'")) {
-          trailingPunc = "'" + trailingPunc;
           cleanWord = withoutApostrophe;
         }
       }
@@ -555,9 +549,7 @@ export class VocalTranslator {
       // Try to extract clean word for fallback
       const punctuationMatch = word.match(/([^\w'-]*)([\w'-]+)([^\w'-]*)$/);
       if (punctuationMatch) {
-        const leadingPunc = punctuationMatch[1] || '';
         const cleanWord = punctuationMatch[2] || '';
-        const trailingPunc = punctuationMatch[3] || '';
         const transformed = this.simpleTransform(cleanWord, intensity);
         const result = this.preserveCapitalization(cleanWord, transformed);
         return result; // No punctuation for vocal training
