@@ -5,7 +5,9 @@ echo "⚡ Deploying Edge Functions Stack..."
 
 # Load environment variables
 if [ -f .env ]; then
-    export $(cat .env | grep -v '^#' | xargs)
+    set -a  # automatically export all variables
+    source .env
+    set +a  # stop automatically exporting
 fi
 
 # Check AWS credentials

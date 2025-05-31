@@ -13,13 +13,14 @@ export class EdgeFunctionsStack extends Stack {
   constructor(scope: Construct, id: string, props: EdgeFunctionsStackProps) {
     super(scope, id, props);
 
-    // Lambda@Edge function for redirects
+    // Lambda@Edge function for redirects and static route handling
     this.redirectFunction = new cloudfront.Function(this, 'RedirectFunction', {
       code: cloudfront.FunctionCode.fromInline(`
         function handler(event) {
           var request = event.request;
           var headers = request.headers;
           var host = headers.host.value;
+          var uri = request.uri;
           
           // Redirect CloudFront URL to www domain
           if (host.includes('cloudfront.net')) {
@@ -27,7 +28,7 @@ export class EdgeFunctionsStack extends Stack {
               statusCode: 301,
               statusDescription: 'Moved Permanently',
               headers: {
-                location: { value: 'https://www.${props.domainName}' + request.uri }
+                location: { value: 'https://www.${props.domainName}' + uri }
               }
             };
             return response;
@@ -39,16 +40,26 @@ export class EdgeFunctionsStack extends Stack {
               statusCode: 301,
               statusDescription: 'Moved Permanently',
               headers: {
-                location: { value: 'https://www.${props.domainName}' + request.uri }
+                location: { value: 'https://www.${props.domainName}' + uri }
               }
             };
             return response;
           }
           
+          // Handle static export routing for Next.js
+          // If URI doesn't have a file extension and isn't root, try .html
+          if (uri !== '/' && !uri.includes('.') && !uri.endsWith('/')) {
+            request.uri = uri + '.html';
+          }
+          // If URI ends with '/', append index.html
+          else if (uri.endsWith('/') && uri !== '/') {
+            request.uri = uri + 'index.html';
+          }
+          
           return request;
         }
       `),
-      comment: 'Handles redirects for Vocal Technique Translator',
+      comment: 'Handles redirects and static route mapping for Vocal Technique Translator',
     });
 
     // Security Headers Function

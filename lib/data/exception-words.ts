@@ -41,7 +41,7 @@ export const exceptionWords: ExceptionWord = {
   'they': { 1: 'they', 4: 'theh', 8: 'deh' },
   'them': { 1: 'them', 4: 'them', 8: 'dem' },
   'then': { 1: 'then', 4: 'then', 8: 'den' },
-  'this': { 1: 'this', 4: 'this', 8: 'dis' },
+  'this': { 1: 'this', 4: 'thess', 8: 'dehz' },
   'that': { 1: 'that', 4: 'that', 8: 'dat' },
   'these': { 1: 'these', 4: 'theez', 8: 'deez' },
   'those': { 1: 'those', 4: 'thohz', 8: 'dohz' },
@@ -124,8 +124,12 @@ export const exceptionWords: ExceptionWord = {
   'first': { 1: 'first', 4: 'ferzt', 8: 'fahzd' },
   'best': { 1: 'best', 4: 'bezt', 8: 'bahzd' },
 
+  // Time and place words
+  'forever': { 1: 'for-e-ver', 4: 'fohr-eh-vehr', 8: 'vahr-eh-vahr' },
+  'city': { 1: 'ci-ty', 4: 'sih-tae', 8: 'seh-teh' },
+
   // Contractions
-  'well': { 1: 'well', 4: 'weh-ll', 8: 'weh-ll' },
+  'well': { 1: 'well', 4: 'wehl', 8: 'wehw' },
   'ill': { 1: 'ill', 4: 'ah-ll', 8: 'ah-ll' },
   'cant': { 1: 'cant', 4: 'kahnt', 8: 'gahnd' },
   'wont': { 1: 'wont', 4: 'wohnt', 8: 'wohnt' },

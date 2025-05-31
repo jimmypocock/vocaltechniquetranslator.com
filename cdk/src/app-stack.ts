@@ -1,4 +1,4 @@
-import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
+import { Stack, StackProps, CfnOutput, Fn } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
@@ -8,8 +8,6 @@ import * as fs from 'fs';
 
 export interface AppStackProps extends StackProps {
   websiteBucketName: string;
-  distributionId: string;
-  distributionDomainName: string;
 }
 
 export class AppStack extends Stack {
@@ -19,10 +17,13 @@ export class AppStack extends Stack {
     // Import bucket from name
     const websiteBucket = s3.Bucket.fromBucketName(this, 'ImportedWebsiteBucket', props.websiteBucketName);
 
-    // Import distribution from attributes
+    // Import distribution from CloudFormation exports
+    const distributionId = Fn.importValue('VTT-CDN-DistributionId');
+    const distributionDomainName = Fn.importValue('VTT-CDN-DistributionDomainName');
+    
     const distribution = cloudfront.Distribution.fromDistributionAttributes(this, 'ImportedDistribution', {
-      distributionId: props.distributionId,
-      domainName: props.distributionDomainName,
+      distributionId: distributionId,
+      domainName: distributionDomainName,
     });
 
     // Deploy site contents to S3

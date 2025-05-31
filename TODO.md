@@ -23,17 +23,20 @@
 ### P0 - Critical
 
 - [ ] **[Features]** Use Canva to come up with a full brand kit for Vocal Technique Translator. `[VTT-040]`
-- [ ] **[Features]** Contruct full lyrical logic for redeployment. `[VTT-039]`
-- [x] **[Features]** Add basic keyboard shortcuts (spacebar for play/pause, R for repeat) `[VTT-014]`
-- [ ] **[UI/UX]** Improve button contrast and size to 44px minimum touch targets `[VTT-013]`
-- [x] **[Features]** Implement copy button for IPA transcriptions `[VTT-012]`
-- [x] **[UI/UX]** Add dark mode toggle `[VTT-011]`
-- [x] **[UI/UX]** Make font size and type more legible `[VTT-001]`
-- [x] **[UI/UX]** Structure words so they're easier to read `[VTT-002]`
-- [x] **[Features]** Add a copy button to the generated text `[VTT-003]`
+- [x] **[Features]** Contruct full lyrical logic for redeployment. `[VTT-039]` ✓ 2025-05-31
+- [x] **[Features]** Add basic keyboard shortcuts (spacebar for play/pause, R for repeat) `[VTT-014]` ✓ 2025-05-31
+- [x] **[UI/UX]** Improve button contrast and size to 44px minimum touch targets `[VTT-013]` ✓ 2025-05-31
+- [x] **[UI/UX]** Add dark mode toggle `[VTT-011]` ✓ 2025-05-31
+- [x] **[UI/UX]** Make font size and type more legible `[VTT-001]` ✓ 2025-05-31
+- [ ] **[UI/UX]** Structure words so they're easier to read `[VTT-002]`
+- [x] **[Features]** Add a copy button to the generated text `[VTT-003]` ✓ 2025-05-31
 
 ### P1 - Important
 
+- [x] **[Logic]** Translate: well `[VTT-045]` ✓ 2025-05-31
+- [x] **[Logic]** Translate: this `[VTT-044]` ✓ 2025-05-31
+- [x] **[Logic]** Translate: city `[VTT-043]` ✓ 2025-05-31
+- [x] **[Logic]** Translate: forever `[VTT-042]` ✓ 2025-05-31
 - [x] **[Logic]** Translate: lonely `[VTT-041]` ✓ 2025-05-30
 
 #### Content & Documentation for AdSense Approval
@@ -46,7 +49,7 @@
 - [ ] **[Monetization]** Reach out to music educators/vocal coaches for testimonials `[VTT-037]`
 - [ ] **[Monetization]** Get backlinks from music/education sites (reach out to contacts) `[VTT-038]`
 
-- [x] **[Features]** Allow users to adjust size of text areas `[VTT-026]`
+- [ ] **[Features]** Allow users to adjust size of text areas `[VTT-026]`
 - [ ] **[Features]** Add visual progress tracking with practice streaks `[VTT-018]`
 - [ ] **[Features]** Implement simple favorites system using local storage `[VTT-017]`
 - [ ] **[UI/UX]** Add print-friendly CSS styles `[VTT-015]`

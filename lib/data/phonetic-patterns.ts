@@ -10,8 +10,8 @@ import {
 // Phoneme-based vowel transforms
 export const vowelPhonemes: VowelPhoneme = {
   // Monophthongs
-  'i': { 1: 'i', 4: 'eh', 8: 'ah' },        // bit → baht
-  'ɪ': { 1: 'i', 4: 'eh', 8: 'ah' },        // bit → baht
+  'i': { 1: 'i', 4: 'ih', 8: 'eh' },        // bit → bih → beh
+  'ɪ': { 1: 'i', 4: 'ih', 8: 'eh' },        // bit → bih → beh
   'e': { 1: 'e', 4: 'eh', 8: 'eh' },        // bet → beht
   'ɛ': { 1: 'eh', 4: 'eh', 8: 'ah' },       // bet → baht
   'æ': { 1: 'a', 4: 'ah', 8: 'ah' },        // bat → baht
@@ -27,7 +27,7 @@ export const vowelPhonemes: VowelPhoneme = {
   'o': { 1: 'o', 4: 'oh', 8: 'ah' },        // boat → baht
   'o_cvce': { 1: 'o', 4: 'oh', 8: 'ah' },    // lone → lohn → lahn (CVCe context)
   'ʊ': { 1: 'oo', 4: 'uh', 8: 'ah' },       // book → bahk
-  'u': { 1: 'oo', 4: 'oo', 8: 'ah' },       // boot → baht
+  'u': { 1: 'oo', 4: 'oh', 8: 'ah' },       // boot → baht
 
   // Diphthongs - emphasize first vowel
   'aɪ': { 1: 'ai', 4: 'ah', 8: 'ah' },      // bite → baht
@@ -151,6 +151,10 @@ export const phoneticPatterns: PhoneticPattern = {
   'sks': { 1: 'sks', 4: 'sks', 8: 'ss' }, // simplify at full
   'st$': { 1: 'st', 4: 'zt', 8: 'zd' }, // final st cluster: most, rest, etc.
   'ill$': { 1: 'ill', 4: 'ehl', 8: 'ahl' }, // final ill pattern: fill, hill, bill
+  'll$': { 1: 'll', 4: 'l', 8: 'w' }, // double l at end: well, bell, tell
+  'ss$': { 1: 'ss', 4: 'ss', 8: 'z' }, // double s at end: this, kiss, miss
+  'ty$': { 1: 'ty', 4: 'tae', 8: 'teh' }, // -ty ending: city, pretty, party
+  'ight$': { 1: 'ight', 4: 'aed', 8: 'nahd' }, // -ight ending: night, light, right, fight
   'where$': { 1: 'where', 4: 'wehr', 8: 'wahr' } // where ending: somewhere, nowhere
 };
 

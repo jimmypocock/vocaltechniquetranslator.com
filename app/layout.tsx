@@ -3,7 +3,8 @@ import { Noto_Sans, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import AdSenseScript from "@/components/AdSense/AdSenseScript";
-import CookieConsent from "@/components/CookieConsent";
+import GoogleCMP from "@/components/GoogleCMP";
+import GoogleConsentInit from "@/components/GoogleConsentInit";
 import ThemeToggle from "@/components/ThemeToggle";
 
 // Configure Noto Sans for UI text with phonetic support
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="en" className={`${notoSans.variable} ${notoSerif.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <GoogleConsentInit />
         <GoogleAnalytics />
         <AdSenseScript />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
@@ -148,7 +150,7 @@ export default function RootLayout({
         
         <ThemeToggle />
         {children}
-        <CookieConsent />
+        <GoogleCMP />
       </body>
     </html>
   );

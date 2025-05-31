@@ -83,15 +83,12 @@ monitoringStack.addDependency(cdnStack);
 // 7. App Stack - Application deployment
 const appStack = new AppStack(app, 'VTT-App', {
   websiteBucketName: `${domainName}-app`,
-  distributionId: cdnStack.distribution.distributionId,
-  distributionDomainName: cdnStack.distribution.distributionDomainName,
   env: usEast1Env,
   description: 'Application deployment for Vocal Technique Translator',
 });
 
-// Add dependencies for app deployment
+// Add dependencies for app deployment (only foundation needed now)
 appStack.addDependency(foundationStack);
-appStack.addDependency(cdnStack);
 
 // Add tags to all stacks
 const tags = {

@@ -31,7 +31,7 @@ The system uses a "Syllable-Based Technique" approach:
 ### Transformation Flow
 1. **Syllable Splitting First**: Words are split into syllables BEFORE any transformation
 2. **Independent Processing**: Each syllable is transformed independently based on its own context
-3. **Progressive Intensity**: 
+3. **Progressive Intensity**:
    - Levels 1-3 (Minimal): Original syllables with hyphens, no phonetic changes
    - Levels 4-7 (Moderate): Medium transformation per syllable with hyphens
    - Levels 8-10 (Full): Maximum transformation per syllable with hyphens
@@ -95,7 +95,8 @@ The system uses a "Syllable-Based Technique" approach:
 The Vocal Technique Translator uses a carefully curated color palette. These colors should be used consistently throughout the application:
 
 ### Official Brand Colors
-- **Primary**: `#6366f1` (Indigo/Purple) - Main brand color for primary actions, buttons, and key UI elements
+
+- **Primary**: `#9436eb` (Purple) - Main brand color for primary actions, buttons, and key UI elements
 - **Secondary**: `#2196f3` (Blue) - Secondary actions, links, and complementary elements
 - **Accent**: `#ec4899` (Pink) - Highlights, special features, and emphasis
 - **Neutral**: `#9ca3af` (Gray-400) - Base neutral for text, borders, and backgrounds
