@@ -1,10 +1,10 @@
-import { 
-  IntensityLevel, 
+import {
+  IntensityLevel,
   MorphologyAnalysis,
   IntensityTransformations
 } from '@/lib/types/vocal-translator';
 import { exceptionWords } from '@/lib/data/exception-words';
-import { 
+import {
   vowelPhonemes,
   consonantRules,
   morphemePatterns,
@@ -13,79 +13,20 @@ import {
   vowelPatterns,
   silentPatterns
 } from '@/lib/data/phonetic-patterns';
+import { SyllableSplitter } from '@/lib/utils/syllable-splitter';
 
 export class VocalTranslator {
   private currentIntensity: number = 5;
+  private syllableSplitter: SyllableSplitter;
 
-  // Syllable boundary detection with better error handling
+  constructor() {
+    this.syllableSplitter = new SyllableSplitter();
+  }
+
+  // Syllable boundary detection using our enhanced splitter
   syllabify(word: string): string[] {
-    if (!word || word.length === 0) return [];
-    if (word.length <= 2) return [word];
-
-    const vowels = 'aeiouAEIOU';
-    const consonants = 'bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ';
-
-    // Find vowel positions
-    const vowelPositions: number[] = [];
-    for (let i = 0; i < word.length; i++) {
-      if (vowels.includes(word[i])) {
-        vowelPositions.push(i);
-      }
-    }
-
-    // If no vowels or only one vowel, return as single syllable
-    if (vowelPositions.length <= 1) return [word];
-
-    const syllables: string[] = [];
-    let start = 0;
-
-    for (let i = 0; i < vowelPositions.length - 1; i++) {
-      const currentVowel = vowelPositions[i];
-      const nextVowel = vowelPositions[i + 1];
-
-      // Find consonants between vowels
-      let consonantStart = currentVowel + 1;
-      while (consonantStart < nextVowel && !consonants.includes(word[consonantStart])) {
-        consonantStart++;
-      }
-
-      let consonantEnd = consonantStart;
-      while (consonantEnd < nextVowel && consonants.includes(word[consonantEnd])) {
-        consonantEnd++;
-      }
-
-      const consonantCluster = word.slice(consonantStart, consonantEnd);
-      let boundary: number;
-
-      if (consonantCluster.length === 0) {
-        // No consonants between vowels - split after first vowel
-        boundary = currentVowel + 1;
-      } else if (consonantCluster.length === 1) {
-        // Single consonant - goes to second syllable
-        boundary = consonantStart;
-      } else if (consonantCluster.length === 2) {
-        // Two consonants - split between them
-        boundary = consonantStart + 1;
-      } else {
-        // Three or more consonants - split after first
-        boundary = consonantStart + 1;
-      }
-
-      // Ensure boundary is within word bounds
-      boundary = Math.max(start, Math.min(boundary, word.length));
-
-      if (boundary > start) {
-        syllables.push(word.slice(start, boundary));
-        start = boundary;
-      }
-    }
-
-    // Add final syllable
-    if (start < word.length) {
-      syllables.push(word.slice(start));
-    }
-
-    return syllables.filter(s => s && s.length > 0);
+    const result = this.syllableSplitter.split(word);
+    return result.syllables;
   }
 
   // Identify morphemes with better error handling
@@ -167,10 +108,10 @@ export class VocalTranslator {
 
   // Context-sensitive consonant transformation with error handling
   transformConsonantInContext(
-    consonant: string, 
-    position: number, 
-    syllables: string[], 
-    syllableIndex: number, 
+    consonant: string,
+    position: number,
+    syllables: string[],
+    syllableIndex: number,
     positionInSyllable: number
   ): string {
     if (!consonant || !consonantRules[consonant]) {
@@ -206,13 +147,13 @@ export class VocalTranslator {
 
     const contextRules = rules[context];
     if (!contextRules) return consonant;
-    
+
     const transformation = contextRules as IntensityTransformations;
     return transformation[intensity] || transformation[1] || consonant;
   }
 
   // Transform vowel based on phonetic context with error handling
-  transformVowelPhoneme(vowelPattern: string, intensity: number): string {
+  transformVowelPhoneme(vowelPattern: string, intensity: number, context?: { isCVCe?: boolean }): string {
     if (!vowelPattern) return '';
 
     const level = this.getIntensityLevel(intensity);
@@ -229,19 +170,32 @@ export class VocalTranslator {
         }
       }
 
+      // Check for CVCe context first
+      if (context?.isCVCe && vowelPhonemes[vowelPattern + '_cvce']) {
+        const transform = vowelPhonemes[vowelPattern + '_cvce'];
+        return transform[level] || transform[1] || vowelPattern;
+      }
+      
       // Fallback to single vowel
       if (vowelPhonemes[vowelPattern]) {
         const transform = vowelPhonemes[vowelPattern];
         return transform[level] || transform[1] || vowelPattern;
       }
 
-      // Simple vowel mapping fallback
-      const simpleVowelMap: { [key: string]: string } = {
-        'a': 'ah', 'e': 'eh', 'i': 'ae', 'o': 'oh', 'u': 'ah'
-      };
-
-      if (level >= 4 && simpleVowelMap[vowelPattern]) {
-        return simpleVowelMap[vowelPattern];
+      // Simple vowel mapping with CVCe context awareness
+      if (level >= 4) {
+        // Special handling for 'o' in CVCe contexts
+        if (vowelPattern === 'o' && context?.isCVCe) {
+          return level === 4 ? 'u' : 'ah'; // 'u' at moderate, 'ah' at full
+        }
+        
+        const simpleVowelMap: { [key: string]: string } = {
+          'a': 'ah', 'e': 'eh', 'i': 'ae', 'o': 'oh', 'u': 'ah'
+        };
+        
+        if (simpleVowelMap[vowelPattern]) {
+          return simpleVowelMap[vowelPattern];
+        }
       }
     } catch {
       // If anything fails, return original
@@ -261,144 +215,221 @@ export class VocalTranslator {
     if (!morpheme || morpheme.length === 0) return '';
 
     try {
-      // Apply suffix pattern transformations based on intensity
-      let processedMorpheme = morpheme;
-      const intensityLevel = this.getIntensityLevel(intensity);
-
-      // -ce ending transformation
-      if (processedMorpheme.endsWith('ce')) {
-        if (intensityLevel >= 4) {
-          processedMorpheme = processedMorpheme.slice(0, -2) + 'ss';
-        }
-      }
-
-      // -y ending transformation (when it makes EE sound)
-      if (processedMorpheme.endsWith('y')) {
-        if (intensityLevel >= 4) {
-          // Check if preceded by consonant (making EE sound)
-          const beforeY = processedMorpheme[processedMorpheme.length - 2];
-          if (beforeY && !'aeiou'.includes(beforeY.toLowerCase())) {
-            processedMorpheme = processedMorpheme.slice(0, -1) + 'eh';
-          }
-        }
-      }
-
-      // -ies ending transformation
-      if (processedMorpheme.endsWith('ies')) {
-        if (intensityLevel >= 4) {
-          processedMorpheme = processedMorpheme.slice(0, -3) + 'ehs';
-        }
-      }
-
-      // Normalize phonetic patterns first with intensity
-      const normalized = this.normalizePhonetics(processedMorpheme, intensity);
-
-      // Syllabify the morpheme
-      const syllables = this.syllabify(normalized);
+      // First syllabify the ORIGINAL word (not normalized)
+      const syllables = this.syllabify(morpheme);
 
       // If syllabification failed or returned empty, use simple processing
       if (!syllables || syllables.length === 0) {
         return this.simpleTransform(morpheme, intensity);
       }
 
-      let result = '';
+      // Transform each syllable based on intensity level
+      const intensityLevel = this.getIntensityLevel(intensity);
+      let transformedSyllables: string[] = [];
 
-      for (let syllableIndex = 0; syllableIndex < syllables.length; syllableIndex++) {
-        const syllable = syllables[syllableIndex];
-        if (!syllable || syllable.length === 0) continue;
-
-        let syllableResult = '';
-
-        let i = 0;
-        while (i < syllable.length) {
-          const char = syllable[i];
-          let processed = false;
-
-          // Check for vowel patterns (2+ characters)
-          // Try 3-character vowel patterns first
-          if (i + 2 < syllable.length) {
-            const threeChar = syllable.slice(i, i + 3);
-            if (vowelPatterns && vowelPatterns[threeChar]) {
-              syllableResult += this.transformVowelPhoneme(threeChar, intensity);
-              i += 3;
-              processed = true;
-            }
-          }
-
-          // Try 2-character vowel patterns
-          if (!processed && i + 1 < syllable.length) {
-            const twoChar = syllable.slice(i, i + 2);
-            if (vowelPatterns && vowelPatterns[twoChar]) {
-              syllableResult += this.transformVowelPhoneme(twoChar, intensity);
-              i += 2;
-              processed = true;
-            }
-          }
-
-          // Single character processing
-          if (!processed) {
-            if ('aeiouAEIOU'.includes(char)) {
-              // Single vowel
-              syllableResult += this.transformVowelPhoneme(char.toLowerCase(), intensity);
-            } else if (char.toLowerCase() === 'y') {
-              // Y can be vowel or consonant - check context
-              const nextChar = i < syllable.length - 1 ? syllable[i + 1] : '';
-              const prevChar = i > 0 ? syllable[i - 1] : '';
-
-              // Y acts as vowel when preceded by consonant or at word end
-              if ((prevChar && 'bcdfghjklmnpqrstvwxz'.includes(prevChar.toLowerCase())) ||
-                  (i === syllable.length - 1) ||
-                  (nextChar && 'bcdfghjklmnpqrstvwxz'.includes(nextChar.toLowerCase()))) {
-                // Treat as vowel making EE sound
-                const intensityLevel = this.getIntensityLevel(intensity);
-                if (intensityLevel >= 4) {
-                  // At end of word or before vowel: EH
-                  // Before consonant: E
-                  if (i === syllable.length - 1 || 'aeiou'.includes(nextChar.toLowerCase())) {
-                    syllableResult += 'eh';
-                  } else {
-                    syllableResult += 'e';
-                  }
-                } else {
-                  syllableResult += char;
-                }
-              } else {
-                // Treat as consonant
-                syllableResult += char;
-              }
-            } else if ('bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ'.includes(char)) {
-              // Consonant with context
-              const transformed = this.transformConsonantInContext(
-                char.toLowerCase(),
-                i,
-                syllables,
-                syllableIndex,
-                syllableResult.length
-              );
-              syllableResult += transformed;
-            } else {
-              // Keep other characters as-is
-              syllableResult += char;
-            }
-            i++;
-          }
-        }
-
-        result += syllableResult;
-
-        // Add syllable separator for multi-syllable words at high intensity
-        if (intensity >= 8 && syllables.length > 1 && syllableIndex < syllables.length - 1) {
-          result += '-';
-        }
+      if (intensityLevel === 1) {
+        // Minimal: Original syllables, no transformation
+        transformedSyllables = syllables;
+      } else {
+        // Moderate or Maximum: Transform each syllable independently
+        transformedSyllables = syllables.map((syllable, index) =>
+          this.transformSyllable(syllable, intensity, index === syllables.length - 1, morpheme)
+        );
       }
 
-      return result;
+      // Always join with hyphens for multi-syllable words
+      if (syllables.length > 1) {
+        return transformedSyllables.join('-');
+      }
+
+      return transformedSyllables.join('');
 
     } catch (error) {
       // If anything fails, fall back to simple transformation
       console.warn('Advanced transformation failed, using simple transform:', error);
       return this.simpleTransform(morpheme, intensity);
     }
+  }
+
+  // New method to transform a single syllable
+  private transformSyllable(syllable: string, intensity: number, isLastSyllable: boolean, fullWord: string): string {
+    if (!syllable || syllable.length === 0) return '';
+
+    const intensityLevel = this.getIntensityLevel(intensity);
+    // Check both the full word AND the individual syllable for CVCe pattern
+    const fullWordIsCVCe = this.isCVCePattern(fullWord);
+    const syllableIsCVCe = isLastSyllable && this.isCVCePattern(syllable);
+    const isCVCe = fullWordIsCVCe || syllableIsCVCe;
+    let result = '';
+
+    // Apply pre-processing transformations
+    let processedSyllable = syllable;
+
+    // Handle special endings only if it's the last syllable
+    if (isLastSyllable) {
+      // -ce ending transformation (but not for CVCe words)
+      if (processedSyllable.endsWith('ce') && !isCVCe) {
+        if (intensityLevel >= 4) {
+          processedSyllable = processedSyllable.slice(0, -2) + 'ss';
+        }
+      }
+
+      // -y ending transformation (when it makes EE sound)
+      if (processedSyllable.endsWith('y')) {
+        if (intensityLevel >= 4) {
+          // Check if preceded by consonant (making EE sound)
+          const beforeY = processedSyllable[processedSyllable.length - 2];
+          if (beforeY && !'aeiou'.includes(beforeY.toLowerCase())) {
+            processedSyllable = processedSyllable.slice(0, -1) + 'eh';
+          }
+        }
+      }
+    }
+
+    // Check if this syllable is a common suffix pattern
+    if (morphemePatterns.suffixes[syllable.toLowerCase()]) {
+      const suffixPattern = morphemePatterns.suffixes[syllable.toLowerCase()];
+      const level = this.getIntensityLevel(intensity);
+      return suffixPattern[level] || suffixPattern[1] || syllable;
+    }
+    
+    // Special handling for specific syllables
+    const syllableLower = syllable.toLowerCase();
+    
+    // Keep short syllables with 'o' unchanged at moderate intensity if not CVCe
+    if (intensityLevel === 4 && (syllableLower === 'con' || syllableLower === 'co')) {
+      return syllable; // Preserve original
+    }
+    
+    // Normalize phonetic patterns for this syllable
+    const normalized = this.normalizePhonetics(processedSyllable, intensity);
+
+    let i = 0;
+    while (i < normalized.length) {
+      const char = normalized[i];
+      let processed = false;
+
+      // Check for vowel patterns (2+ characters)
+      // Try 3-character vowel patterns first
+      if (i + 2 < normalized.length) {
+        const threeChar = normalized.slice(i, i + 3);
+        if (vowelPatterns && vowelPatterns[threeChar]) {
+          result += this.transformVowelPhoneme(threeChar, intensity, { isCVCe: syllableIsCVCe });
+          i += 3;
+          processed = true;
+        }
+      }
+
+      // Try 2-character vowel patterns
+      if (!processed && i + 1 < normalized.length) {
+        const twoChar = normalized.slice(i, i + 2);
+        if (vowelPatterns && vowelPatterns[twoChar]) {
+          result += this.transformVowelPhoneme(twoChar, intensity, { isCVCe: syllableIsCVCe });
+          i += 2;
+          processed = true;
+        }
+      }
+
+      // Single character processing
+      if (!processed) {
+        if ('aeiouAEIOU'.includes(char)) {
+          // Check if this is a silent 'e' at the end of a CVCe word
+          const isLastChar = isLastSyllable && i === normalized.length - 1;
+          const isSilentE = char.toLowerCase() === 'e' && isLastChar && isCVCe;
+
+          if (!isSilentE) {
+            // Check for special CVCe vowel contexts
+            const remainingChars = normalized.slice(i + 1).toLowerCase();
+            const vowel = char.toLowerCase();
+            let specialContext = '';
+            
+            // Check for specific CVCe patterns
+            if (vowel === 'a') {
+              if (remainingChars.startsWith('kes')) {
+                specialContext = 'a_akes'; // takes, makes, bakes
+              } else if (remainingChars.startsWith('tes')) {
+                specialContext = 'a_ates'; // mates, gates, dates
+              }
+            } else if (vowel === 'o') {
+              if (remainingChars.startsWith('tes')) {
+                specialContext = 'o_otes'; // motes, notes, votes
+              } else if (remainingChars.startsWith('kes')) {
+                specialContext = 'o_okes'; // tokes, pokes, jokes
+              }
+            }
+            
+            if (specialContext) {
+              // Use special context transformation
+              result += this.transformVowelPhoneme(specialContext, intensity);
+            } else {
+              // Single vowel - transform it with CVCe context
+              result += this.transformVowelPhoneme(char.toLowerCase(), intensity, { isCVCe: syllableIsCVCe });
+            }
+          }
+          // If it's a silent e, we don't add anything
+        } else if (char.toLowerCase() === 'y') {
+          // Y can be vowel or consonant - check context
+          const nextChar = i < normalized.length - 1 ? normalized[i + 1] : '';
+          const prevChar = i > 0 ? normalized[i - 1] : '';
+
+          // Y acts as vowel when preceded by consonant or at word end
+          if ((prevChar && 'bcdfghjklmnpqrstvwxz'.includes(prevChar.toLowerCase())) ||
+              (i === normalized.length - 1) ||
+              (nextChar && 'bcdfghjklmnpqrstvwxz'.includes(nextChar.toLowerCase()))) {
+            // Treat as vowel making EE sound
+            if (intensityLevel >= 4) {
+              // At end of word or before vowel: EH
+              // Before consonant: E
+              if (i === normalized.length - 1 || 'aeiou'.includes(nextChar.toLowerCase())) {
+                result += 'eh';
+              } else {
+                result += 'e';
+              }
+            } else {
+              result += char;
+            }
+          } else {
+            // Treat as consonant
+            result += char;
+          }
+        } else if ('bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXYZ'.includes(char)) {
+          // For consonants, use simpler context since we're in a single syllable
+          const position = i === 0 ? 'initial' : i === normalized.length - 1 ? 'final' : 'medial';
+          result += this.transformConsonantSimple(char.toLowerCase(), position, intensity);
+        } else {
+          // Keep other characters as-is
+          result += char;
+        }
+        i++;
+      }
+    }
+
+    return result;
+  }
+
+  // Simplified consonant transformation for single syllables
+  private transformConsonantSimple(consonant: string, position: 'initial' | 'medial' | 'final', intensity: number): string {
+    if (!consonant || !consonantRules[consonant]) {
+      return consonant;
+    }
+
+    const rules = consonantRules[consonant];
+    const intensityLevel = this.getIntensityLevel(intensity);
+
+    let context: keyof typeof rules = 'syllableInitial';
+    if (position === 'initial') {
+      context = 'syllableInitial';
+    } else if (position === 'final') {
+      context = 'syllableFinal';
+    } else {
+      context = 'intervocalic'; // Default for medial position
+    }
+
+    const contextRules = rules[context];
+    if (!contextRules) return consonant;
+
+    const transformation = contextRules as IntensityTransformations;
+    return transformation[intensityLevel] || transformation[1] || consonant;
   }
 
   // Simple fallback transformation method - more conservative
@@ -429,63 +460,103 @@ export class VocalTranslator {
     return result;
   }
 
+  // Helper function to apply the same capitalization pattern from original to transformed text
+  private preserveCapitalization(original: string, transformed: string): string {
+    if (original.length === 0 || transformed.length === 0) return transformed;
+
+    let result = '';
+    for (let i = 0; i < transformed.length; i++) {
+      if (i < original.length) {
+        // If original character at this position is uppercase, make transformed uppercase
+        if (original[i] === original[i].toUpperCase() && original[i] !== original[i].toLowerCase()) {
+          result += transformed[i].toUpperCase();
+        } else {
+          result += transformed[i].toLowerCase();
+        }
+      } else {
+        // If transformed is longer than original, keep lowercase for extra characters
+        result += transformed[i].toLowerCase();
+      }
+    }
+
+    // Special case: if entire original word is uppercase, make entire result uppercase
+    if (original === original.toUpperCase() && original !== original.toLowerCase()) {
+      return transformed.toUpperCase();
+    }
+
+    return result;
+  }
+
   translateWord(word: string, intensity: number): string {
     if (!word || word.trim() === '') return word;
 
     try {
       this.currentIntensity = intensity; // Store for context-sensitive rules
-      const originalWord = word.toLowerCase().trim();
+      
+      // Strip punctuation for vocal training (punctuation is not needed for singing technique)
+      let cleanWord = word;
+      
+      // Extract leading non-word characters
+      const leadingMatch = word.match(/^([^\w]*)(.*)/);
+      if (leadingMatch) {
+        cleanWord = leadingMatch[2];
+      }
+      
+      // Extract trailing punctuation, treating trailing apostrophes as punctuation
+      const trailingMatch = cleanWord.match(/^([\w']*\w|[\w])([^\w]*)$/);
+      if (trailingMatch) {
+        cleanWord = trailingMatch[1];
+      }
+      
+      // Special case: if word ends with just apostrophe, treat it as trailing punctuation
+      if (cleanWord.endsWith("'") && cleanWord.length > 1) {
+        const withoutApostrophe = cleanWord.slice(0, -1);
+        // Only move apostrophe to trailing if it's likely g-dropping (not a contraction)
+        if (!withoutApostrophe.includes("'")) {
+          cleanWord = withoutApostrophe;
+        }
+      }
+      
+      if (!cleanWord) return word;
+      
+      const originalWord = cleanWord.toLowerCase().trim();
 
       // 1. Check exception dictionary first (highest priority)
       if (exceptionWords && exceptionWords[originalWord]) {
         const level = this.getIntensityLevel(intensity);
         const exception = exceptionWords[originalWord];
-        return (exception[level] || exception[1] || originalWord).toUpperCase();
+        const transformed = exception[level] || exception[1] || originalWord;
+        const result = this.preserveCapitalization(cleanWord, transformed);
+        return result; // No punctuation for vocal training
       }
 
       // 2. For very short words, use simple processing
       if (originalWord.length <= 2) {
-        return this.simpleTransform(originalWord, intensity).toUpperCase();
+        const transformed = this.simpleTransform(originalWord, intensity);
+        const result = this.preserveCapitalization(cleanWord, transformed);
+        return result; // No punctuation for vocal training
       }
 
-      // 3. Morphological analysis
-      const morphology = this.analyzeMorphology(word);
-      let result = '';
-
-      // 4. Handle prefix if present
-      if (morphology.prefix) {
-        const prefixPattern = morphemePatterns.prefixes[morphology.prefix.toLowerCase()];
-        if (prefixPattern) {
-          const level = this.getIntensityLevel(intensity);
-          result += (prefixPattern[level] || prefixPattern[1] || morphology.prefix);
-        } else {
-          result += this.transformMorpheme(morphology.prefix, intensity);
-        }
-      }
-
-      // 5. Handle root word
-      const rootTransformed = this.transformMorpheme(morphology.root, intensity);
-      result += rootTransformed;
-
-      // 6. Handle suffix if present
-      if (morphology.suffix) {
-        const suffixPattern = morphemePatterns.suffixes[morphology.suffix.toLowerCase()];
-        if (suffixPattern) {
-          const level = this.getIntensityLevel(intensity);
-          result += (suffixPattern[level] || suffixPattern[1] || morphology.suffix);
-        } else {
-          result += this.transformMorpheme(morphology.suffix, intensity);
-        }
-      }
-
-      // Clean up result and return
-      const finalResult = result || originalWord;
-      return finalResult.toUpperCase();
+      // 3. For syllable-based transformation, skip morphological analysis
+      // and transform the whole word as a unit
+      const transformed = this.transformMorpheme(cleanWord, intensity);
+      const result = this.preserveCapitalization(cleanWord, transformed);
+      return result; // No punctuation for vocal training
 
     } catch (error) {
       // If anything fails, fall back to simple transformation
       console.warn('Word transformation failed, using fallback:', error);
-      return this.simpleTransform(word, intensity).toUpperCase();
+      // Try to extract clean word for fallback
+      const punctuationMatch = word.match(/([^\w'-]*)([\w'-]+)([^\w'-]*)$/);
+      if (punctuationMatch) {
+        const cleanWord = punctuationMatch[2] || '';
+        const transformed = this.simpleTransform(cleanWord, intensity);
+        const result = this.preserveCapitalization(cleanWord, transformed);
+        return result; // No punctuation for vocal training
+      }
+      // Last resort: use original word
+      const transformed = this.simpleTransform(word, intensity);
+      return this.preserveCapitalization(word, transformed);
     }
   }
 
@@ -524,5 +595,51 @@ export class VocalTranslator {
     });
 
     return translatedLines.join('\n');
+  }
+
+  // Check if a word follows the CVCe pattern (silent e)
+  private isCVCePattern(word: string): boolean {
+    // Check for classic CVCe pattern (consonant-vowel-consonant-silent e)
+    // Examples: make, time, hope, cute, drive, love
+    if (word.length < 3 || word.length > 5) return false;
+
+    const lowerWord = word.toLowerCase();
+
+    // Must end with 'e'
+    if (lowerWord[lowerWord.length - 1] !== 'e') return false;
+
+    // Check the pattern before the 'e'
+    const beforeE = lowerWord.substring(0, lowerWord.length - 1);
+
+    // Pattern 1: CVC (like "make", "time", "love")
+    if (beforeE.length === 3) {
+      return this.isConsonant(beforeE[0]) &&
+             this.isVowel(beforeE[1]) &&
+             this.isConsonant(beforeE[2]);
+    }
+
+    // Pattern 2: CCVC (like "drive", "brake")
+    if (beforeE.length === 4) {
+      return this.isConsonant(beforeE[0]) &&
+             this.isConsonant(beforeE[1]) &&
+             this.isVowel(beforeE[2]) &&
+             this.isConsonant(beforeE[3]);
+    }
+
+    // Pattern 3: VC (like "ice", "age", "use")
+    if (beforeE.length === 2) {
+      return this.isVowel(beforeE[0]) &&
+             this.isConsonant(beforeE[1]);
+    }
+
+    return false;
+  }
+
+  private isVowel(char: string): boolean {
+    return 'aeiouAEIOU'.includes(char);
+  }
+
+  private isConsonant(char: string): boolean {
+    return 'bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ'.includes(char);
   }
 }

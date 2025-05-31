@@ -1,5 +1,5 @@
-import VocalTranslatorApp from '@/components/VocalTranslatorApp';
+import GeniusStyleLayout from '@/components/GeniusStyleLayout';
 
 export default function Home() {
-  return <VocalTranslatorApp />;
+  return <GeniusStyleLayout />;
 }

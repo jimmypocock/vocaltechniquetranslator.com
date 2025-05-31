@@ -1,3 +1,4 @@
+// DELETE IF NOT USED
 export default function TechniqueInfo() {
   const techniques = [
     "Conservative transformations maintain lyric readability",
@@ -5,7 +6,7 @@ export default function TechniqueInfo() {
     "Exception dictionary preserves common words naturally",
     "Syllable breaks only added when beneficial for longer words",
     "Abbreviations and proper nouns handled appropriately",
-    "Intensity 1-3: Minimal changes, 4-5: Conservative, 6-7: Moderate, 8-10: Full technique"
+    "Intensity 1-3: Minimal changes, 4: Conservative, 5-7: Moderate, 8-10: Full technique"
   ];
 
   return (
@@ -15,8 +16,8 @@ export default function TechniqueInfo() {
       </h3>
       <ul className="list-none pl-0">
         {techniques.map((technique, index) => (
-          <li 
-            key={index} 
+          <li
+            key={index}
             className="mb-1 pl-5 relative before:content-['♪'] before:absolute before:left-0 before:text-[#2196f3]"
           >
             {technique}

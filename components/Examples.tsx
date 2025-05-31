@@ -1,3 +1,4 @@
+// DELETE IF NOT USED
 interface Example {
   title: string;
   content: string;
@@ -6,7 +7,7 @@ interface Example {
 export default function Examples() {
   const examples: Example[] = [
     {
-      title: "Conservative Transformations (Intensity 4-5):",
+      title: "Conservative Transformations (Intensity 4):",
       content: '"blue jean baby" → "BLUH JAHN BAH-BAY" | "pretty smile" → "PRIH-TEE SMEHL"'
     },
     {
@@ -29,8 +30,8 @@ export default function Examples() {
         Improved Readability Examples
       </div>
       {examples.map((example, index) => (
-        <div 
-          key={index} 
+        <div
+          key={index}
           className="example mb-4 p-4 bg-[#f8f9fa] rounded-lg border-l-4 border-[#667eea]"
         >
           <div className="example-title font-semibold text-gray-800 mb-1">

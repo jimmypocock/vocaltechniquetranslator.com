@@ -1,28 +1,33 @@
-import { 
-  VowelPhoneme, 
-  ConsonantRules, 
-  MorphemePatterns, 
-  PhoneticPattern, 
-  InitialCluster, 
-  VowelPatterns 
+import {
+  VowelPhoneme,
+  ConsonantRules,
+  MorphemePatterns,
+  PhoneticPattern,
+  InitialCluster,
+  VowelPatterns
 } from '@/lib/types/vocal-translator';
 
 // Phoneme-based vowel transforms
 export const vowelPhonemes: VowelPhoneme = {
   // Monophthongs
-  'i': { 1: 'i', 4: 'eh', 8: 'ae' },        // bit → baet
-  'ɪ': { 1: 'ih', 4: 'eh', 8: 'ae' },       // bit → baet
+  'i': { 1: 'i', 4: 'ih', 8: 'eh' },        // bit → bih → beh
+  'ɪ': { 1: 'i', 4: 'ih', 8: 'eh' },        // bit → bih → beh
   'e': { 1: 'e', 4: 'eh', 8: 'eh' },        // bet → beht
   'ɛ': { 1: 'eh', 4: 'eh', 8: 'ah' },       // bet → baht
   'æ': { 1: 'a', 4: 'ah', 8: 'ah' },        // bat → baht
+  'a_akes': { 1: 'a', 4: 'ae', 8: 'ah' },   // takes → taeks → tahks (special 'akes' context)
+  'a_ates': { 1: 'a', 4: 'ae', 8: 'ah' },   // mates → maets → mahts
+  'o_otes': { 1: 'o', 4: 'oh', 8: 'ah' },   // motes → mohts → mahts
+  'o_okes': { 1: 'o', 4: 'oh', 8: 'ah' },   // tokes → tohks → tahks
   'ə': { 1: 'uh', 4: 'ah', 8: 'ah' },       // about → ahbaht
   'ʌ': { 1: 'uh', 4: 'ah', 8: 'ah' },       // but → baht
   'ɑ': { 1: 'ah', 4: 'ah', 8: 'ah' },       // bot → baht
   'ɔ': { 1: 'aw', 4: 'oh', 8: 'ah' },       // bought → baht
   'y': { 1: 'y', 4: 'eh', 8: 'e' },         // y as vowel → eh/e
   'o': { 1: 'o', 4: 'oh', 8: 'ah' },        // boat → baht
+  'o_cvce': { 1: 'o', 4: 'oh', 8: 'ah' },    // lone → lohn → lahn (CVCe context)
   'ʊ': { 1: 'oo', 4: 'uh', 8: 'ah' },       // book → bahk
-  'u': { 1: 'oo', 4: 'oo', 8: 'ah' },       // boot → baht
+  'u': { 1: 'oo', 4: 'oh', 8: 'ah' },       // boot → baht
 
   // Diphthongs - emphasize first vowel
   'aɪ': { 1: 'ai', 4: 'ah', 8: 'ah' },      // bite → baht
@@ -43,7 +48,8 @@ export const consonantRules: ConsonantRules = {
   'k': {
     syllableInitial: { 1: 'k', 4: 'g', 8: 'g' },
     intervocalic: { 1: 'k', 4: 'g', 8: 'g' },
-    syllableFinal: { 1: 'k', 4: 'g', 8: 'g' }
+    syllableFinal: { 1: 'k', 4: 'g', 8: 'g' },
+    beforeConsonant: { 1: 'k', 4: 'g', 8: 'g' }
   },
   'p': {
     syllableInitial: { 1: 'p', 4: 'b', 8: 'b' },
@@ -58,7 +64,7 @@ export const consonantRules: ConsonantRules = {
   's': {
     syllableInitial: { 1: 's', 4: 's', 8: 'z' },
     intervocalic: { 1: 's', 4: 'z', 8: 'z' },
-    syllableFinal: { 1: 's', 4: 's', 8: 'z' },
+    syllableFinal: { 1: 's', 4: 'z', 8: 'z' },
     beforeConsonant: { 1: 's', 4: 's', 8: 'z' }
   },
   'g': {
@@ -100,22 +106,25 @@ export const morphemePatterns: MorphemePatterns = {
     'ed': { 1: 'ed', 4: 'd', 8: 'd' },
     'er': { 1: 'er', 4: 'uhr', 8: 'ahr' },
     'est': { 1: 'est', 4: 'ehst', 8: 'ahst' },
-    'ly': { 1: 'ly', 4: 'lee', 8: 'lae' },
-    'tion': { 1: 'tion', 4: 'shuhn', 8: 'shahn' },
+    'ly': { 1: 'ly', 4: 'leh', 8: 'leh' },
+    'tion': { 1: 'tion', 4: 'shun', 8: 'shahn' },
     'sion': { 1: 'sion', 4: 'zhuhn', 8: 'zhahn' },
     'ness': { 1: 'ness', 4: 'nehs', 8: 'nahs' },
     'ment': { 1: 'ment', 4: 'mehnt', 8: 'mahnt' },
     'ful': { 1: 'ful', 4: 'fool', 8: 'fahl' },
     'less': { 1: 'less', 4: 'lehs', 8: 'lahs' },
     'able': { 1: 'able', 4: 'uhbuhl', 8: 'ahbahl' },
-    'ible': { 1: 'ible', 4: 'uhbuhl', 8: 'ahbahl' }
+    'ible': { 1: 'ible', 4: 'uhbuhl', 8: 'ahbahl' },
+    'ies': { 1: 'ies', 4: 'aez', 8: 'ahz' },
+    'in\'': { 1: 'in\'', 4: 'ehn\'', 8: 'ahn\'' }
   },
   prefixes: {
     'un': { 1: 'un', 4: 'uhn', 8: 'ahn' },
     're': { 1: 're', 4: 'ree', 8: 'rae' },
     'pre': { 1: 'pre', 4: 'pree', 8: 'brae' },
     'dis': { 1: 'dis', 4: 'dihs', 8: 'dahs' },
-    'over': { 1: 'over', 4: 'oh-vuhr', 8: 'ah-vahr' }
+    'over': { 1: 'over', 4: 'oh-vuhr', 8: 'ah-vahr' },
+    'any': { 1: 'a-ny', 4: 'eh-neh', 8: 'ah-nah' }
   }
 };
 
@@ -129,7 +138,24 @@ export const phoneticPatterns: PhoneticPattern = {
   'wh': { 1: 'w', 4: 'w', 8: 'w' },
   'ck': { 1: 'k', 4: 'k', 8: 'g' },
   'dge': { 1: 'j', 4: 'j', 8: 'zh' },
-  'tch': { 1: 'ch', 4: 'ch', 8: 'ch' }
+  'tch': { 1: 'ch', 4: 'ch', 8: 'ch' },
+
+  // Consonant clusters
+  'nds': { 1: 'nds', 4: 'nz', 8: 'nz' }, // simplify at moderate/full
+  'nts': { 1: 'nts', 4: 'ns', 8: 'ns' }, // simplify at moderate/full
+  'lds': { 1: 'lds', 4: 'lz', 8: 'lz' }, // simplify at moderate/full
+  'rds': { 1: 'rds', 4: 'rz', 8: 'rz' }, // simplify at moderate/full
+  'mps': { 1: 'mps', 4: 'ms', 8: 'ms' }, // simplify at moderate/full
+  'nks': { 1: 'nks', 4: 'ngs', 8: 'ngs' }, // simplify at moderate/full
+  'sts': { 1: 'sts', 4: 'ss', 8: 's' }, // progressive simplification
+  'sks': { 1: 'sks', 4: 'sks', 8: 'ss' }, // simplify at full
+  'st$': { 1: 'st', 4: 'zt', 8: 'zd' }, // final st cluster: most, rest, etc.
+  'ill$': { 1: 'ill', 4: 'ehl', 8: 'ahl' }, // final ill pattern: fill, hill, bill
+  'll$': { 1: 'll', 4: 'l', 8: 'w' }, // double l at end: well, bell, tell
+  'ss$': { 1: 'ss', 4: 'ss', 8: 'z' }, // double s at end: this, kiss, miss
+  'ty$': { 1: 'ty', 4: 'tae', 8: 'teh' }, // -ty ending: city, pretty, party
+  'ight$': { 1: 'ight', 4: 'aed', 8: 'nahd' }, // -ight ending: night, light, right, fight
+  'where$': { 1: 'where', 4: 'wehr', 8: 'wahr' } // where ending: somewhere, nowhere
 };
 
 // Initial consonant cluster transformations

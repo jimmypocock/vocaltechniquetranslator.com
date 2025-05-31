@@ -13,13 +13,14 @@ export class EdgeFunctionsStack extends Stack {
   constructor(scope: Construct, id: string, props: EdgeFunctionsStackProps) {
     super(scope, id, props);
 
-    // Lambda@Edge function for redirects
+    // Lambda@Edge function for redirects and static route handling
     this.redirectFunction = new cloudfront.Function(this, 'RedirectFunction', {
       code: cloudfront.FunctionCode.fromInline(`
         function handler(event) {
           var request = event.request;
           var headers = request.headers;
           var host = headers.host.value;
+          var uri = request.uri;
           
           // Redirect CloudFront URL to www domain
           if (host.includes('cloudfront.net')) {
@@ -27,7 +28,7 @@ export class EdgeFunctionsStack extends Stack {
               statusCode: 301,
               statusDescription: 'Moved Permanently',
               headers: {
-                location: { value: 'https://www.${props.domainName}' + request.uri }
+                location: { value: 'https://www.${props.domainName}' + uri }
               }
             };
             return response;
@@ -39,16 +40,26 @@ export class EdgeFunctionsStack extends Stack {
               statusCode: 301,
               statusDescription: 'Moved Permanently',
               headers: {
-                location: { value: 'https://www.${props.domainName}' + request.uri }
+                location: { value: 'https://www.${props.domainName}' + uri }
               }
             };
             return response;
           }
           
+          // Handle static export routing for Next.js
+          // If URI doesn't have a file extension and isn't root, try .html
+          if (uri !== '/' && !uri.includes('.') && !uri.endsWith('/')) {
+            request.uri = uri + '.html';
+          }
+          // If URI ends with '/', append index.html
+          else if (uri.endsWith('/') && uri !== '/') {
+            request.uri = uri + 'index.html';
+          }
+          
           return request;
         }
       `),
-      comment: 'Handles redirects for Vocal Technique Translator',
+      comment: 'Handles redirects and static route mapping for Vocal Technique Translator',
     });
 
     // Security Headers Function
@@ -66,7 +77,7 @@ export class EdgeFunctionsStack extends Stack {
           headers['referrer-policy'] = { value: 'strict-origin-when-cross-origin' };
           headers['permissions-policy'] = { value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()' };
           headers['content-security-policy'] = { 
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';" 
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.googleadservices.com https://*.google-analytics.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.googleapis.com; img-src 'self' data: https: blob: *.google.com *.googleusercontent.com *.googlesyndication.com *.doubleclick.net *.gstatic.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.googlesyndication.com https://*.googleadservices.com https://*.adtrafficquality.google; frame-src 'self' blob: data: https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com https://*.adtrafficquality.google; fenced-frame-src * blob: data:; frame-ancestors 'none';" 
           };
           
           return response;

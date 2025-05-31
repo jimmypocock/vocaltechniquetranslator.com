@@ -1,6 +1,11 @@
 import { ExceptionWord } from '@/lib/types/vocal-translator';
 
 export const exceptionWords: ExceptionWord = {
+  // Special words with custom handling
+  'meet': { 1: 'meet', 4: 'meht', 8: 'mahd' },
+  'beautiful': { 1: 'beau-ti-ful', 4: 'byoo-teh-fool', 8: 'behoo-dah-fahl' },
+  'eyes': { 1: 'eyes', 4: 'aez', 8: 'ahz' },
+  
   // Articles & pronouns
   'the': { 1: 'the', 4: 'dhuh', 8: 'duh' },
   'a': { 1: 'a', 4: 'uh', 8: 'uh' },
@@ -23,7 +28,7 @@ export const exceptionWords: ExceptionWord = {
   'was': { 1: 'was', 4: 'wuhz', 8: 'wuhz' },
   'were': { 1: 'were', 4: 'wuhr', 8: 'wuhr' },
   'been': { 1: 'been', 4: 'bihn', 8: 'bihn' },
-  'will': { 1: 'will', 4: 'wihl', 8: 'wihl' },
+  'will': { 1: 'will', 4: 'wehl', 8: 'wahl' },
   'would': { 1: 'would', 4: 'wood', 8: 'wood' },
   'could': { 1: 'could', 4: 'kood', 8: 'kood' },
   'should': { 1: 'should', 4: 'shood', 8: 'shood' },
@@ -36,7 +41,7 @@ export const exceptionWords: ExceptionWord = {
   'they': { 1: 'they', 4: 'theh', 8: 'deh' },
   'them': { 1: 'them', 4: 'them', 8: 'dem' },
   'then': { 1: 'then', 4: 'then', 8: 'den' },
-  'this': { 1: 'this', 4: 'this', 8: 'dis' },
+  'this': { 1: 'this', 4: 'thess', 8: 'dehz' },
   'that': { 1: 'that', 4: 'that', 8: 'dat' },
   'these': { 1: 'these', 4: 'theez', 8: 'deez' },
   'those': { 1: 'those', 4: 'thohz', 8: 'dohz' },
@@ -47,27 +52,32 @@ export const exceptionWords: ExceptionWord = {
   // Specific to the example lyrics
   'blue': { 1: 'blue', 4: 'bluh', 8: 'bluh' },
   'jean': { 1: 'jean', 4: 'jahn', 8: 'jahn' },
-  'baby': { 1: 'baby', 4: 'bah-bay', 8: 'bah-bae' },
-  'lady': { 1: 'lady', 4: 'lah-dee', 8: 'lahd-eh' },
-  'seamstress': { 1: 'seamstress', 4: 'sehm-stress', 8: 'sehm-stress' },
+  'baby': { 1: 'ba-by', 4: 'bah-bay', 8: 'bah-bae' },
+  'lady': { 1: 'la-dy', 4: 'lah-dee', 8: 'lahd-eh' },
+  'seamstress': { 1: 'seam-stress', 4: 'sehm-stress', 8: 'sehm-stress' },
   'band': { 1: 'band', 4: 'bahnd', 8: 'band' },
-  'pretty': { 1: 'pretty', 4: 'prih-tee', 8: 'preh-teh' },
-  'pirate': { 1: 'pirate', 4: 'pah-ruht', 8: 'pah-ruht' },
+  'pretty': { 1: 'pret-ty', 4: 'prih-tee', 8: 'preh-teh' },
+  'pirate': { 1: 'pir-ate', 4: 'pah-ruht', 8: 'pah-ruht' },
   'smile': { 1: 'smile', 4: 'smehl', 8: 'zmel' },
   'eyed': { 1: 'eyed', 4: 'ahed', 8: 'aed' },
-  'marry': { 1: 'marry', 4: 'mahr-ee', 8: 'mahr-eh' },
-  'music': { 1: 'music', 4: 'myoo-sik', 8: 'myuh-suhk' },
+  'marry': { 1: 'mar-ry', 4: 'mahr-ee', 8: 'mahr-eh' },
+  'music': { 1: 'mu-sic', 4: 'myoo-sik', 8: 'myuh-suhk' },
   'man': { 1: 'man', 4: 'mahn', 8: 'mahn' },
   'seen': { 1: 'seen', 4: 'sehn', 8: 'sehn' },
   'her': { 1: 'her', 4: 'hehr', 8: 'hehr' },
-  'dancing': { 1: 'dancing', 4: 'dahn-sing', 8: 'dahn-sehn' },
+  'dancing': { 1: 'dan-cing', 4: 'dahn-sing', 8: 'dahn-sehn' },
   'sand': { 1: 'sand', 4: 'sahnd', 8: 'sahnd' },
-  'ballerina': { 1: 'ballerina', 4: 'bahl-luhr-eenah', 8: 'bahl-luh-reh-nah' },
+  'ballerina': { 1: 'bal-ler-i-na', 4: 'bahl-luhr-eenah', 8: 'bahl-luh-reh-nah' },
   'mustve': { 1: 'mustve', 4: 'muht-ve', 8: 'muht-ve' },
 
   // New additions from user examples
   'i': { 1: 'i', 4: 'ah', 8: 'ae' },
+  'everywhere': { 1: 'ev-ery-where', 4: 'ehv-eh-ree-wehr', 8: 'ahv-ah-rah-wahr' },
   'everything': { 1: 'everything', 4: 'eh-ver-ee-thing', 8: 'eh-ver-eh-dang' },
+  'anywhere': { 1: 'a-ny-where', 4: 'eh-neh-wehr', 8: 'ah-nah-wahr' },
+  'emotion': { 1: 'e-mo-tion', 4: 'eh-moh-shun', 8: 'eh-mah-shahn' },
+  'believin': { 1: 'be-lie-vin', 4: 'beh-lee-vehn', 8: 'bah-leh-vahn' },
+  'lonely': { 1: 'lone-ly', 4: 'lohn-leh', 8: 'lahn-leh' },
   'childhood': { 1: 'childhood', 4: 'chah-ld-hood', 8: 'cheld-hud' },
   'memories': { 1: 'memories', 4: 'meh-mor-ees', 8: 'meh-mor-ehs' },
   'got': { 1: 'got', 4: 'gaht', 8: 'god' },
@@ -88,7 +98,7 @@ export const exceptionWords: ExceptionWord = {
   'she': { 1: 'she', 4: 'shee', 8: 'zhee' },
   'show': { 1: 'show', 4: 'shoh', 8: 'zhoh' },
   'shine': { 1: 'shine', 4: 'shehn', 8: 'zhehn' },
-  'stop': { 1: 'stop', 4: 'stahp', 8: 'dahp' },
+  'stop': { 1: 'stop', 4: 'stahp', 8: 'zdahp' },
   'start': { 1: 'start', 4: 'stahrt', 8: 'dahrt' },
   'stand': { 1: 'stand', 4: 'stahnd', 8: 'dahnd' },
   'still': { 1: 'still', 4: 'stihl', 8: 'dihl' },
@@ -97,10 +107,31 @@ export const exceptionWords: ExceptionWord = {
   'small': { 1: 'small', 4: 'smahl', 8: 'mahl' },
   'smart': { 1: 'smart', 4: 'smahrt', 8: 'mahrt' },
 
+  // Greek-origin words where 'ch' = /k/ sound
+  'chorus': { 1: 'cho-rus', 4: 'koh-ruz', 8: 'kah-rahz' },
+  'chemistry': { 1: 'chem-is-try', 4: 'kehm-ihs-tree', 8: 'kahm-ahs-drae' },
+  'chrome': { 1: 'chrome', 4: 'krohm', 8: 'krahm' },
+  'chaos': { 1: 'cha-os', 4: 'kah-ahs', 8: 'kah-ahs' },
+  'character': { 1: 'char-ac-ter', 4: 'kahr-ahk-tehr', 8: 'kahr-ahg-dahr' },
+  'chronical': { 1: 'chron-i-cal', 4: 'krahn-ih-kahl', 8: 'krahn-ah-gahl' },
+  'echo': { 1: 'e-cho', 4: 'eh-koh', 8: 'ah-gah' },
+  
+  // Single syllable words with special patterns
+  'takes': { 1: 'takes', 4: 'taegz', 8: 'dahgz' },
+  'just': { 1: 'just', 4: 'juhzt', 8: 'zhahzd' },
+  'fast': { 1: 'fast', 4: 'fazt', 8: 'fahzd' },
+  'last': { 1: 'last', 4: 'lazt', 8: 'lahzd' },
+  'first': { 1: 'first', 4: 'ferzt', 8: 'fahzd' },
+  'best': { 1: 'best', 4: 'bezt', 8: 'bahzd' },
+
+  // Time and place words
+  'forever': { 1: 'for-e-ver', 4: 'fohr-eh-vehr', 8: 'vahr-eh-vahr' },
+  'city': { 1: 'ci-ty', 4: 'sih-tae', 8: 'seh-teh' },
+
   // Contractions
-  'well': { 1: 'well', 4: 'weh-ll', 8: 'weh-ll' },
+  'well': { 1: 'well', 4: 'wehl', 8: 'wehw' },
   'ill': { 1: 'ill', 4: 'ah-ll', 8: 'ah-ll' },
-  'cant': { 1: 'cant', 4: 'kahnt', 8: 'kahnt' },
+  'cant': { 1: 'cant', 4: 'kahnt', 8: 'gahnd' },
   'wont': { 1: 'wont', 4: 'wohnt', 8: 'wohnt' },
   'dont': { 1: 'dont', 4: 'dohnt', 8: 'dohnt' },
   'didnt': { 1: 'didnt', 4: 'dih-dnt', 8: 'dih-dnt' },
