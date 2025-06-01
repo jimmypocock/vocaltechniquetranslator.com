@@ -22,6 +22,7 @@
 
 ### P0 - Critical
 
+- [ ] **[Monetization]** Review ADSENSE_RECOMMENDATIONS.md doc and finish building site to get approved by Google. `[VTT-046]`
 - [ ] **[Features]** Use Canva to come up with a full brand kit for Vocal Technique Translator. `[VTT-040]`
 - [x] **[Features]** Contruct full lyrical logic for redeployment. `[VTT-039]` ✓ 2025-05-31
 - [x] **[Features]** Add basic keyboard shortcuts (spacebar for play/pause, R for repeat) `[VTT-014]` ✓ 2025-05-31
