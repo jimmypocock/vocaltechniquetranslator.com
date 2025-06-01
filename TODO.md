@@ -28,7 +28,7 @@
 - [x] **[UI/UX]** Improve button contrast and size to 44px minimum touch targets `[VTT-013]` ✓ 2025-05-31
 - [x] **[UI/UX]** Add dark mode toggle `[VTT-011]` ✓ 2025-05-31
 - [x] **[UI/UX]** Make font size and type more legible `[VTT-001]` ✓ 2025-05-31
-- [ ] **[UI/UX]** Structure words so they're easier to read `[VTT-002]`
+- [x] **[UI/UX]** Structure words so they're easier to read `[VTT-002]` ✓ 2025-05-31
 - [x] **[Features]** Add a copy button to the generated text `[VTT-003]` ✓ 2025-05-31
 
 ### P1 - Important
@@ -45,11 +45,11 @@
 - [x] **[Documentation]** Create a detailed "How to Use" guide with screenshots/examples `[VTT-033]`
 - [ ] **[Documentation]** Write 3-5 blog articles about vocal techniques (can use AI assistance) `[VTT-034]`
 - [ ] **[Documentation]** Create an FAQ section about vocal techniques and the tool `[VTT-035]`
-- [ ] **[Monetization]** Create a sitemap.xml and submit to Google Search Console `[VTT-036]`
+- [x] **[Monetization]** Create a sitemap.xml and submit to Google Search Console `[VTT-036]` ✓ 2025-05-31
 - [ ] **[Monetization]** Reach out to music educators/vocal coaches for testimonials `[VTT-037]`
 - [ ] **[Monetization]** Get backlinks from music/education sites (reach out to contacts) `[VTT-038]`
 
-- [ ] **[Features]** Allow users to adjust size of text areas `[VTT-026]`
+- [x] **[Features]** Allow users to adjust size of text areas `[VTT-026]` ✓ 2025-05-31
 - [ ] **[Features]** Add visual progress tracking with practice streaks `[VTT-018]`
 - [ ] **[Features]** Implement simple favorites system using local storage `[VTT-017]`
 - [ ] **[UI/UX]** Add print-friendly CSS styles `[VTT-015]`
@@ -60,10 +60,10 @@
 
 #### AdSense Setup Tasks
 
-- [ ] **[Monetization]** Create AdSense account and submit site for review `[VTT-027]`
+- [x] **[Monetization]** Create AdSense account and submit site for review `[VTT-027]` ✓ 2025-05-31
 - [ ] **[Monetization]** Create ad units in AdSense dashboard (Header, Content, Footer) `[VTT-028]`
 - [ ] **[Monetization]** Update .env with AdSense publisher ID and ad slot IDs `[VTT-029]`
-- [ ] **[Monetization]** Deploy and test consent flow in production `[VTT-030]`
+- [x] **[Monetization]** Deploy and test consent flow in production `[VTT-030]` ✓ 2025-05-31
 - [ ] **[Monetization]** Monitor AdSense performance and optimize placements `[VTT-031]`
 
 ### P2 - Nice to Have
@@ -80,7 +80,7 @@
 
 ### P3 - Future
 
-- [ ] **[Infrastructure]** Create a starter template out of Vocal Translator to make it simple to deploy front end apps to s3/cf/l@e in the future on AWS with the CDK `[VTT-009]`
+- [x] **[Infrastructure]** Create a starter template out of Vocal Translator to make it simple to deploy front end apps to s3/cf/l@e in the future on AWS with the CDK `[VTT-009]` ✓ 2025-05-31
 
 ---
 
