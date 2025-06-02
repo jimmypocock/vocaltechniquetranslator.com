@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
+import ArticleDisclaimer from '@/components/ArticleDisclaimer'
 
 // This will eventually come from a CMS or markdown files
 const articles = {
   'beyond-water-singers-nutrition': {
     id: 'beyond-water-singers-nutrition',
-    title: 'Beyond Water: The Complete Singer\'s Nutrition and Hydration Science',
+    title: 'Beyond Water: A Singer\'s Nutrition and Hydration Science',
     content: `
-# Beyond Water: The Complete Singer's Nutrition and Hydration Science
+# Beyond Water: A Singer's Nutrition and Hydration Science
 
 The mantra "just drink water" has dominated vocal health advice for decades, but cutting-edge research reveals this guidance dramatically oversimplifies what singers truly need for optimal performance. Recent studies from leading voice science institutions demonstrate that vocal health depends on complex physiological mechanisms extending far beyond simple hydration—from cellular-level ion transport to inflammatory responses triggered by specific foods. This comprehensive guide synthesizes the latest scientific research with expert insights to provide singers with evidence-based nutrition strategies that support vocal excellence.
 
@@ -47,7 +49,7 @@ For immune support critical during performance seasons, **propolis** demonstrate
 
 Performance anxiety affects many singers, making **adaptogenic herbs** valuable additions. [Ashwagandha shows significant cortisol reduction](https://www.sciencedirect.com/science/article/pii/S1756464623002955) (MD = -3.27 ug/dL) in meta-analyses, while Rhodiola rosea improves stress resilience without sedation. These evidence-based options provide sustainable alternatives to beta-blockers or other medications that may affect vocal function.
 
-## Why "just drink water" dangerously oversimplifies vocal health
+## Why "just drink water" oversimplifies vocal health
 
 Leading laryngologists increasingly criticize the reductionist "8 glasses a day" approach. [Dr. Wendy LeBorgne, NATS Vocal Health and Wellness Coordinator](https://www.nats.org/cgi/page.cgi/_article.html/What_s_New/Setting_Your_2017_Vocal_Goals), emphasizes that vocal wellness requires comprehensive strategies beyond basic hydration. [Recent meta-analysis of hydration treatment outcomes](https://pmc.ncbi.nlm.nih.gov/articles/PMC4157110/) revealed "substantial variation across studies with no statistically significant treatment effect" on phonation threshold pressure when examining water intake alone.
 
@@ -131,7 +133,8 @@ Professional singers investing in comprehensive nutritional strategies report im
     publishedAt: '2024-12-15',
     featured: true,
     author: 'Jimmy Pocock',
-    tags: ['nutrition', 'hydration', 'vocal health', 'performance', 'science']
+    tags: ['nutrition', 'hydration', 'vocal health', 'performance', 'science'],
+    disclaimerType: 'medical' as const
   },
   'hybrid-voice-teacher-business': {
     id: 'hybrid-voice-teacher-business',
@@ -243,7 +246,8 @@ The hybrid voice teacher's business blueprint requires mastering five interconne
     publishedAt: '2024-12-10',
     featured: true,
     author: 'Jimmy Pocock',
-    tags: ['business', 'hybrid teaching', 'technology', 'pricing', 'remote lessons']
+    tags: ['business', 'hybrid teaching', 'technology', 'pricing', 'remote lessons'],
+    disclaimerType: 'financial' as const
   },
   'vocal-biomarkers-voice-teachers': {
     id: 'vocal-biomarkers-voice-teachers',
@@ -361,7 +365,8 @@ As we stand at the intersection of ancient vocal traditions and cutting-edge tec
     publishedAt: '2024-12-05',
     featured: false,
     author: 'Jimmy Pocock',
-    tags: ['biomarkers', 'technology', 'vocal health', 'AI', 'pedagogy']
+    tags: ['biomarkers', 'technology', 'vocal health', 'AI', 'pedagogy'],
+    disclaimerType: 'medical' as const
   }
 }
 
@@ -369,6 +374,43 @@ export async function generateStaticParams() {
   return Object.keys(articles).map((slug) => ({
     slug,
   }))
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const article = articles[slug as keyof typeof articles]
+
+  if (!article) {
+    return {
+      title: 'Article Not Found',
+    }
+  }
+
+  const canonicalUrl = `https://vocaltechniquetranslator.com/articles/${slug}`
+
+  return {
+    title: `${article.title} | Vocal Technique Translator`,
+    description: article.excerpt,
+    keywords: article.tags.join(', '),
+    authors: [{ name: article.author }],
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      type: 'article',
+      publishedTime: article.publishedAt,
+      authors: [article.author],
+      tags: article.tags,
+      url: canonicalUrl,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.excerpt,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  }
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -391,7 +433,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               </svg>
               Back to Articles
             </Link>
-            
+
             <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -409,22 +451,22 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               <span className="text-sm text-muted-foreground">{article.readTime}</span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {new Date(article.publishedAt).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+                {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
                 })}
               </span>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent leading-tight">
               {article.title}
             </h1>
-            
+
             <p className="text-xl text-muted-foreground mb-6">
               {article.excerpt}
             </p>
-            
+
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span>By {article.author}</span>
               <div className="flex gap-2">
@@ -437,19 +479,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
           </header>
 
+          {/* Disclaimer */}
+          {article.disclaimerType && (
+            <ArticleDisclaimer type={article.disclaimerType} />
+          )}
+
           {/* Article Content */}
           <article className="prose prose-lg dark:prose-invert max-w-none">
-            <div 
-              dangerouslySetInnerHTML={{ 
+            <div
+              dangerouslySetInnerHTML={{
                 __html: article.content
                   .split('\n')
                   .map(line => {
                     // Process markdown links first
                     line = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 underline">$1</a>')
-                    
+
                     // Process bold text
                     line = line.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-                    
+
                     if (line.startsWith('# ')) {
                       return `<h1 class="text-3xl font-bold mt-8 mb-4 text-purple-700 dark:text-purple-300">${line.slice(2)}</h1>`
                     }
@@ -468,7 +515,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     return `<p class="mb-4">${line}</p>`
                   })
                   .join('')
-              }} 
+              }}
             />
           </article>
 
@@ -489,7 +536,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 </svg>
               </Link>
             </div>
-            
+
             {/* AI Disclosure */}
             <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
               <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
@@ -497,6 +544,46 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               </p>
             </div>
           </footer>
+
+          {/* Article Schema Markup */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": article.title,
+                "description": article.excerpt,
+                "author": {
+                  "@type": "Person",
+                  "name": article.author
+                },
+                "datePublished": article.publishedAt,
+                "dateModified": article.publishedAt,
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "Vocal Technique Translator",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://vocaltechniquetranslator.com/images/logo.svg"
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": `https://vocaltechniquetranslator.com/articles/${article.id}`
+                },
+                "keywords": article.tags.join(", "),
+                "articleSection": article.category,
+                "wordCount": article.content.split(' ').length,
+                "timeRequired": `PT${parseInt(article.readTime)}M`,
+                "educationalLevel": "Intermediate to Advanced",
+                "educationalUse": ["Professional Development", "Voice Training", "Music Education"],
+                "learningResourceType": "Article",
+                "isAccessibleForFree": true,
+                "inLanguage": "en-US"
+              })
+            }}
+          />
 
           {/* Related Articles */}
           <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">

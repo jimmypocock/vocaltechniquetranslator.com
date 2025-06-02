@@ -39,4 +39,34 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+  
+  <!-- Articles Section -->
+  <url>
+    <loc>https://vocaltechniquetranslator.com/articles</loc>
+    <lastmod>2025-02-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Individual Articles -->
+  <url>
+    <loc>https://vocaltechniquetranslator.com/articles/beyond-water-singers-nutrition</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://vocaltechniquetranslator.com/articles/hybrid-voice-teacher-business</loc>
+    <lastmod>2024-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://vocaltechniquetranslator.com/articles/vocal-biomarkers-voice-teachers</loc>
+    <lastmod>2024-12-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

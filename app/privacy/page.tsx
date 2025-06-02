@@ -1,4 +1,13 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Vocal Technique Translator',
+  description: 'Privacy Policy for Vocal Technique Translator. Learn how we protect your data and respect your privacy.',
+  alternates: {
+    canonical: 'https://vocaltechniquetranslator.com/privacy',
+  },
+};
 
 export default function PrivacyPage() {
   return (

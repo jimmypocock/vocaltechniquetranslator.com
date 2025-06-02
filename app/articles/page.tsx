@@ -7,7 +7,7 @@ import { useState } from 'react'
 const articles = [
   {
     id: 'beyond-water-singers-nutrition',
-    title: 'Beyond Water: The Complete Singer\'s Nutrition and Hydration Science',
+    title: 'Beyond Water: A Singer\'s Nutrition and Hydration Science',
     excerpt: 'Cutting-edge research reveals why "just drink water" oversimplifies vocal health. Learn evidence-based nutrition strategies that actually support vocal excellence.',
     category: 'Health',
     readTime: '12 min read',
@@ -150,7 +150,7 @@ export default function ArticlesPage() {
               <span className="w-1 h-6 bg-purple-500 rounded-full mr-3"></span>
               All Articles ({filteredArticles.length})
             </h2>
-            
+
             {filteredArticles.length === 0 ? (
               <div className="text-center py-12">
                 <svg className="w-16 h-16 mx-auto text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

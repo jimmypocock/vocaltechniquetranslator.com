@@ -35,7 +35,7 @@ export default function AdUnit({
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (err) {
-        console.error('AdSense error:', err);
+        // AdSense initialization error - silently fail
       }
     }
   }, [showAds, testMode, adClient]);

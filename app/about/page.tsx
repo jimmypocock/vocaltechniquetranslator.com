@@ -1,6 +1,20 @@
-'use client'
-
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About Us | Vocal Technique Translator',
+  description: 'Learn about the Vocal Technique Translator - a revolutionary phonetic tool for singers and voice teachers. Discover our mission, technology, and the creator behind the innovation.',
+  keywords: 'about vocal technique translator, phonetic transformation, singing tool, voice training technology, Jimmy Pocock',
+  alternates: {
+    canonical: 'https://vocaltechniquetranslator.com/about',
+  },
+  openGraph: {
+    title: 'About Vocal Technique Translator',
+    description: 'Discover the technology and mission behind the revolutionary phonetic tool that\'s transforming how singers learn proper vocal technique.',
+    url: 'https://vocaltechniquetranslator.com/about',
+    type: 'website',
+  },
+}
 
 export default function AboutPage() {
   return (

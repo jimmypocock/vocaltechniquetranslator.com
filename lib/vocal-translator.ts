@@ -175,7 +175,7 @@ export class VocalTranslator {
         const transform = vowelPhonemes[vowelPattern + '_cvce'];
         return transform[level] || transform[1] || vowelPattern;
       }
-      
+
       // Fallback to single vowel
       if (vowelPhonemes[vowelPattern]) {
         const transform = vowelPhonemes[vowelPattern];
@@ -188,11 +188,11 @@ export class VocalTranslator {
         if (vowelPattern === 'o' && context?.isCVCe) {
           return level === 4 ? 'u' : 'ah'; // 'u' at moderate, 'ah' at full
         }
-        
+
         const simpleVowelMap: { [key: string]: string } = {
           'a': 'ah', 'e': 'eh', 'i': 'ae', 'o': 'oh', 'u': 'ah'
         };
-        
+
         if (simpleVowelMap[vowelPattern]) {
           return simpleVowelMap[vowelPattern];
         }
@@ -244,9 +244,8 @@ export class VocalTranslator {
 
       return transformedSyllables.join('');
 
-    } catch (error) {
+    } catch {
       // If anything fails, fall back to simple transformation
-      console.warn('Advanced transformation failed, using simple transform:', error);
       return this.simpleTransform(morpheme, intensity);
     }
   }
@@ -292,15 +291,15 @@ export class VocalTranslator {
       const level = this.getIntensityLevel(intensity);
       return suffixPattern[level] || suffixPattern[1] || syllable;
     }
-    
+
     // Special handling for specific syllables
     const syllableLower = syllable.toLowerCase();
-    
+
     // Keep short syllables with 'o' unchanged at moderate intensity if not CVCe
     if (intensityLevel === 4 && (syllableLower === 'con' || syllableLower === 'co')) {
       return syllable; // Preserve original
     }
-    
+
     // Normalize phonetic patterns for this syllable
     const normalized = this.normalizePhonetics(processedSyllable, intensity);
 
@@ -342,7 +341,7 @@ export class VocalTranslator {
             const remainingChars = normalized.slice(i + 1).toLowerCase();
             const vowel = char.toLowerCase();
             let specialContext = '';
-            
+
             // Check for specific CVCe patterns
             if (vowel === 'a') {
               if (remainingChars.startsWith('kes')) {
@@ -357,7 +356,7 @@ export class VocalTranslator {
                 specialContext = 'o_okes'; // tokes, pokes, jokes
               }
             }
-            
+
             if (specialContext) {
               // Use special context transformation
               result += this.transformVowelPhoneme(specialContext, intensity);
@@ -492,22 +491,22 @@ export class VocalTranslator {
 
     try {
       this.currentIntensity = intensity; // Store for context-sensitive rules
-      
+
       // Strip punctuation for vocal training (punctuation is not needed for singing technique)
       let cleanWord = word;
-      
+
       // Extract leading non-word characters
       const leadingMatch = word.match(/^([^\w]*)(.*)/);
       if (leadingMatch) {
         cleanWord = leadingMatch[2];
       }
-      
+
       // Extract trailing punctuation, treating trailing apostrophes as punctuation
       const trailingMatch = cleanWord.match(/^([\w']*\w|[\w])([^\w]*)$/);
       if (trailingMatch) {
         cleanWord = trailingMatch[1];
       }
-      
+
       // Special case: if word ends with just apostrophe, treat it as trailing punctuation
       if (cleanWord.endsWith("'") && cleanWord.length > 1) {
         const withoutApostrophe = cleanWord.slice(0, -1);
@@ -516,9 +515,9 @@ export class VocalTranslator {
           cleanWord = withoutApostrophe;
         }
       }
-      
+
       if (!cleanWord) return word;
-      
+
       const originalWord = cleanWord.toLowerCase().trim();
 
       // 1. Check exception dictionary first (highest priority)
@@ -543,9 +542,8 @@ export class VocalTranslator {
       const result = this.preserveCapitalization(cleanWord, transformed);
       return result; // No punctuation for vocal training
 
-    } catch (error) {
+    } catch {
       // If anything fails, fall back to simple transformation
-      console.warn('Word transformation failed, using fallback:', error);
       // Try to extract clean word for fallback
       const punctuationMatch = word.match(/([^\w'-]*)([\w'-]+)([^\w'-]*)$/);
       if (punctuationMatch) {
