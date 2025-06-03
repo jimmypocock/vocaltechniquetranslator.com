@@ -5,105 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maintenance - Vocal Technique Translator</title>
     <style>
+        :root {
+            --primary: #9436eb;
+            --primary-hover: #7c2ecf;
+            --secondary: #2196f3;
+            --accent: #ec4899;
+            --neutral: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafbfc;
+            --text-primary: #0e1117;
+            --text-secondary: #31333e;
+            --text-accent: #808495;
+            --border-color: #e0e2e9;
+            --gradient-bg: radial-gradient(circle at 30% 20%, #f3f4ff 0%, #fafbfc 40%, #ffffff 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Sans', 'Segoe UI', 'Arial Unicode MS', system-ui, sans-serif;
+            background: var(--gradient-bg);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-primary);
         }
-        
+
+        /* Gradient orbs */
+        .gradient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            top: -10%;
+            right: -200px;
+            background: radial-gradient(circle at center, rgba(147, 51, 234, 0.5) 0%, rgba(99, 102, 241, 0.3) 50%, transparent 70%);
+        }
+
+        .orb2 {
+            width: 350px;
+            height: 350px;
+            bottom: -10%;
+            left: -10%;
+            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.5) 0%, rgba(219, 39, 119, 0.3) 50%, transparent 70%);
+        }
+
+        .orb3 {
+            width: 300px;
+            height: 300px;
+            top: 40%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.5) 0%, rgba(124, 58, 237, 0.3) 50%, transparent 70%);
+        }
+
+        .orb4 {
+            width: 250px;
+            height: 250px;
+            bottom: 20%;
+            right: -50px;
+            background: radial-gradient(circle at center, rgba(168, 85, 247, 0.5) 0%, rgba(139, 92, 246, 0.3) 50%, transparent 70%);
+        }
+
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 48px 40px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.06);
+            max-width: 500px;
+            width: 100%;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
-        
+
         h1 {
-            color: #333;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
         }
-        
+
         .icon {
             font-size: 4em;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
-        
+
         p {
-            color: #666;
-            font-size: 1.2em;
+            color: var(--text-secondary);
+            font-size: 1.125rem;
             line-height: 1.6;
             margin-bottom: 20px;
         }
-        
+
         .status {
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 10px;
+            background: rgba(148, 54, 235, 0.05);
+            border: 1px solid rgba(148, 54, 235, 0.1);
+            border-radius: 8px;
             padding: 20px;
-            margin: 20px 0;
+            margin: 24px 0;
         }
-        
+
         .eta {
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 600;
+            color: var(--primary);
         }
-        
+
         .updates {
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #888;
+            margin-top: 32px;
+            font-size: 0.875rem;
+            color: var(--text-accent);
         }
-        
+
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-        
+
         .working {
             animation: pulse 2s infinite;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 14px rgba(148, 54, 235, 0.3);
+        }
+
+        .button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(148, 54, 235, 0.4);
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 32px 24px;
+            }
+
+            p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="gradient-orb orb1"></div>
+    <div class="gradient-orb orb2"></div>
+    <div class="gradient-orb orb3"></div>
+    <div class="gradient-orb orb4"></div>
+
     <div class="container">
         <div class="icon">🔧</div>
-        <h1>Vocal Technique Translator</h1>
+        <h1>Maintenance Mode</h1>
         <p>We're currently performing scheduled maintenance to improve your experience.</p>
-        
+
         <div class="status">
             <p class="working">⚡ Upgrading our infrastructure</p>
             <p class="eta">Expected completion: <span id="eta">Soon</span></p>
         </div>
-        
-        <p>We apologize for any inconvenience. The site will be back online shortly with improved performance and new features!</p>
-        
+
+        <p>We apologize for any inconvenience. The Vocal Technique Translator will be back online shortly with improved performance!</p>
+
+        <a href="/" class="button">Check Again</a>
+
         <div class="updates">
             <p>Last updated: <span id="last-update"></span></p>
         </div>
     </div>
-    
+
     <script>
         // Auto-update timestamp
         document.getElementById('last-update').textContent = new Date().toLocaleString();
-        
-        // You can customize the ETA here
-        // document.getElementById('eta').textContent = '2 hours';
+
+        // Auto-refresh every 60 seconds
+        setTimeout(function() {
+            window.location.reload();
+        }, 60000);
     </script>
 </body>
 </html>
