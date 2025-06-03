@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { VocalTranslator } from '@/lib/vocal-translator';
 // import TechniqueInfo from './TechniqueInfo';
 // import Examples from './Examples';
@@ -180,6 +181,15 @@ export default function GeniusStyleLayout() {
               </svg>
               How It Works
             </a>
+            <Link
+              href="/articles"
+              className="inline-flex items-center px-4 py-2 rounded-lg border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-medium transition-all duration-100 text-sm text-purple-700 dark:text-purple-300"
+            >
+              <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              Vocal Health Articles
+            </Link>
             <button
               onClick={() => setShowShortcuts(true)}
               className="inline-flex items-center px-4 py-2 rounded-lg border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-medium transition-all duration-100 text-sm text-purple-700 dark:text-purple-300"
@@ -418,6 +428,10 @@ export default function GeniusStyleLayout() {
               <a href="/about" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 About
               </a>
+              <span className="mx-2 text-gray-400 dark:text-gray-500">•</span>
+              <Link href="/articles" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                Articles
+              </Link>
               <span className="mx-2 text-gray-400 dark:text-gray-500">•</span>
               <a href="/how-it-works" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 How It Works

@@ -28,7 +28,7 @@ export default function HowItWorksPage() {
           <div className="flex space-x-1 mb-8 bg-purple-100/50 dark:bg-purple-900/20 rounded-lg p-1 border border-purple-200/50 dark:border-purple-800/50">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 activeTab === 'overview'
                   ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
                   : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
@@ -38,7 +38,7 @@ export default function HowItWorksPage() {
             </button>
             <button
               onClick={() => setActiveTab('technique')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 activeTab === 'technique'
                   ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
                   : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
@@ -48,7 +48,7 @@ export default function HowItWorksPage() {
             </button>
             <button
               onClick={() => setActiveTab('examples')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 activeTab === 'examples'
                   ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
                   : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
@@ -58,7 +58,7 @@ export default function HowItWorksPage() {
             </button>
             <button
               onClick={() => setActiveTab('tips')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 activeTab === 'tips'
                   ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
                   : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
@@ -68,7 +68,7 @@ export default function HowItWorksPage() {
             </button>
             <button
               onClick={() => setActiveTab('shortcuts')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 activeTab === 'shortcuts'
                   ? 'bg-white dark:bg-gray-900 text-purple-700 dark:text-purple-300 shadow-sm border border-purple-300 dark:border-purple-700'
                   : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'

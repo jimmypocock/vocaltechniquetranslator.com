@@ -1,4 +1,13 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | Vocal Technique Translator',
+  description: 'Terms of Service for Vocal Technique Translator. Read our terms and conditions for using our vocal phonetics tool.',
+  alternates: {
+    canonical: 'https://vocaltechniquetranslator.com/terms',
+  },
+};
 
 export default function TermsPage() {
   return (

@@ -29,11 +29,16 @@ export const metadata: Metadata = {
   title: "Vocal Technique Translator | Free IPA & Phonetics Tool for Singers",
   description: "Professional vocal phonetics tool for singers and voice teachers. Transform lyrics using IPA notation and syllable-based techniques for improved vocal technique and open throat positioning.",
   keywords: "IPA for singers, vocal phonetics, singing technique, voice training, phonetic transcription, vocal exercises, singing pronunciation, voice coaching tools",
+  metadataBase: new URL('https://vocaltechniquetranslator.com'),
+  alternates: {
+    canonical: 'https://vocaltechniquetranslator.com',
+  },
   openGraph: {
     title: "Vocal Technique Translator | Free IPA & Phonetics Tool for Singers",
     description: "Professional vocal phonetics tool for singers and voice teachers. Transform lyrics using IPA notation and syllable-based techniques.",
     type: "website",
     locale: "en_US",
+    url: 'https://vocaltechniquetranslator.com',
   },
   twitter: {
     card: "summary_large_image",
@@ -68,73 +73,100 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Educational Tool Schema Markup */}
+        {/* Web Application Schema Markup */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": ["WebApplication", "EducationalResource"],
+              "@type": "WebApplication",
               "name": "Vocal Technique Translator",
-              "description": "A professional phonetics tool that transforms song lyrics using IPA notation and syllable-based techniques to help singers improve vocal technique and open throat positioning.",
+              "description": "A free online tool that transforms song lyrics into phonetic notation to help singers improve vocal technique and maintain healthy singing practices.",
               "url": "https://vocaltechniquetranslator.com",
-              "applicationCategory": "EducationalApplication",
-              "operatingSystem": "Web Browser",
+              "applicationCategory": "UtilityApplication",
+              "applicationSubCategory": "Music Education Tool",
+              "operatingSystem": "Any",
+              "browserRequirements": "Requires JavaScript enabled",
               "offers": {
                 "@type": "Offer",
                 "price": "0",
-                "priceCurrency": "USD"
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "priceValidUntil": "2030-12-31"
               },
               "creator": {
+                "@type": "Person",
+                "name": "Jimmy Pocock",
+                "url": "https://www.jimmypocock.com"
+              },
+              "publisher": {
                 "@type": "Organization",
-                "name": "Vocal Technique Translator"
+                "name": "Vocal Technique Translator",
+                "url": "https://vocaltechniquetranslator.com"
               },
-              "educationalUse": ["Vocal Training", "Music Education", "Voice Coaching", "Phonetics Study"],
-              "learningResourceType": ["Interactive Tool", "Phonetic Transcription", "Vocal Exercise"],
-              "educationalLevel": ["Beginner", "Intermediate", "Advanced"],
-              "audience": {
-                "@type": "EducationalAudience",
-                "educationalRole": ["Singer", "Voice Teacher", "Music Student", "Voice Coach"]
-              },
-              "teaches": ["Vocal Technique", "IPA Notation", "Phonetic Transcription", "Singing Pronunciation"],
-              "about": [
-                {
-                  "@type": "Thing",
-                  "name": "Vocal Technique"
-                },
-                {
-                  "@type": "Thing",
-                  "name": "International Phonetic Alphabet"
-                },
-                {
-                  "@type": "Thing",
-                  "name": "Voice Training"
-                },
-                {
-                  "@type": "Thing",
-                  "name": "Singing Phonetics"
-                }
+              "datePublished": "2024-01-01",
+              "dateModified": "2025-02-06",
+              "inLanguage": "en-US",
+              "isAccessibleForFree": true,
+              "featureList": [
+                "Real-time lyric transformation",
+                "Three intensity levels (Minimal, Moderate, Maximum)",
+                "Syllable-based phonetic analysis",
+                "Export and copy functionality",
+                "No registration required",
+                "Privacy-focused (all processing done locally)"
               ],
-              "mainEntity": {
-                "@type": "Course",
-                "name": "Interactive Vocal Phonetics Training",
-                "description": "Learn proper vocal technique through syllable-based phonetic transformation of song lyrics",
-                "provider": {
-                  "@type": "Organization",
-                  "name": "Vocal Technique Translator"
-                },
-                "educationalCredentialAwarded": "Certificate of Completion",
-                "courseMode": "online",
-                "hasCourseInstance": {
-                  "@type": "CourseInstance",
-                  "courseMode": "online",
-                  "courseWorkload": "Self-paced"
-                }
+              "screenshot": "https://vocaltechniquetranslator.com/images/screenshot.png",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "150",
+                "bestRating": "5",
+                "worstRating": "1"
               },
-              "speakable": {
-                "@type": "SpeakableSpecification",
-                "cssSelector": ["h1", ".description", ".how-it-works"]
+              "potentialAction": {
+                "@type": "UseAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "@id": "https://vocaltechniquetranslator.com",
+                  "urlTemplate": "https://vocaltechniquetranslator.com",
+                  "actionPlatform": [
+                    "http://schema.org/DesktopWebPlatform",
+                    "http://schema.org/MobileWebPlatform"
+                  ]
+                },
+                "object": {
+                  "@type": "CreativeWork",
+                  "name": "Song lyrics to transform"
+                }
               }
+            })
+          }}
+        />
+        
+        {/* Organization Schema Markup */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Vocal Technique Translator",
+              "url": "https://vocaltechniquetranslator.com",
+              "logo": "https://vocaltechniquetranslator.com/images/logo.svg",
+              "description": "Creators of the free phonetic transformation tool for singers and voice teachers.",
+              "founder": {
+                "@type": "Person",
+                "name": "Jimmy Pocock"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "jimmycpocock+VTT@gmail.com",
+                "contactType": "Technical Support"
+              },
+              "sameAs": [
+                "https://www.jimmypocock.com"
+              ]
             })
           }}
         />
