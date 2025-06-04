@@ -39,11 +39,20 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: 'https://vocaltechniquetranslator.com',
+    images: [
+      {
+        url: '/images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Vocal Technique Translator - Transform lyrics for better singing',
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vocal Technique Translator | Free IPA & Phonetics Tool for Singers",
     description: "Professional vocal phonetics tool for singers and voice teachers. Transform lyrics using IPA notation and syllable-based techniques.",
+    images: ['/images/og-image.png'],
   },
   robots: {
     index: true,

@@ -25,6 +25,111 @@ export default function GeniusStyleLayout() {
   const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
   const shouldShowAds = useAdsVisibility();
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [favorites, setFavorites] = useState<Array<{id: string, title: string, lyrics: string, intensity: number}>>([]);
+  const [lyricsHistory, setLyricsHistory] = useState<Array<{lyrics: string, timestamp: number}>>([]);
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [favoriteSuccess, setFavoriteSuccess] = useState(false);
+
+  // Load saved data from local storage on mount
+  useEffect(() => {
+    // Ensure we're on the client side
+    if (typeof window !== 'undefined') {
+      try {
+        const savedIntensity = localStorage.getItem('vtt-intensity');
+        const savedLyrics = localStorage.getItem('vtt-lyrics');
+        const savedFavorites = localStorage.getItem('vtt-favorites');
+        const savedHistory = localStorage.getItem('vtt-history');
+
+        if (savedIntensity) {
+          const parsedIntensity = parseInt(savedIntensity, 10);
+          if (!isNaN(parsedIntensity) && parsedIntensity >= 1 && parsedIntensity <= 10) {
+            setIntensity(parsedIntensity);
+          }
+        }
+
+        if (savedLyrics) {
+          setInputLyrics(savedLyrics);
+        }
+
+        if (savedFavorites) {
+          setFavorites(JSON.parse(savedFavorites));
+        }
+
+        if (savedHistory) {
+          setLyricsHistory(JSON.parse(savedHistory));
+        }
+      } catch (error) {
+        console.error('Error loading from localStorage:', error);
+      }
+
+      setIsHydrated(true);
+    }
+  }, []);
+
+  // Save intensity to local storage when it changes
+  useEffect(() => {
+    if (isHydrated && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vtt-intensity', intensity.toString());
+      } catch (error) {
+        console.error('Error saving intensity:', error);
+      }
+    }
+  }, [intensity, isHydrated]);
+
+  // Save lyrics to local storage with debounce
+  useEffect(() => {
+    if (isHydrated && typeof window !== 'undefined') {
+      const timeout = setTimeout(() => {
+        try {
+          localStorage.setItem('vtt-lyrics', inputLyrics);
+        } catch (error) {
+          console.error('Error saving lyrics:', error);
+        }
+      }, 1000); // Save after 1 second of no typing
+
+      return () => clearTimeout(timeout);
+    }
+  }, [inputLyrics, isHydrated]);
+
+  // Update history when lyrics change (with debounce)
+  useEffect(() => {
+    if (isHydrated && typeof window !== 'undefined' && inputLyrics.trim()) {
+      const timeout = setTimeout(() => {
+        try {
+          const newHistory = [...lyricsHistory];
+          // Remove duplicate if exists
+          const existingIndex = newHistory.findIndex(h => h.lyrics === inputLyrics);
+          if (existingIndex > -1) {
+            newHistory.splice(existingIndex, 1);
+          }
+          // Add to beginning
+          newHistory.unshift({ lyrics: inputLyrics, timestamp: Date.now() });
+          // Keep only last 10 entries
+          const trimmedHistory = newHistory.slice(0, 10);
+          setLyricsHistory(trimmedHistory);
+          localStorage.setItem('vtt-history', JSON.stringify(trimmedHistory));
+        } catch (error) {
+          console.error('Error saving history:', error);
+        }
+      }, 3000); // Save to history after 3 seconds of no typing
+
+      return () => clearTimeout(timeout);
+    }
+  }, [inputLyrics, isHydrated, lyricsHistory]);
+
+  // Save favorites to localStorage when they change
+  useEffect(() => {
+    if (isHydrated && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('vtt-favorites', JSON.stringify(favorites));
+      } catch (error) {
+        console.error('Error saving favorites:', error);
+      }
+    }
+  }, [favorites, isHydrated]);
 
   const translateLyrics = useCallback(() => {
     if (!inputLyrics.trim()) {
@@ -65,6 +170,62 @@ export default function GeniusStyleLayout() {
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
       }
+    }
+  };
+
+  const addToFavorites = () => {
+    if (!inputLyrics.trim()) return;
+
+    const title = inputLyrics.split('\n')[0].slice(0, 50) + (inputLyrics.split('\n')[0].length > 50 ? '...' : '');
+    const newFavorite = {
+      id: Date.now().toString(),
+      title,
+      lyrics: inputLyrics,
+      intensity
+    };
+
+    setFavorites([newFavorite, ...favorites]);
+    setFavoriteSuccess(true);
+  };
+
+  // Reset favorite success when lyrics or intensity changes
+  useEffect(() => {
+    setFavoriteSuccess(false);
+  }, [inputLyrics, intensity]);
+
+  const removeFavorite = (id: string) => {
+    setFavorites(favorites.filter(f => f.id !== id));
+  };
+
+  const getIntensityLabel = (level: number): string => {
+    if (level <= 3) return 'Minimal';
+    if (level <= 7) return 'Moderate';
+    return 'Maximum';
+  };
+
+  const loadFavorite = (favorite: typeof favorites[0]) => {
+    setInputLyrics(favorite.lyrics);
+    setIntensity(favorite.intensity);
+    setShowFavorites(false);
+  };
+
+  const loadFromHistory = (historyItem: typeof lyricsHistory[0]) => {
+    setInputLyrics(historyItem.lyrics);
+    setShowHistory(false);
+  };
+
+  const loadRandomLyrics = async () => {
+    try {
+      // Read from LYRICS.md file
+      const response = await fetch('/LYRICS.md');
+      const text = await response.text();
+      const passages = text.split('\n---\n').filter(p => p.trim());
+      if (passages.length > 0) {
+        const randomIndex = Math.floor(Math.random() * passages.length);
+        setInputLyrics(passages[randomIndex].trim());
+      }
+    } catch (error) {
+      console.error('Error loading random lyrics:', error);
     }
   };
 
@@ -124,6 +285,29 @@ export default function GeniusStyleLayout() {
       key: '?',
       action: () => setShowShortcuts(true),
       description: 'Show keyboard shortcuts'
+    },
+    {
+      key: 'f',
+      action: () => setShowFavorites(true),
+      description: 'Show favorites'
+    },
+    {
+      key: 'r',
+      action: () => setShowHistory(true),
+      description: 'Show recent lyrics'
+    },
+    {
+      key: 's',
+      ctrl: true,
+      action: () => {
+        addToFavorites();
+      },
+      description: 'Save to favorites'
+    },
+    {
+      key: 'd',
+      action: () => loadRandomLyrics(),
+      description: 'Load random lyrics'
     }
   ]);
 
@@ -156,7 +340,7 @@ export default function GeniusStyleLayout() {
               alt="Vocal Technique Translator Logo"
               width={48}
               height={48}
-              className="mr-1"
+              className="mr-3 mt-2 hidden sm:inline-block"
               priority
             />
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
@@ -201,6 +385,28 @@ export default function GeniusStyleLayout() {
               Shortcuts
             </button>
           </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-3">
+            <button
+              onClick={() => setShowFavorites(true)}
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-lg border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-medium transition-all duration-100 text-sm text-purple-700 dark:text-purple-300"
+              title="View favorites"
+            >
+              <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              Favorites ({favorites.length})
+            </button>
+            <button
+              onClick={() => setShowHistory(true)}
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-lg border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-medium transition-all duration-100 text-sm text-purple-700 dark:text-purple-300"
+              title="View history"
+            >
+              <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              History ({lyricsHistory.length})
+            </button>
+          </div>
         </div>
 
         {/* <TechniqueInfo /> */}
@@ -210,10 +416,22 @@ export default function GeniusStyleLayout() {
           {/* Left Column - Original Lyrics (2/3 width when ads shown, full width when hidden) */}
           <div className={shouldShowAds ? "lg:col-span-2" : ""}>
             <section className="glass-card p-6 h-full">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <span className="w-1 h-6 bg-purple-500 rounded-full mr-3"></span>
-                Original Lyrics
-              </h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
+                  <span className="w-1 h-6 bg-purple-500 rounded-full mr-3"></span>
+                  Original Lyrics
+                </h2>
+                <button
+                  onClick={loadRandomLyrics}
+                  className="inline-flex items-center px-3 py-1.5 rounded-md border-2 border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/50 font-medium transition-all duration-100 text-xs text-purple-700 dark:text-purple-300"
+                  title="Load random lyrics"
+                >
+                  <svg className="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Random
+                </button>
+              </div>
               <textarea
                 ref={inputTextareaRef}
                 id="lyricsInput"
@@ -349,34 +567,64 @@ export default function GeniusStyleLayout() {
               Translated for Vocal Technique
             </h2>
             {outputLyrics && (
-              <button
-                onClick={handleCopy}
-                className={`
-                  px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
-                  ${copySuccess
-                    ? 'bg-green-500 text-white hover:bg-green-600'
-                    : 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md hover:scale-105'
-                  }
-                `}
-                title="Copy to clipboard (Ctrl+Enter)"
-                aria-label="Copy translated lyrics"
-              >
-                {copySuccess ? (
-                  <>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    Copy
-                  </>
-                )}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={addToFavorites}
+                  className={`
+                    px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
+                    ${favoriteSuccess
+                      ? 'bg-green-500 text-white hover:bg-green-600'
+                      : 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md hover:scale-105'
+                    }
+                  `}
+                  title={favoriteSuccess ? "Already in favorites" : "Add to favorites (Ctrl+S)"}
+                  disabled={favoriteSuccess}
+                >
+                  {favoriteSuccess ? (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Added
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      Favorite
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className={`
+                    px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
+                    ${copySuccess
+                      ? 'bg-green-500 text-white hover:bg-green-600'
+                      : 'bg-purple-600 text-white hover:bg-purple-700 hover:shadow-md hover:scale-105'
+                    }
+                  `}
+                  title="Copy to clipboard (Ctrl+Enter)"
+                  aria-label="Copy translated lyrics"
+                >
+                  {copySuccess ? (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      Copy
+                    </>
+                  )}
+                </button>
+              </div>
             )}
           </div>
           <div className="relative">
@@ -454,6 +702,105 @@ export default function GeniusStyleLayout() {
         isOpen={showShortcuts}
         onClose={() => setShowShortcuts(false)}
       />
+
+      {/* Favorites Modal */}
+      {showFavorites && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowFavorites(false)} />
+          <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Favorites</h2>
+              <button
+                onClick={() => setShowFavorites(false)}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[calc(80vh-100px)]">
+              {favorites.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400 py-8">No favorites yet. Add lyrics to see them here!</p>
+              ) : (
+                <div className="space-y-3">
+                  {favorites.map((favorite) => (
+                    <div key={favorite.id} className="glass-card p-4 hover:shadow-lg transition-shadow">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">{favorite.title}</h3>
+                        <button
+                          onClick={() => removeFavorite(favorite.id)}
+                          className="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
+                          title="Remove from favorites"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Intensity: {getIntensityLabel(favorite.intensity)}</p>
+                      <button
+                        onClick={() => loadFavorite(favorite)}
+                        className="w-full px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors"
+                      >
+                        Load
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* History Modal */}
+      {showHistory && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowHistory(false)} />
+          <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Recent Lyrics</h2>
+              <button
+                onClick={() => setShowHistory(false)}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[calc(80vh-100px)]">
+              {lyricsHistory.length === 0 ? (
+                <p className="text-center text-gray-500 dark:text-gray-400 py-8">No history yet. Start typing lyrics to see them here!</p>
+              ) : (
+                <div className="space-y-3">
+                  {lyricsHistory.map((item, index) => (
+                    <div key={index} className="glass-card p-4 hover:shadow-lg transition-shadow">
+                      <div className="mb-2">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {new Date(item.timestamp).toLocaleString()}
+                        </p>
+                      </div>
+                      <p className="text-gray-900 dark:text-white mb-2 line-clamp-2">
+                        {item.lyrics}
+                      </p>
+                      <button
+                        onClick={() => loadFromHistory(item)}
+                        className="w-full px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors"
+                      >
+                        Load
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Toast - Removed to reduce visual clutter since button already shows feedback */}
 
       {/* Floating keyboard hint */}
       <div className="fixed bottom-4 left-4 z-50 hidden lg:block">

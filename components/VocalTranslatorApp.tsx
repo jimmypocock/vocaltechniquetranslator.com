@@ -14,6 +14,44 @@ export default function VocalTranslatorApp() {
   const [copySuccess, setCopySuccess] = useState(false);
   const [isUppercase, setIsUppercase] = useState(false);
   const outputTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load saved data from local storage on mount
+  useEffect(() => {
+    const savedIntensity = localStorage.getItem('vtt-intensity');
+    const savedLyrics = localStorage.getItem('vtt-lyrics');
+    
+    if (savedIntensity) {
+      const parsedIntensity = parseInt(savedIntensity, 10);
+      if (!isNaN(parsedIntensity) && parsedIntensity >= 1 && parsedIntensity <= 10) {
+        setIntensity(parsedIntensity);
+      }
+    }
+    
+    if (savedLyrics) {
+      setInputLyrics(savedLyrics);
+    }
+    
+    setIsHydrated(true);
+  }, []);
+
+  // Save intensity to local storage when it changes
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('vtt-intensity', intensity.toString());
+    }
+  }, [intensity, isHydrated]);
+
+  // Save lyrics to local storage with debounce
+  useEffect(() => {
+    if (isHydrated) {
+      const timeout = setTimeout(() => {
+        localStorage.setItem('vtt-lyrics', inputLyrics);
+      }, 1000); // Save after 1 second of no typing
+
+      return () => clearTimeout(timeout);
+    }
+  }, [inputLyrics, isHydrated]);
 
   const translateLyrics = useCallback(() => {
     if (!inputLyrics.trim()) {

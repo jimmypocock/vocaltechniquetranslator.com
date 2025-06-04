@@ -19,14 +19,53 @@ export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onU
   const [selectedWord, setSelectedWord] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const hasSetInitialView = useRef(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Set word-by-word view when first lyrics appear
+  // Load saved view preferences on mount
+  useEffect(() => {
+    // Ensure we're on the client side
+    if (typeof window !== 'undefined') {
+      try {
+        const savedUppercase = localStorage.getItem('vtt-uppercase');
+        const savedExpanded = localStorage.getItem('vtt-expanded');
+        
+        if (savedUppercase !== null) {
+          setIsUppercase(savedUppercase === 'true');
+        }
+        
+        if (savedExpanded !== null) {
+          setIsExpanded(savedExpanded === 'true');
+          hasSetInitialView.current = true;
+        }
+      } catch (error) {
+        console.error('Error loading from localStorage:', error);
+      }
+      
+      setIsHydrated(true);
+    }
+  }, []);
+
+  // Set word-by-word view when first lyrics appear (if no saved preference)
   useEffect(() => {
     if (lyrics && !hasSetInitialView.current) {
       setIsExpanded(true);
       hasSetInitialView.current = true;
     }
   }, [lyrics]);
+
+  // Save uppercase preference
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('vtt-uppercase', isUppercase.toString());
+    }
+  }, [isUppercase, isHydrated]);
+
+  // Save expanded preference
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('vtt-expanded', isExpanded.toString());
+    }
+  }, [isExpanded, isHydrated]);
 
   if (!lyrics) return null;
 

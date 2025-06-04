@@ -40,6 +40,17 @@
 - [x] **[Logic]** Translate: forever `[VTT-042]` ✓ 2025-05-31
 - [x] **[Logic]** Translate: lonely `[VTT-041]` ✓ 2025-05-30
 
+#### Local Storage Enhancements
+
+- [x] **[Features]** Save and restore theme preference (dark/light mode) in local storage `[VTT-047]` ✓ 2025-06-04
+- [x] **[Features]** Save and restore intensity level setting in local storage `[VTT-048]` ✓ 2025-06-04
+- [x] **[Features]** Save and restore most recent lyrics in local storage `[VTT-049]` ✓ 2025-06-04
+- [x] **[Features]** Implement favorites system with add/remove/view functionality `[VTT-050]` ✓ 2025-06-04
+- [x] **[Features]** Save view preferences (single vs side-by-side) in local storage `[VTT-051]` ✓ 2025-06-04
+- [x] **[Features]** Add lyrics history (last 5-10 entries) with quick access `[VTT-052]` ✓ 2025-06-04
+- [x] **[Features]** Add randomize lyrics feature from LYRICS.md `[VTT-053]` ✓ 2025-06-04
+- [x] **[UI/UX]** Improve favorites UX - move button to output section, persist state, show intensity labels `[VTT-054]` ✓ 2025-06-04
+
 #### Content & Documentation for AdSense Approval
 
 - [ ] **[Documentation]** Create an About page explaining the tool's purpose and creator background `[VTT-032]`
