@@ -1,8 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /out/
 
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: AdsBot-Google
 Allow: /
@@ -10,4 +14,4 @@ Allow: /
 User-agent: Mediapartners-Google
 Allow: /
 
-Sitemap: https://vocaltechniquetranslator.com/sitemap.xml
+Sitemap: https://www.vocaltechniquetranslator.com/sitemap.xml

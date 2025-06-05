@@ -386,7 +386,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
-  const canonicalUrl = `https://vocaltechniquetranslator.com/articles/${slug}`
+  const canonicalUrl = `https://www.vocaltechniquetranslator.com/articles/${slug}`
 
   return {
     title: `${article.title} | Vocal Technique Translator`,
@@ -565,7 +565,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   "name": "Vocal Technique Translator",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://vocaltechniquetranslator.com/images/logo.svg"
+                    "url": "https://www.vocaltechniquetranslator.com/images/logo.svg"
                   }
                 },
                 "mainEntityOfPage": {

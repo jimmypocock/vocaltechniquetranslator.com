@@ -37,8 +37,8 @@ export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onU
           setIsExpanded(savedExpanded === 'true');
           hasSetInitialView.current = true;
         }
-      } catch (error) {
-        console.error('Error loading from localStorage:', error);
+      } catch {
+        // Silently fail if localStorage is not available
       }
       
       setIsHydrated(true);

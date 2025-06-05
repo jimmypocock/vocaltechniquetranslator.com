@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   description: 'Learn about the Vocal Technique Translator - a revolutionary phonetic tool for singers and voice teachers. Discover our mission, technology, and the creator behind the innovation.',
   keywords: 'about vocal technique translator, phonetic transformation, singing tool, voice training technology, Jimmy Pocock',
   alternates: {
-    canonical: 'https://vocaltechniquetranslator.com/about',
+    canonical: 'https://www.vocaltechniquetranslator.com/about',
   },
   openGraph: {
     title: 'About Vocal Technique Translator',
     description: 'Discover the technology and mission behind the revolutionary phonetic tool that\'s transforming how singers learn proper vocal technique.',
-    url: 'https://vocaltechniquetranslator.com/about',
+    url: 'https://www.vocaltechniquetranslator.com/about',
     type: 'website',
   },
 }

@@ -5,12 +5,36 @@ export const metadata: Metadata = {
   title: 'Privacy Policy | Vocal Technique Translator',
   description: 'Privacy Policy for Vocal Technique Translator. Learn how we protect your data and respect your privacy.',
   alternates: {
-    canonical: 'https://vocaltechniquetranslator.com/privacy',
+    canonical: 'https://www.vocaltechniquetranslator.com/privacy',
   },
 };
 
 export default function PrivacyPage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy",
+    "description": "Privacy Policy for Vocal Technique Translator. Learn how we protect your data and respect your privacy.",
+    "url": "https://www.vocaltechniquetranslator.com/privacy",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Vocal Technique Translator",
+      "url": "https://www.vocaltechniquetranslator.com"
+    },
+    "about": {
+      "@type": "Thing",
+      "name": "Privacy Policy"
+    },
+    "dateModified": new Date().toISOString(),
+    "inLanguage": "en-US"
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     <div className="min-h-screen bg-gradient-to-br from-[#667eea] to-[#764ba2] flex items-start justify-center p-5 pt-20">
       <div className="container bg-white/95 rounded-[20px] p-[30px] shadow-[0_20px_40px_rgba(0,0,0,0.1)] backdrop-blur-[10px] w-full max-w-[800px]">
         <h1 className="text-[2.5em] mb-6 bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent text-center">
@@ -103,5 +127,6 @@ export default function PrivacyPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

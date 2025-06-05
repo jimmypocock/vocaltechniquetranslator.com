@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/</loc>
+    <loc>https://www.vocaltechniquetranslator.com/</loc>
     <lastmod>2025-01-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -10,7 +10,7 @@
   
   <!-- About Page -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/about</loc>
+    <loc>https://www.vocaltechniquetranslator.com/about</loc>
     <lastmod>2025-01-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -18,7 +18,7 @@
   
   <!-- How It Works -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/how-it-works</loc>
+    <loc>https://www.vocaltechniquetranslator.com/how-it-works</loc>
     <lastmod>2025-01-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -26,23 +26,23 @@
   
   <!-- Privacy Policy -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/privacy</loc>
-    <lastmod>2025-01-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://www.vocaltechniquetranslator.com/privacy</loc>
+    <lastmod>2025-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <!-- Terms of Service -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/terms</loc>
-    <lastmod>2025-01-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://www.vocaltechniquetranslator.com/terms</loc>
+    <lastmod>2025-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <!-- Articles Section -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/articles</loc>
+    <loc>https://www.vocaltechniquetranslator.com/articles</loc>
     <lastmod>2025-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -50,21 +50,21 @@
   
   <!-- Individual Articles -->
   <url>
-    <loc>https://vocaltechniquetranslator.com/articles/beyond-water-singers-nutrition</loc>
+    <loc>https://www.vocaltechniquetranslator.com/articles/beyond-water-singers-nutrition</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://vocaltechniquetranslator.com/articles/hybrid-voice-teacher-business</loc>
+    <loc>https://www.vocaltechniquetranslator.com/articles/hybrid-voice-teacher-business</loc>
     <lastmod>2024-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://vocaltechniquetranslator.com/articles/vocal-biomarkers-voice-teachers</loc>
+    <loc>https://www.vocaltechniquetranslator.com/articles/vocal-biomarkers-voice-teachers</loc>
     <lastmod>2024-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

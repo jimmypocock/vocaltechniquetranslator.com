@@ -33,7 +33,7 @@ export const vowelPhonemes: VowelPhoneme = {
   'aɪ': { 1: 'ai', 4: 'ah', 8: 'ah' },      // bite → baht
   'aʊ': { 1: 'ow', 4: 'ah', 8: 'ah' },      // bout → baht
   'ɔɪ': { 1: 'oy', 4: 'oh', 8: 'ah' },      // boy → bah
-  'eɪ': { 1: 'ay', 4: 'eh', 8: 'ae' },      // bait → baeht
+  'eɪ': { 1: 'ay', 4: 'ae', 8: 'eh' },      // bait → baeht
   'oʊ': { 1: 'oh', 4: 'oh', 8: 'ah' }       // boat → baht
 };
 

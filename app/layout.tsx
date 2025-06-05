@@ -29,16 +29,16 @@ export const metadata: Metadata = {
   title: "Vocal Technique Translator | Free IPA & Phonetics Tool for Singers",
   description: "Professional vocal phonetics tool for singers and voice teachers. Transform lyrics using IPA notation and syllable-based techniques for improved vocal technique and open throat positioning.",
   keywords: "IPA for singers, vocal phonetics, singing technique, voice training, phonetic transcription, vocal exercises, singing pronunciation, voice coaching tools",
-  metadataBase: new URL('https://vocaltechniquetranslator.com'),
+  metadataBase: new URL('https://www.vocaltechniquetranslator.com'),
   alternates: {
-    canonical: 'https://vocaltechniquetranslator.com',
+    canonical: 'https://www.vocaltechniquetranslator.com',
   },
   openGraph: {
     title: "Vocal Technique Translator | Free IPA & Phonetics Tool for Singers",
     description: "Professional vocal phonetics tool for singers and voice teachers. Transform lyrics using IPA notation and syllable-based techniques.",
     type: "website",
     locale: "en_US",
-    url: 'https://vocaltechniquetranslator.com',
+    url: 'https://www.vocaltechniquetranslator.com',
     images: [
       {
         url: '/images/og-image.png',

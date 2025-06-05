@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { VocalTranslator } from '@/lib/vocal-translator';
-// import TechniqueInfo from './TechniqueInfo';
-// import Examples from './Examples';
 import FormattedLyrics from './FormattedLyrics';
 import { AdUnit } from './AdSense';
 import KeyboardShortcutsModal from './KeyboardShortcutsModal';

@@ -8,6 +8,7 @@ import { CdnStack } from './cdn-stack';
 import { WafStack } from './waf-stack';
 import { MonitoringStack } from './monitoring-stack';
 import { AppStack } from './app-stack';
+import { DnsStack } from './dns-stack';
 
 const app = new cdk.App();
 
@@ -89,6 +90,17 @@ const appStack = new AppStack(app, 'VTT-App', {
 
 // Add dependencies for app deployment (only foundation needed now)
 appStack.addDependency(foundationStack);
+
+// 8. DNS Stack - Route 53 DNS records
+const dnsStack = new DnsStack(app, 'VTT-DNS', {
+  domainName: domainName,
+  distribution: cdnStack.distribution,
+  env: usEast1Env,
+  description: 'DNS records for Vocal Technique Translator',
+});
+
+// Add dependency
+dnsStack.addDependency(cdnStack);
 
 // Add tags to all stacks
 const tags = {
