@@ -489,3 +489,54 @@ textarea, input {
   -ms-user-select: text !important;
   user-select: text !important;
 }
+
+/* Condensed View Transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Smooth layout transitions */
+.view-transition {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Grid transitions for condensed view */
+.condensed-grid {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Content fade transitions */
+.content-fade {
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+/* Button hover transitions */
+.view-toggle-button {
+  transition: all 0.15s ease-out;
+}
+
+.view-toggle-button:hover {
+  transform: scale(1.05);
+}
+
+.view-toggle-button:active {
+  transform: scale(0.98);
+}
