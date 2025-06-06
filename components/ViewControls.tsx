@@ -5,32 +5,36 @@ interface ViewControlsProps {
   onUppercaseChange: (value: boolean) => void;
   isExpanded: boolean;
   onExpandedChange: (value: boolean) => void;
+  isCondensed?: boolean;
 }
 
 export default function ViewControls({
   isUppercase,
   onUppercaseChange,
   isExpanded,
-  onExpandedChange
+  onExpandedChange,
+  isCondensed = false
 }: ViewControlsProps) {
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-1.5">
-        <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
-          View Options
-        </label>
-        <span className="text-xs text-gray-500 dark:text-gray-500">
-          Press U or V
-        </span>
-      </div>
+      {!isCondensed && (
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
+            View Options
+          </label>
+          <span className="text-xs text-gray-500 dark:text-gray-500">
+            Press U or V
+          </span>
+        </div>
+      )}
 
-      <div className="space-y-2">
+      <div className={`${isCondensed ? 'space-y-1' : 'space-y-2'}`}>
         {/* Case Options Group */}
         <div className="flex gap-1">
           <button
             onClick={() => onUppercaseChange(false)}
             className={`
-              relative flex-1 flex flex-col items-center justify-center p-2.5 rounded-md border transition-all duration-100
+              relative flex-1 flex flex-col items-center justify-center ${isCondensed ? 'p-1.5' : 'p-2.5'} rounded-md border transition-all duration-100
               ${!isUppercase
                 ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-sm'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300 dark:hover:border-purple-700'
@@ -38,7 +42,7 @@ export default function ViewControls({
             `}
             aria-label="Show original mixed case"
           >
-            <span className="text-base mb-0.5">Aa</span>
+            {!isCondensed && <span className="text-base mb-0.5">Aa</span>}
             <span className={`text-xs font-medium ${
               !isUppercase
                 ? 'text-purple-700 dark:text-purple-300'
@@ -54,7 +58,7 @@ export default function ViewControls({
           <button
             onClick={() => onUppercaseChange(true)}
             className={`
-              relative flex-1 flex flex-col items-center justify-center p-2.5 rounded-md border transition-all duration-100
+              relative flex-1 flex flex-col items-center justify-center ${isCondensed ? 'p-1.5' : 'p-2.5'} rounded-md border transition-all duration-100
               ${isUppercase
                 ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-sm'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300 dark:hover:border-purple-700'
@@ -62,7 +66,7 @@ export default function ViewControls({
             `}
             aria-label="Show uppercase"
           >
-            <span className="text-base mb-0.5">AA</span>
+            {!isCondensed && <span className="text-base mb-0.5">AA</span>}
             <span className={`text-xs font-medium ${
               isUppercase
                 ? 'text-purple-700 dark:text-purple-300'
@@ -81,7 +85,7 @@ export default function ViewControls({
           <button
             onClick={() => onExpandedChange(false)}
             className={`
-              relative flex-1 flex flex-col items-center justify-center p-2.5 rounded-md border transition-all duration-100
+              relative flex-1 flex flex-col items-center justify-center ${isCondensed ? 'p-1.5' : 'p-2.5'} rounded-md border transition-all duration-100
               ${!isExpanded
                 ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-sm'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300 dark:hover:border-purple-700'
@@ -89,7 +93,7 @@ export default function ViewControls({
             `}
             aria-label="Show continuous view"
           >
-            <span className="text-base mb-0.5">📝</span>
+            {!isCondensed && <span className="text-base mb-0.5">📝</span>}
             <span className={`text-xs font-medium ${
               !isExpanded
                 ? 'text-purple-700 dark:text-purple-300'
@@ -105,7 +109,7 @@ export default function ViewControls({
           <button
             onClick={() => onExpandedChange(true)}
             className={`
-              relative flex-1 flex flex-col items-center justify-center p-2.5 rounded-md border transition-all duration-100
+              relative flex-1 flex flex-col items-center justify-center ${isCondensed ? 'p-1.5' : 'p-2.5'} rounded-md border transition-all duration-100
               ${isExpanded
                 ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 shadow-sm'
                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-purple-300 dark:hover:border-purple-700'
@@ -113,7 +117,7 @@ export default function ViewControls({
             `}
             aria-label="Show word-by-word view"
           >
-            <span className="text-base mb-0.5">🎯</span>
+            {!isCondensed && <span className="text-base mb-0.5">🎯</span>}
             <span className={`text-xs font-medium ${
               isExpanded
                 ? 'text-purple-700 dark:text-purple-300'

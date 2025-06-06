@@ -11,9 +11,10 @@ interface FormattedLyricsProps {
   intensity: number;
   onUppercaseChange?: (isUppercase: boolean) => void;
   onIntensityChange?: (intensity: number) => void;
+  isCondensed?: boolean;
 }
 
-export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onUppercaseChange, onIntensityChange }: FormattedLyricsProps) {
+export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onUppercaseChange, onIntensityChange, isCondensed = false }: FormattedLyricsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isUppercase, setIsUppercase] = useState(false);
   const [selectedWord, setSelectedWord] = useState<string>('');
@@ -169,6 +170,7 @@ export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onU
           <IntensitySelector
             value={intensity}
             onChange={(newIntensity) => onIntensityChange?.(newIntensity)}
+            isCondensed={isCondensed}
           />
           <ViewControls
             isUppercase={isUppercase}
@@ -178,6 +180,7 @@ export default function FormattedLyrics({ lyrics, originalLyrics, intensity, onU
             }}
             isExpanded={isExpanded}
             onExpandedChange={setIsExpanded}
+            isCondensed={isCondensed}
           />
         </div>
       </div>
