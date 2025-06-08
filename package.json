@@ -30,9 +30,25 @@
     "todo": "./scripts/update-todos.sh show",
     "todo:add": "./scripts/update-todos.sh add",
     "todo:complete": "./scripts/update-todos.sh complete",
-    "todo:progress": "./scripts/update-todos.sh progress"
+    "todo:progress": "./scripts/update-todos.sh progress",
+    "deploy:feedback": "./scripts/deploy-feedback.sh",
+    "deploy:feedback:email": "./scripts/deploy-feedback-with-email.sh",
+    "setup:ses": "./scripts/setup-ses-email.sh",
+    "deploy:cognito": "./scripts/deploy-cognito.sh",
+    "feedback": "./scripts/export-feedback.sh",
+    "feedback:export": "./scripts/export-feedback.sh",
+    "feedback:analyze": "python3 scripts/analyze-feedback.py --analyze",
+    "feedback:csv": "python3 scripts/analyze-feedback.py --format csv",
+    "feedback:json": "python3 scripts/analyze-feedback.py --format json",
+    "feedback:view": "open scripts/feedback-viewer.html",
+    "feedback:cli": "./scripts/feedback-cli.sh",
+    "feedback:help": "echo '📊 Feedback Commands:\n  npm run feedback - Quick export to CSV\n  npm run feedback:analyze - Export with analysis\n  npm run feedback:csv - Export CSV only\n  npm run feedback:json - Export JSON only\n  npm run feedback:view - Open web viewer\n  npm run feedback:cli - Interactive feedback manager\n  npm run deploy:feedback - Deploy feedback infrastructure'"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.11.2",
+    "@aws-sdk/client-s3": "^3.826.0",
+    "aws-amplify": "^6.15.0",
+    "lucide-react": "^0.513.0",
     "next": "^15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

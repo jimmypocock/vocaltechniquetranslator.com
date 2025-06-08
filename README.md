@@ -887,6 +887,310 @@ If your stack is stuck updating:
 - **WAF blocking**: Check WAF logs if legitimate traffic is blocked
 - **Billing alerts**: Confirm SNS subscription email
 
+## User Feedback System
+
+The Vocal Technique Translator includes a comprehensive feedback system that allows users to suggest better pronunciations and helps improve the translation engine over time.
+
+### Feedback System Architecture
+
+The feedback system uses AWS services for reliable, scalable collection:
+
+- **S3 Bucket**: Stores feedback as JSON files with date-based organization
+- **API Gateway**: RESTful endpoint for submitting feedback
+- **Lambda Function**: Processes submissions and adds metadata
+- **CloudFormation**: Infrastructure as code for easy deployment
+
+### Deploying the Feedback System
+
+#### Basic Setup (Storage Only)
+```bash
+# Deploy basic feedback infrastructure (S3 storage only)
+npm run deploy:feedback
+```
+
+#### With Email Notifications (Recommended)
+```bash
+# Deploy with instant email alerts when feedback is submitted
+npm run deploy:feedback:email your-email@example.com
+
+# This creates:
+# - S3 bucket for feedback storage
+# - API Gateway + Lambda for collection
+# - SES email notifications to your inbox
+# - Outputs the API endpoint URL
+```
+
+After deployment, add the API endpoint to your `.env` file:
+```
+NEXT_PUBLIC_FEEDBACK_API_ENDPOINT=https://xxx.execute-api.us-east-1.amazonaws.com/prod/feedback
+```
+
+#### Email Setup
+The email deployment will automatically:
+1. **Verify your email** with AWS SES (check your inbox)
+2. **Configure notifications** to send rich feedback details
+3. **Handle errors gracefully** (feedback still saves if email fails)
+
+### User Experience
+
+Users can submit feedback directly from the translation interface:
+
+1. Click the **Feedback** button next to any translation
+2. Enter their suggested pronunciation
+3. Optionally explain why it's better
+4. Submit - feedback is sent to your S3 bucket
+5. **Email notification sent instantly** (if configured) with full feedback details
+
+#### Email Notification Content
+
+When feedback is submitted, you'll receive an email like this:
+
+```
+Subject: [VTT] New Feedback: "love" → "lahv"
+
+📝 Original Word/Phrase: "love"
+🔄 Current Translation (Intensity 8): "lahv"
+✨ Suggested Improvement: "luhv"
+📍 Context: word
+💭 User's Reasoning: "This sounds more natural for singing"
+
+📊 Submission Details:
+• ID: abc123-def456-789
+• Timestamp: 2025-06-07T18:30:00.000Z
+• User Agent: Mozilla/5.0...
+
+🔗 View in Admin Panel:
+https://www.vocaltechniquetranslator.com/admin/feedback
+```
+
+### Managing Feedback
+
+#### Quick Commands
+
+```bash
+# Export all feedback to CSV (most common)
+npm run feedback
+
+# View all feedback commands
+npm run feedback:help
+
+# Interactive feedback manager (recommended)
+npm run feedback:cli
+```
+
+#### Available NPM Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run feedback` | Quick export all feedback to CSV |
+| `npm run feedback:analyze` | Export with statistical analysis |
+| `npm run feedback:csv` | Export only as CSV (no analysis) |
+| `npm run feedback:json` | Export only as JSON |
+| `npm run feedback:view` | Open web-based viewer |
+| `npm run feedback:cli` | Interactive menu system |
+
+### Interactive CLI (`npm run feedback:cli`)
+
+The interactive CLI provides a menu-driven interface:
+
+```
+📊 VTT Feedback Manager
+========================
+
+1) Quick Export to CSV
+2) Export with Analysis  
+3) Export JSON Only
+4) Open Web Viewer
+5) Deploy Feedback Infrastructure
+6) Show Recent Feedback (Last 10)
+7) Search Feedback by Word
+8) Exit
+```
+
+Features:
+- View recent feedback without downloading everything
+- Search for specific words across all feedback
+- Export filtered results
+- No configuration needed - automatically finds your S3 bucket
+
+### Feedback Analysis Tools
+
+#### 1. Export Script (`npm run feedback`)
+- Downloads all feedback from S3
+- Exports to CSV with timestamp
+- Opens export folder automatically
+- Perfect for quick data access
+
+#### 2. Analysis Script (`npm run feedback:analyze`)
+Provides detailed insights:
+- Total feedback count
+- Most common words needing improvement
+- Intensity distribution
+- Conflicting suggestions for the same word
+- Transformation patterns
+
+Example output:
+```
+📊 Feedback Analysis
+====================
+Total feedback items: 247
+Date range: 2025-01-01 to 2025-01-07
+
+📈 Intensity Distribution:
+  Level 4: 89 (36.0%)
+  Level 5: 102 (41.3%)
+  Level 8: 56 (22.7%)
+
+🔤 Top 10 Words with Feedback:
+  'beautiful': 23 times
+  'love': 18 times
+  'heart': 15 times
+  ...
+
+🔄 Common Transformation Patterns:
+  'byoo-tih-ful' → 'byoo-teh-ful': 12 times
+  'lahv' → 'luhv': 8 times
+```
+
+#### 3. Web Viewer (`npm run feedback:view`)
+- Drag & drop interface for JSON exports
+- Real-time filtering by word or intensity
+- Export filtered results to CSV
+- Visual statistics dashboard
+
+### Feedback Data Structure
+
+Each feedback entry contains:
+```json
+{
+  "id": "feedback_1234567890_abc123",
+  "timestamp": "2025-01-07T10:30:00.000Z",
+  "originalWord": "beautiful",
+  "currentTransformation": "byoo-tih-ful", 
+  "suggestedTransformation": "byoo-teh-ful",
+  "intensity": 5,
+  "context": "singing",
+  "reason": "More natural for singing",
+  "submittedAt": "2025-01-07T10:30:00.000Z",
+  "userAgent": "Mozilla/5.0...",
+  "ip": "192.168.1.1"
+}
+```
+
+### Using Feedback to Improve Translations
+
+1. **Regular Reviews**: Export feedback weekly/monthly
+2. **Pattern Recognition**: Look for commonly requested changes
+3. **Update Exception Dictionary**: Add popular suggestions to `exception-words.ts`
+4. **Test Changes**: Verify improvements maintain vocal technique benefits
+
+Example workflow:
+```bash
+# 1. Export and analyze feedback
+npm run feedback:analyze
+
+# 2. Review CSV for patterns
+# 3. Update exception dictionary with popular suggestions
+# 4. Test changes locally
+npm run dev
+
+# 5. Deploy updates
+npm run deploy
+```
+
+### Cost Considerations
+
+The feedback system is extremely cost-effective:
+- **S3 Storage**: ~$0.023/GB/month (minimal for JSON files)
+- **API Gateway**: $3.50 per million API calls
+- **Lambda**: Free tier covers most usage
+- **Typical Cost**: Under $1/month for moderate usage
+
+### Security & Privacy
+
+- Feedback is stored in a private S3 bucket
+- API uses CORS to restrict access to your domain
+- No personal information is collected beyond basic metadata
+- Admin panel is password protected (configurable via `NEXT_PUBLIC_ADMIN_PASSWORD`)
+
+#### Admin Panel Security
+
+The admin panel (`/admin/feedback`) uses AWS Cognito for secure authentication:
+
+##### Production Setup (Recommended)
+
+1. **Deploy Cognito authentication**:
+   ```bash
+   npm run deploy:cognito
+   ```
+
+2. **Add the output values to your `.env` file**:
+   ```
+   NEXT_PUBLIC_COGNITO_USER_POOL_ID=us-east-1_XXXXXXXXX
+   NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID=1234567890abcdefghijk
+   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID=us-east-1:12345678-1234-1234-1234-123456789012
+   NEXT_PUBLIC_COGNITO_DOMAIN=us-east-1_XXXXXXXXX.auth.us-east-1.amazoncognito.com
+   ```
+
+3. **Create an admin user**:
+   ```bash
+   aws cognito-idp admin-create-user \
+     --user-pool-id us-east-1_XXXXXXXXX \
+     --username admin \
+     --user-attributes Name=email,Value=your-email@example.com \
+     --temporary-password TempPass123! \
+     --message-action SUPPRESS
+   
+   aws cognito-idp admin-set-user-password \
+     --user-pool-id us-east-1_XXXXXXXXX \
+     --username admin \
+     --password YourSecurePassword123! \
+     --permanent
+   ```
+
+##### Legacy Password Authentication (Development Only)
+
+For local development, you can still use simple password authentication:
+
+1. **Set your admin password** in `.env`:
+   ```
+   NEXT_PUBLIC_ADMIN_PASSWORD=your-secure-password-here
+   ```
+
+2. **Important**: This method is **not secure for production** as the password is visible in the client-side JavaScript bundle.
+
+### Advanced Usage
+
+#### Searching Feedback
+```bash
+# In the interactive CLI, option 7
+# Search for all feedback containing "love"
+```
+
+#### Bulk Analysis
+```python
+# Use the Python script for advanced analysis
+python3 scripts/analyze-feedback.py --analyze
+```
+
+#### Direct S3 Access
+```bash
+# List recent feedback files
+aws s3 ls s3://vtt-feedback-YOUR-ACCOUNT-REGION/feedback/ --recursive | tail -20
+
+# Download specific feedback
+aws s3 cp s3://vtt-feedback-.../feedback/2025/01/07/feedback_123.json .
+```
+
+### Future Enhancements
+
+The feedback system is designed to support future AI integration:
+1. Pattern learning from user suggestions
+2. Automatic exception dictionary updates
+3. Machine learning model training
+4. Regional pronunciation variations
+5. Genre-specific feedback analysis
+
 ## Additional Documentation
 
 - [DEPLOYMENT-QUICKSTART.md](./docs/DEPLOYMENT-QUICKSTART.md) - 🚀 **Start here!** Quick deployment guide
@@ -897,4 +1201,6 @@ If your stack is stuck updating:
 - [ARCHITECTURE.md](./cdk/src/ARCHITECTURE.md) - AWS stack architecture
 - [DECOUPLING-GUIDE.md](./docs/DECOUPLING-GUIDE.md) - When and how to decouple stacks
 - [CLOUDFRONT-TESTING.md](./docs/CLOUDFRONT-TESTING.md) - Testing CloudFront before DNS switch
+- [FEEDBACK-SETUP.md](./docs/FEEDBACK-SETUP.md) - Detailed feedback system setup
+- [SCALING-STRATEGY.md](./SCALING-STRATEGY.md) - AI-powered scaling roadmap
 - [CLAUDE.md](./CLAUDE.md) - AI assistant instructions

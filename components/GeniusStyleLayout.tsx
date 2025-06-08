@@ -11,6 +11,8 @@ import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useAdsVisibility } from '@/hooks/useAdsVisibility';
 import CondensedViewToggle from './CondensedViewToggle';
+import { FeedbackModal } from './FeedbackModal';
+import { MessageSquare } from 'lucide-react';
 
 export default function GeniusStyleLayout() {
   const [intensity, setIntensity] = useState(8); // Default to Maximum
@@ -31,6 +33,8 @@ export default function GeniusStyleLayout() {
   const [showHistory, setShowHistory] = useState(false);
   const [favoriteSuccess, setFavoriteSuccess] = useState(false);
   const [isCondensedView, setIsCondensedView] = useState(false);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [feedbackWord, setFeedbackWord] = useState({ original: '', transformed: '' });
 
   // Load saved data from local storage on mount
   useEffect(() => {
@@ -212,6 +216,16 @@ export default function GeniusStyleLayout() {
   const loadFromHistory = (historyItem: typeof lyricsHistory[0]) => {
     setInputLyrics(historyItem.lyrics);
     setShowHistory(false);
+  };
+
+  const handleFeedbackClick = () => {
+    if (outputLyrics && inputLyrics) {
+      setFeedbackWord({
+        original: inputLyrics.trim(),
+        transformed: outputLyrics.trim()
+      });
+      setFeedbackModalOpen(true);
+    }
   };
 
   const loadRandomLyrics = async () => {
@@ -457,6 +471,18 @@ export default function GeniusStyleLayout() {
                 </h2>
                 {outputLyrics && (
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleFeedbackClick}
+                      className="inline-flex items-center px-3 py-1.5 rounded-md border-2 font-medium transition-all duration-100 text-xs
+                        border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 
+                        hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 
+                        text-gray-700 dark:text-gray-300"
+                      title="Suggest better pronunciation"
+                      aria-label="Suggest better pronunciation"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span className="ml-1.5">Feedback</span>
+                    </button>
                     <button
                       onClick={handleCopy}
                       className={`
@@ -705,6 +731,16 @@ export default function GeniusStyleLayout() {
                   )}
                 </button>
                 <button
+                  onClick={handleFeedbackClick}
+                  className="px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
+                    bg-gray-600 text-white hover:bg-gray-700 hover:shadow-md hover:scale-105"
+                  title="Suggest better pronunciation"
+                  aria-label="Suggest better pronunciation"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Feedback
+                </button>
+                <button
                   onClick={handleCopy}
                   className={`
                     px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
@@ -802,6 +838,10 @@ export default function GeniusStyleLayout() {
               <span className="mx-2 text-gray-400 dark:text-gray-500">•</span>
               <a href="/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Terms of Service
+              </a>
+              <span className="mx-2 text-gray-400 dark:text-gray-500">•</span>
+              <a href="/admin/feedback" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                Admin
               </a>
             </div>
           </div>
@@ -924,6 +964,15 @@ export default function GeniusStyleLayout() {
           <span className="text-xs font-medium">Keyboard shortcuts</span>
         </button>
       </div>
+
+      {/* Feedback Modal */}
+      <FeedbackModal
+        isOpen={feedbackModalOpen}
+        onClose={() => setFeedbackModalOpen(false)}
+        originalWord={feedbackWord.original}
+        currentTransformation={feedbackWord.transformed}
+        intensity={intensity}
+      />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { VocalTranslator } from '@/lib/vocal-translator';
 import TechniqueInfo from './TechniqueInfo';
 import Examples from './Examples';
 import FormattedLyrics from './FormattedLyrics';
+import { FeedbackModal } from './FeedbackModal';
+import { MessageSquare } from 'lucide-react';
 
 export default function VocalTranslatorApp() {
   const [intensity, setIntensity] = useState(4);
@@ -15,6 +17,8 @@ export default function VocalTranslatorApp() {
   const [isUppercase, setIsUppercase] = useState(false);
   const outputTextareaRef = useRef<HTMLTextAreaElement>(null);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [feedbackWord, setFeedbackWord] = useState({ original: '', transformed: '' });
 
   // Load saved data from local storage on mount
   useEffect(() => {
@@ -95,6 +99,18 @@ export default function VocalTranslatorApp() {
     }
   };
 
+  const handleFeedbackClick = () => {
+    // For now, we'll use the entire output as feedback
+    // In the future, we could allow selecting specific words
+    if (outputLyrics && inputLyrics) {
+      setFeedbackWord({
+        original: inputLyrics.trim(),
+        transformed: outputLyrics.trim()
+      });
+      setFeedbackModalOpen(true);
+    }
+  };
+
   return (
     <div className="w-full max-w-5xl mx-auto">
       {/* Header */}
@@ -131,12 +147,22 @@ export default function VocalTranslatorApp() {
               Translated for Vocal Technique
             </h2>
             {outputLyrics && (
-              <button
-                onClick={handleCopy}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200 flex items-center gap-2"
-                title="Copy to clipboard"
-                aria-label="Copy translated lyrics"
-              >
+              <div className="flex gap-2">
+                <button
+                  onClick={handleFeedbackClick}
+                  className="px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  title="Suggest better pronunciation"
+                  aria-label="Suggest better pronunciation"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Feedback
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  title="Copy to clipboard"
+                  aria-label="Copy translated lyrics"
+                >
                 {copySuccess ? (
                   <>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,6 +179,7 @@ export default function VocalTranslatorApp() {
                   </>
                 )}
               </button>
+              </div>
             )}
           </div>
           <div className="relative">
@@ -181,6 +208,14 @@ export default function VocalTranslatorApp() {
 
         <Examples />
       </div>
+      
+      <FeedbackModal
+        isOpen={feedbackModalOpen}
+        onClose={() => setFeedbackModalOpen(false)}
+        originalWord={feedbackWord.original}
+        currentTransformation={feedbackWord.transformed}
+        intensity={intensity}
+      />
     </div>
   );
 }

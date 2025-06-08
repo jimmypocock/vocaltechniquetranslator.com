@@ -1,0 +1,8 @@
+{
+  "VTT-Cognito": {
+    "UserPoolClientId": "656mjmg4b2bo66flnquhrjs2vv",
+    "UserPoolId": "us-east-1_tA87mLJSO",
+    "CognitoHostedUIURL": "https://us-east-1_tA87mLJSO.auth.us-east-1.amazoncognito.com/login?client_id=656mjmg4b2bo66flnquhrjs2vv&response_type=code&scope=email+openid+profile&redirect_uri=https://www.vocaltechniquetranslator.com/admin/callback",
+    "IdentityPoolId": "us-east-1:7323911d-b52c-4d3e-96f8-65bfeb13058d"
+  }
+}

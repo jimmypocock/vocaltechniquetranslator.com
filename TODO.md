@@ -40,6 +40,22 @@
 - [x] **[Logic]** Translate: forever `[VTT-042]` ✓ 2025-05-31
 - [x] **[Logic]** Translate: lonely `[VTT-041]` ✓ 2025-05-30
 
+#### Scaling & AI Integration (Phase 1)
+
+- [ ] **[Features]** Implement user feedback system for pronunciation suggestions `[VTT-055]`
+- [ ] **[Features]** Create data model for extended PhoneticToken interface `[VTT-056]`
+- [ ] **[Features]** Add context selector (singing, speech therapy, ESL, etc.) `[VTT-057]`
+- [ ] **[Infrastructure]** Set up API endpoint for phonetic transformations `[VTT-058]`
+- [ ] **[Features]** Implement caching layer for generated transformations `[VTT-059]`
+
+#### Scaling & AI Integration (Phase 2)
+
+- [ ] **[Features]** Integrate LLM for vocabulary generation (OpenAI/Anthropic) `[VTT-060]`
+- [ ] **[Features]** Build human review queue for AI-generated transformations `[VTT-061]`
+- [ ] **[Features]** Create similarity matching algorithm for unknown words `[VTT-062]`
+- [ ] **[Features]** Implement progressive vocabulary loading based on context `[VTT-063]`
+- [ ] **[Infrastructure]** Set up monitoring and analytics for transformation quality `[VTT-064]`
+
 #### Local Storage Enhancements
 
 - [x] **[Features]** Save and restore theme preference (dark/light mode) in local storage `[VTT-047]` ✓ 2025-06-04
