@@ -16,7 +16,7 @@ const cognitoConfig = {
           redirectSignOut: [
             typeof window !== 'undefined' ? window.location.origin + '/admin/feedback' : 'http://localhost:4062/admin/feedback'
           ],
-          responseType: 'code',
+          responseType: 'code' as const,
         },
         email: true,
         username: true,

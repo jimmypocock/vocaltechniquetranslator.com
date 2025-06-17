@@ -68,7 +68,7 @@ export class S3FeedbackStorage {
     
     try {
       // If we have date filters, construct prefix
-      let prefix = 'feedback/';
+      const prefix = 'feedback/';
       if (startDate) {
         // For simplicity, we'll just list all and filter
         // In production, you might want to iterate through date folders

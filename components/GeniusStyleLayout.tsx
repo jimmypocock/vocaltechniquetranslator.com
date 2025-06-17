@@ -282,13 +282,68 @@ export default function GeniusStyleLayout() {
     },
     {
       key: '2',
-      action: () => setIntensity(4),
-      description: 'Moderate intensity'
+      action: () => setIntensity(2),
+      description: 'Set intensity to 2'
     },
     {
       key: '3',
+      action: () => setIntensity(3),
+      description: 'Set intensity to 3'
+    },
+    {
+      key: '4',
+      action: () => setIntensity(4),
+      description: 'Set intensity to 4'
+    },
+    {
+      key: '5',
+      action: () => setIntensity(5),
+      description: 'Set intensity to 5'
+    },
+    {
+      key: '6',
+      action: () => setIntensity(6),
+      description: 'Set intensity to 6'
+    },
+    {
+      key: '7',
+      action: () => setIntensity(7),
+      description: 'Set intensity to 7'
+    },
+    {
+      key: '8',
       action: () => setIntensity(8),
-      description: 'Full intensity'
+      description: 'Set intensity to 8'
+    },
+    {
+      key: '9',
+      action: () => setIntensity(9),
+      description: 'Set intensity to 9'
+    },
+    {
+      key: '0',
+      action: () => setIntensity(10),
+      description: 'Set intensity to 10'
+    },
+    {
+      key: 'ArrowLeft',
+      action: () => setIntensity(Math.max(1, intensity - 1)),
+      description: 'Decrease intensity'
+    },
+    {
+      key: 'ArrowRight',
+      action: () => setIntensity(Math.min(10, intensity + 1)),
+      description: 'Increase intensity'
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        // Clear lyrics when not in a modal
+        if (!showShortcuts && !feedbackModalOpen && !showFavorites && !showHistory) {
+          setInputLyrics('');
+        }
+      },
+      description: 'Clear lyrics'
     },
     {
       key: 'h',
@@ -297,6 +352,7 @@ export default function GeniusStyleLayout() {
     },
     {
       key: '?',
+      shift: true,
       action: () => setShowShortcuts(true),
       description: 'Show keyboard shortcuts'
     },
@@ -973,6 +1029,35 @@ export default function GeniusStyleLayout() {
         currentTransformation={feedbackWord.transformed}
         intensity={intensity}
       />
+      
+      {/* Footer */}
+      <footer className="mt-12 py-6 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              Terms
+            </Link>
+            <Link href="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              About
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/admin/feedback" 
+              className="hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              Admin
+            </Link>
+            <span>© 2025 Vocal Technique Translator</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

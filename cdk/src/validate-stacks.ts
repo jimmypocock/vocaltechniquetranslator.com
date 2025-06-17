@@ -47,12 +47,12 @@ async function validateStack(stackName: string): Promise<ValidationResult> {
       status: 'pass',
       message: 'Stack validated successfully'
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       stackName,
       status: 'fail',
       message: 'Stack validation error',
-      errors: [error.message || 'Unknown error']
+      errors: [(error as Error).message || 'Unknown error']
     };
   }
 }
@@ -84,14 +84,14 @@ async function checkCircularDependencies(): Promise<ValidationResult> {
       status: 'pass',
       message: 'No circular dependencies found'
     };
-  } catch (error: any) {
+  } catch (error) {
     // Parse error message for circular dependency info
-    if (error.message && error.message.includes('cyclic reference')) {
+    if ((error as Error).message && (error as Error).message.includes('cyclic reference')) {
       return {
         stackName: 'All Stacks',
         status: 'fail',
         message: 'Circular dependency detected',
-        errors: [error.message]
+        errors: [(error as Error).message]
       };
     }
     
@@ -99,7 +99,7 @@ async function checkCircularDependencies(): Promise<ValidationResult> {
       stackName: 'All Stacks',
       status: 'fail',
       message: 'Dependency check error',
-      errors: [error.message || 'Unknown error']
+      errors: [(error as Error).message || 'Unknown error']
     };
   }
 }
@@ -127,12 +127,12 @@ async function validateContext(): Promise<ValidationResult> {
       message: warnings.length > 0 ? 'Context validation warnings' : 'Context validated successfully',
       errors: warnings
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       stackName: 'Context',
       status: 'fail',
       message: 'Context validation error',
-      errors: [error.message || 'Unknown error']
+      errors: [(error as Error).message || 'Unknown error']
     };
   }
 }

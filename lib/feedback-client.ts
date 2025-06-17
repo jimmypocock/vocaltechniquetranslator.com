@@ -13,33 +13,42 @@ interface FeedbackData {
 }
 
 export async function submitFeedback(feedback: FeedbackData): Promise<void> {
-  // Determine which endpoint to use
-  let endpoint = '/api/feedback'; // Default for local development
-  
   // Check if we have a production API endpoint configured
   const apiEndpoint = process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT;
+  
   if (apiEndpoint) {
-    endpoint = apiEndpoint;
+    // Use API Gateway endpoint
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(feedback),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log('Feedback submitted successfully:', result);
+      return;
+    } catch (error) {
+      console.error('Error submitting to API:', error);
+      // Fall through to localStorage backup
+    }
   }
   
+  // Fallback to localStorage if no API or if API fails
   try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(feedback),
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const result = await response.json();
-    console.log('Feedback submitted successfully:', result);
+    const stored = localStorage.getItem('vtt_feedback') || '[]';
+    const feedbackArray = JSON.parse(stored);
+    feedbackArray.push(feedback);
+    localStorage.setItem('vtt_feedback', JSON.stringify(feedbackArray));
+    console.log('Feedback saved to localStorage');
   } catch (error) {
-    console.error('Error submitting feedback:', error);
-    // Re-throw to let the caller handle it
+    console.error('Error saving to localStorage:', error);
     throw error;
   }
 }

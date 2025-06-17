@@ -429,6 +429,73 @@ if (intensity >= 8 && word.length > 6) {
 
 ## Testing and Quality Assurance
 
+### Test Coverage
+
+The project includes comprehensive test coverage with multiple testing approaches:
+
+#### Unit Tests (Vitest)
+```bash
+# Run all unit tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+**Current Coverage**: 283 unit tests covering:
+- Core transformation logic (`VocalTranslator` class)
+- Syllable splitting algorithm (`SyllableSplitter` class)
+- Exception dictionary integrity
+- Phonetic pattern rules
+- Component behavior (React components)
+- Local storage functionality
+- Keyboard shortcuts and accessibility
+- Feedback system API
+
+#### End-to-End Tests (Playwright)
+```bash
+# Run all E2E tests
+npm run test:e2e
+
+# Run E2E tests with UI
+npm run test:e2e:ui
+
+# Run specific browser tests
+npm run test:e2e:chrome
+npm run test:e2e:firefox
+npm run test:e2e:webkit
+
+# Run smoke tests only
+npm run test:e2e:smoke
+```
+
+**E2E Test Coverage**:
+- Basic transformation flow
+- Intensity level changes
+- Copy functionality
+- Keyboard navigation
+- Mobile responsiveness
+- Local storage persistence
+- Feedback submission
+- View mode switching
+
+#### Performance Tests
+```bash
+# Run performance benchmarks
+npm run test:perf
+```
+
+**Performance Targets**:
+- Transformation speed: <50ms for typical lyrics
+- Memory usage: No leaks on repeated transformations
+- Concurrent handling: Efficient multi-text processing
+
 ### Regression Testing Examples
 
 - **"seamstress"** should never produce excessive character sequences
@@ -436,11 +503,46 @@ if (intensity >= 8 && word.length > 6) {
 - **"you'll"** should consistently become "YAH-LL" at high intensity
 - **Single-syllable words** should not gain artificial syllable breaks
 
+### Test Scripts Structure
+```
+test/
+├── setup.ts              # Test environment setup
+├── utils.tsx             # Test utilities and helpers
+└── performance/          # Performance benchmarks
+
+lib/__tests__/            # Logic and data tests
+├── vocal-translator.test.ts
+├── syllable-splitter.test.ts
+├── feedback-client.test.ts
+├── feedback-storage.test.ts
+├── local-storage.test.tsx
+├── keyboard-accessibility.test.tsx
+└── integration/
+    └── transformation-pipeline.test.ts
+
+components/__tests__/     # Component tests
+├── FormattedLyrics.test.tsx
+├── IntensitySelector.test.tsx
+├── VocalTranslatorApp.test.tsx
+└── ...
+
+e2e/tests/               # End-to-end tests
+├── basic-transformation.spec.ts
+├── copy-functionality.spec.ts
+├── feedback-submission.spec.ts
+├── keyboard-navigation.spec.ts
+├── local-storage.spec.ts
+├── mobile-responsive.spec.ts
+├── smoke.spec.ts
+└── view-mode-switching.spec.ts
+```
+
 ### Performance Metrics
 
 - **Readability Score**: Modified words should remain recognizable
 - **Transformation Consistency**: Same input always produces same output
 - **Intensity Scaling**: Higher levels should build upon, not replace, lower levels
+- **Test Execution**: Full suite runs in <20 seconds
 
 ## Future Enhancements (Roadmap)
 

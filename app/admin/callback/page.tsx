@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { confirmSignIn } from 'aws-amplify/auth';
 import { useRouter } from 'next/navigation';
 import '@/lib/cognito-config';
 

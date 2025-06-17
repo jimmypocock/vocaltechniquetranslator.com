@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFeedbackStorage } from '@/lib/feedback-storage';
 
+// Remove dynamic export for static export compatibility
+// export const dynamic = 'force-dynamic';
+
 // For now, we'll use environment variables to control access
-const ADMIN_SECRET = process.env.FEEDBACK_ADMIN_SECRET || 'your-secret-key-here';
+// Function to get admin secret dynamically
+function getAdminSecret() {
+  return process.env.FEEDBACK_ADMIN_SECRET || 'your-secret-key-here';
+}
 
 interface FeedbackData {
   originalWord: string;
@@ -52,7 +58,7 @@ export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
   const providedSecret = authHeader?.replace('Bearer ', '');
   
-  if (providedSecret !== ADMIN_SECRET) {
+  if (providedSecret !== getAdminSecret()) {
     return NextResponse.json(
       { error: 'Unauthorized' },
       { status: 401 }

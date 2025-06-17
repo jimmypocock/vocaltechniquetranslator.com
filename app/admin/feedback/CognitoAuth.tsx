@@ -1,38 +1,45 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { getCurrentUser, signIn, signOut } from 'aws-amplify/auth';
 import { Lock, LogOut } from 'lucide-react';
 import '@/lib/cognito-config'; // Initialize Amplify
 
+interface User {
+  username: string;
+  userId?: string;
+  signInDetails?: unknown;
+}
+
 interface CognitoAuthProps {
-  onAuthenticated: (user: any) => void;
+  onAuthenticated: (user: User) => void;
   children: React.ReactNode;
 }
 
 export default function CognitoAuth({ onAuthenticated, children }: CognitoAuthProps) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
 
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  const checkUser = async () => {
+  const checkUser = useCallback(async () => {
     try {
       const currentUser = await getCurrentUser();
       setUser(currentUser);
       onAuthenticated(currentUser);
-    } catch (error) {
+    } catch {
       // User not authenticated
       setUser(null);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [onAuthenticated]);
+
+  useEffect(() => {
+    checkUser();
+  }, [checkUser]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,9 +57,9 @@ export default function CognitoAuth({ onAuthenticated, children }: CognitoAuthPr
         setUser(currentUser);
         onAuthenticated(currentUser);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Sign in error:', error);
-      setError(error.message || 'Failed to sign in');
+      setError((error as Error).message || 'Failed to sign in');
     } finally {
       setIsSigningIn(false);
     }
@@ -63,8 +70,8 @@ export default function CognitoAuth({ onAuthenticated, children }: CognitoAuthPr
       await signOut();
       setUser(null);
       window.location.reload();
-    } catch (error) {
-      console.error('Sign out error:', error);
+    } catch {
+      console.error('Sign out error');
     }
   };
 
@@ -159,12 +166,12 @@ export default function CognitoAuth({ onAuthenticated, children }: CognitoAuthPr
             </form>
 
             <div className="mt-6 text-center">
-              <a 
+              <Link 
                 href="/" 
                 className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 ← Back to Translator
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -55,6 +55,26 @@ export class FeedbackApiStack extends cdk.Stack {
               // Submit feedback
               const feedback = JSON.parse(event.body);
               
+              // Basic validation to prevent spam
+              if (!feedback.originalWord || !feedback.suggestedTransformation || !feedback.id) {
+                return {
+                  statusCode: 400,
+                  headers,
+                  body: JSON.stringify({ error: 'Missing required fields' }),
+                };
+              }
+              
+              // Length limits to prevent abuse
+              if (feedback.originalWord.length > 500 || 
+                  feedback.suggestedTransformation.length > 500 || 
+                  (feedback.reason && feedback.reason.length > 1000)) {
+                return {
+                  statusCode: 400,
+                  headers,
+                  body: JSON.stringify({ error: 'Input too long' }),
+                };
+              }
+              
               // Add server metadata
               const enrichedFeedback = {
                 ...feedback,
@@ -204,7 +224,7 @@ This feedback has been automatically saved to S3 for analysis.
       resources: ['*'], // SES doesn't support resource-level permissions for sending
     }));
 
-    // Create API Gateway
+    // Create API Gateway with throttling
     const api = new apigateway.RestApi(this, 'FeedbackApi', {
       restApiName: 'VTT Feedback API',
       description: 'API for collecting user feedback',
@@ -218,6 +238,11 @@ This feedback has been automatically saved to S3 for analysis.
         allowMethods: apigateway.Cors.ALL_METHODS,
         allowHeaders: ['Content-Type', 'Authorization'],
       },
+      // API-level throttling
+      deployOptions: {
+        throttlingBurstLimit: 100, // Maximum burst of requests
+        throttlingRateLimit: 50,   // Requests per second
+      },
     });
 
     // Add /feedback resource
@@ -226,6 +251,24 @@ This feedback has been automatically saved to S3 for analysis.
     // Add methods
     feedbackResource.addMethod('POST', new apigateway.LambdaIntegration(feedbackHandler));
     feedbackResource.addMethod('GET', new apigateway.LambdaIntegration(feedbackHandler));
+
+    // Create usage plan for additional rate limiting
+    const usagePlan = new apigateway.UsagePlan(this, 'FeedbackUsagePlan', {
+      name: 'VTT-Feedback-RateLimit',
+      throttle: {
+        rateLimit: 10,    // 10 requests per second per user
+        burstLimit: 20,   // 20 requests burst
+      },
+      quota: {
+        limit: 1000,      // 1000 requests per day
+        period: apigateway.Period.DAY,
+      },
+    });
+
+    // Add API stage to usage plan
+    usagePlan.addApiStage({
+      stage: api.deploymentStage,
+    });
 
     // Store API URL
     this.apiUrl = api.url;

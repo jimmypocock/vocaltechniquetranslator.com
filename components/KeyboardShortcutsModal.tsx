@@ -16,9 +16,16 @@ const shortcuts = [
   { keys: ['1'], description: 'Set to Minimal intensity' },
   { keys: ['2'], description: 'Set to Moderate intensity' },
   { keys: ['3'], description: 'Set to Full intensity' },
+  { keys: ['4-9'], description: 'Set intensity to 4-9' },
+  { keys: ['0'], description: 'Set intensity to 10' },
+  { keys: ['←', '→'], description: 'Adjust intensity' },
+  { keys: ['Esc'], description: 'Clear lyrics or close modals' },
   { keys: ['H'], description: 'Go to How It Works' },
   { keys: ['?'], description: 'Show keyboard shortcuts' },
-  { keys: ['Esc'], description: 'Close modals' },
+  { keys: ['F'], description: 'Show favorites' },
+  { keys: ['R'], description: 'Show recent lyrics' },
+  { keys: ['Ctrl', 'S'], description: 'Save to favorites' },
+  { keys: ['D'], description: 'Load random lyrics' },
 ]
 
 export default function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShortcutsModalProps) {

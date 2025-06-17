@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, Download, Trash2, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import CognitoAuth from './CognitoAuth';
@@ -19,17 +19,41 @@ interface FeedbackData {
 export default function FeedbackAdmin() {
   const [feedbackList, setFeedbackList] = useState<FeedbackData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ username: string } | null>(null);
 
-  useEffect(() => {
-    if (user) {
-      loadFeedback();
-    }
-  }, [user]);
-
-  const loadFeedback = () => {
+  const loadFeedback = useCallback(async () => {
     setIsLoading(true);
     try {
+      // First try to load from API if configured
+      const apiEndpoint = process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT;
+      if (apiEndpoint && user) {
+        try {
+          const response = await fetch(apiEndpoint, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              // The API Gateway should be configured to validate Cognito tokens
+              // If you need to pass auth, you can get the token from Cognito
+            }
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            const data = result.feedback || result.items || [];
+            // Sort by timestamp, newest first
+            data.sort((a: FeedbackData, b: FeedbackData) => 
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+            );
+            setFeedbackList(data);
+            return;
+          }
+        } catch (error) {
+          console.error('Error fetching from API:', error);
+          // Fall back to localStorage
+        }
+      }
+      
+      // Fallback to localStorage
       const stored = localStorage.getItem('vtt_feedback');
       if (stored) {
         const data = JSON.parse(stored) as FeedbackData[];
@@ -37,12 +61,18 @@ export default function FeedbackAdmin() {
         data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
         setFeedbackList(data);
       }
-    } catch (error) {
-      console.error('Error loading feedback:', error);
+    } catch {
+      console.error('Error loading feedback');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadFeedback();
+    }
+  }, [user, loadFeedback]);
 
   const exportToJSON = () => {
     const dataStr = JSON.stringify(feedbackList, null, 2);
@@ -95,7 +125,7 @@ export default function FeedbackAdmin() {
     }
   };
 
-  const handleAuthenticated = (authenticatedUser: any) => {
+  const handleAuthenticated = (authenticatedUser: { username: string }) => {
     setUser(authenticatedUser);
   };
 

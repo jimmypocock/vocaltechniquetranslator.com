@@ -30,6 +30,12 @@ node_modules/
 coverage/
 .nyc_output
 
+# Playwright
+playwright-report/
+test-results/
+e2e/screenshots/
+playwright/.cache/
+
 # NextJS
 .next/
 out/
@@ -86,3 +92,15 @@ test-output/
 
 # Private
 .private/
+
+# Debug files
+debug-*.png
+debug-*.jpg
+debug-*.html
+
+# Test documentation
+TEST_*.md
+TEST_*.txt
+.next/
+cdk/cdk.out/
+cdk/feedback-api-outputs.json
