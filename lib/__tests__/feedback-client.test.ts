@@ -41,18 +41,25 @@ describe('Feedback Client', () => {
       timestamp: '2024-01-01T00:00:00.000Z'
     }
 
-    it('should submit feedback to local API endpoint', async () => {
-      vi.mocked(global.fetch).mockResolvedValue(mockResponse({ success: true, id: 'test-123' }))
+    it('should fallback to localStorage when no API endpoint is configured', async () => {
+      // When no API endpoint is configured, it falls back to localStorage
+      delete process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT
+      
+      const localStorageMock = {
+        getItem: vi.fn().mockReturnValue('[]'),
+        setItem: vi.fn()
+      }
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
       await submitFeedback(mockFeedback)
 
-      expect(global.fetch).toHaveBeenCalledWith('/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(mockFeedback)
-      })
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'vtt_feedback',
+        expect.stringContaining(mockFeedback.id)
+      )
+      const savedData = JSON.parse(localStorageMock.setItem.mock.calls[0][1])
+      expect(savedData).toHaveLength(1)
+      expect(savedData[0]).toMatchObject(mockFeedback)
     })
 
     it('should use production API endpoint when configured', async () => {
@@ -71,20 +78,47 @@ describe('Feedback Client', () => {
       })
     })
 
-    it('should handle HTTP error responses', async () => {
+    it('should fallback to localStorage on HTTP error responses', async () => {
+      process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
       vi.mocked(global.fetch).mockResolvedValue(mockResponse({}, { status: 500, statusText: 'Internal Server Error' }))
+      
+      const localStorageMock = {
+        getItem: vi.fn().mockReturnValue('[]'),
+        setItem: vi.fn()
+      }
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
-      await expect(submitFeedback(mockFeedback)).rejects.toThrow('HTTP error! status: 500')
+      // Should fallback to localStorage on error
+      await submitFeedback(mockFeedback)
+      
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'vtt_feedback',
+        expect.stringContaining(mockFeedback.id)
+      )
     })
 
-    it('should handle network errors', async () => {
+    it('should fallback to localStorage on network errors', async () => {
+      process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
       vi.mocked(global.fetch).mockRejectedValue(new Error('Network failure'))
+      
+      const localStorageMock = {
+        getItem: vi.fn().mockReturnValue('[]'),
+        setItem: vi.fn()
+      }
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
-      await expect(submitFeedback(mockFeedback)).rejects.toThrow('Network failure')
+      // Should fallback to localStorage on network error
+      await submitFeedback(mockFeedback)
+      
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'vtt_feedback',
+        expect.stringContaining(mockFeedback.id)
+      )
     })
 
     it('should log success on successful submission', async () => {
       const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+      process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
       
       vi.mocked(global.fetch).mockResolvedValue(mockResponse({ success: true, id: 'test-123' }))
 
@@ -98,16 +132,42 @@ describe('Feedback Client', () => {
       consoleSpy.mockRestore()
     })
 
-    it('should handle rate limiting (429)', async () => {
+    it('should fallback to localStorage on rate limiting (429)', async () => {
+      process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
       vi.mocked(global.fetch).mockResolvedValue(mockResponse({}, { status: 429, statusText: 'Too Many Requests' }))
+      
+      const localStorageMock = {
+        getItem: vi.fn().mockReturnValue('[]'),
+        setItem: vi.fn()
+      }
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
-      await expect(submitFeedback(mockFeedback)).rejects.toThrow('HTTP error! status: 429')
+      // Should fallback to localStorage on rate limit
+      await submitFeedback(mockFeedback)
+      
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'vtt_feedback',
+        expect.stringContaining(mockFeedback.id)
+      )
     })
 
-    it('should handle validation errors (400)', async () => {
+    it('should fallback to localStorage on validation errors (400)', async () => {
+      process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
       vi.mocked(global.fetch).mockResolvedValue(mockResponse({ error: 'Invalid feedback data' }, { status: 400, statusText: 'Bad Request' }))
+      
+      const localStorageMock = {
+        getItem: vi.fn().mockReturnValue('[]'),
+        setItem: vi.fn()
+      }
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
-      await expect(submitFeedback(mockFeedback)).rejects.toThrow('HTTP error! status: 400')
+      // Should fallback to localStorage on validation error
+      await submitFeedback(mockFeedback)
+      
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'vtt_feedback',
+        expect.stringContaining(mockFeedback.id)
+      )
     })
   })
 
@@ -220,7 +280,11 @@ describe('Feedback Client', () => {
     it('should handle undefined environment variables', async () => {
       delete process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT
       
-      vi.mocked(global.fetch).mockResolvedValue(mockResponse({ success: true }))
+      const localStorageMock = {
+        getItem: vi.fn().mockReturnValue('[]'),
+        setItem: vi.fn()
+      }
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 
       const feedback = {
         id: 'test',
@@ -234,8 +298,11 @@ describe('Feedback Client', () => {
 
       await submitFeedback(feedback)
 
-      // Should use default local endpoint
-      expect(global.fetch).toHaveBeenCalledWith('/api/feedback', expect.any(Object))
+      // Should fallback to localStorage when no API endpoint
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'vtt_feedback',
+        expect.stringContaining(feedback.id)
+      )
     })
 
     it('should handle very long admin secrets', async () => {
@@ -255,6 +322,8 @@ describe('Feedback Client', () => {
     })
 
     it('should handle special characters in feedback data', async () => {
+      process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
+      
       const feedbackWithSpecialChars = {
         id: 'test-special',
         originalWord: "can't",
