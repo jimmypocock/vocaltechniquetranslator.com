@@ -13,6 +13,9 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled: boo
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (!enabled) return;
 
+    // Guard against undefined event.key
+    if (!event.key) return;
+
     // Always allow standard cut/copy/paste/select all commands
     const isModifierKey = event.ctrlKey || event.metaKey;
     const key = event.key.toLowerCase();

@@ -384,7 +384,7 @@ export default function GeniusStyleLayout() {
   const testMode = !process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 
   return (
-    <div className="app-wrapper">
+    <div className="app-wrapper min-h-screen flex flex-col">
       <CondensedViewToggle onToggle={setIsCondensedView} />
       {/* Top Video Ad */}
       {shouldShowAds && (
@@ -402,7 +402,8 @@ export default function GeniusStyleLayout() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
@@ -856,6 +857,7 @@ export default function GeniusStyleLayout() {
             {/* <Examples /> */}
           </>
         )}
+        </div>
       </div>
 
       {/* Bottom Ad */}
@@ -1029,35 +1031,6 @@ export default function GeniusStyleLayout() {
         currentTransformation={feedbackWord.transformed}
         intensity={intensity}
       />
-      
-      {/* Footer */}
-      <footer className="mt-12 py-6 border-t border-gray-200 dark:border-gray-800">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-600 dark:text-gray-400">
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-              Terms
-            </Link>
-            <Link href="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-              About
-            </Link>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/admin/feedback" 
-              className="hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-1"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              Admin
-            </Link>
-            <span>© 2025 Vocal Technique Translator</span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

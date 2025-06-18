@@ -152,12 +152,12 @@ export function FeedbackModal({
                   <label htmlFor="suggestion" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Your Suggested Pronunciation <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     id="suggestion"
                     value={suggestion}
                     onChange={(e) => setSuggestion(e.target.value)}
                     placeholder="e.g., byoo-tih-ful"
+                    rows={2}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
                              bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                              focus:ring-2 focus:ring-purple-500 focus:border-transparent"

@@ -32,7 +32,7 @@ export async function submitFeedback(feedback: FeedbackData): Promise<void> {
       }
       
       const result = await response.json();
-      console.log('Feedback submitted successfully:', result);
+      // Feedback submitted successfully
       return;
     } catch (error) {
       console.error('Error submitting to API:', error);
@@ -46,7 +46,7 @@ export async function submitFeedback(feedback: FeedbackData): Promise<void> {
     const feedbackArray = JSON.parse(stored);
     feedbackArray.push(feedback);
     localStorage.setItem('vtt_feedback', JSON.stringify(feedbackArray));
-    console.log('Feedback saved to localStorage');
+    // Feedback saved to localStorage
   } catch (error) {
     console.error('Error saving to localStorage:', error);
     throw error;

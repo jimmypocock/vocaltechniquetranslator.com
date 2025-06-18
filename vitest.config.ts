@@ -10,6 +10,7 @@ export default defineConfig({
     setupFiles: './test/setup.ts',
     exclude: [
       'node_modules/**',
+      'cdk/node_modules/**',
       'e2e/**',
       '.git/**',
       'dist/**'

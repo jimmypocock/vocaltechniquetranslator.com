@@ -417,8 +417,8 @@ describe('Phonetic Patterns', () => {
       const endTime = performance.now()
       const duration = endTime - startTime
       
-      // Should be very fast
-      expect(duration).toBeLessThan(100)
+      // Should be very fast (increased threshold for CI/slower machines)
+      expect(duration).toBeLessThan(200)
     })
 
     it('should have reasonable data sizes', () => {

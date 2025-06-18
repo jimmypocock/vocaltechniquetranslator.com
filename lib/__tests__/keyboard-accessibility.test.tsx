@@ -192,6 +192,21 @@ describe('Keyboard Shortcuts and Accessibility', () => {
       fireEvent.keyDown(window, { key: 'k', ctrlKey: true, shiftKey: true })
       expect(mockAction).toHaveBeenCalled()
     })
+
+    it('should handle undefined event.key gracefully', () => {
+      const mockAction = vi.fn()
+      const shortcuts = [
+        { key: 'k', action: mockAction, description: 'Test shortcut' }
+      ]
+      
+      renderHook(() => useKeyboardShortcuts(shortcuts))
+      
+      // Fire event with undefined key
+      fireEvent.keyDown(window, { key: undefined as any })
+      
+      // Should not throw error and should not trigger action
+      expect(mockAction).not.toHaveBeenCalled()
+    })
   })
 
   describe('Accessibility Features', () => {

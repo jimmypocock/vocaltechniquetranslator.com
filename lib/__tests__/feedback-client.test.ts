@@ -116,20 +116,21 @@ describe('Feedback Client', () => {
       )
     })
 
-    it('should log success on successful submission', async () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    it('should submit feedback successfully to API', async () => {
       process.env.NEXT_PUBLIC_FEEDBACK_API_ENDPOINT = 'https://api.example.com/feedback'
       
       vi.mocked(global.fetch).mockResolvedValue(mockResponse({ success: true, id: 'test-123' }))
 
       await submitFeedback(mockFeedback)
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Feedback submitted successfully:',
-        { success: true, id: 'test-123' }
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://api.example.com/feedback',
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(mockFeedback)
+        })
       )
-      
-      consoleSpy.mockRestore()
     })
 
     it('should fallback to localStorage on rate limiting (429)', async () => {

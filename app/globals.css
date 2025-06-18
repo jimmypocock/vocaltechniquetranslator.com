@@ -187,6 +187,8 @@ div#__next > div {
   width: 100%;
   overflow-x: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Prevent horizontal scroll on root */
