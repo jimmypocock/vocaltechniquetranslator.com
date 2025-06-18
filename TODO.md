@@ -64,6 +64,7 @@
 - [ ] **[Features]** Implement client-side error boundary and tracking `[VTT-083]`
 - [ ] **[Features]** Add Web Vitals monitoring and reporting to Google Analytics `[VTT-084]`
 - [x] **[Infrastructure]** Remove unused AdminAuth.tsx component (using Cognito instead) `[VTT-085]` ✓ 2025-06-17
+- [ ] **[Infrastructure]** Enable GitHub Actions AWS deployment workflow when ready for production `[VTT-087]`
 
 #### Genre-Specific Vocal Styles
 

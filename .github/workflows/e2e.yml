@@ -60,41 +60,5 @@ jobs:
           path: test-results/
           retention-days: 30
 
-  test-deploy-preview:
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-
-      - name: Wait for Vercel Preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        id: waitForVercel
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
-
-      - name: Run E2E tests against preview
-        run: npm run test:e2e:chrome
-        env:
-          PLAYWRIGHT_BASE_URL: ${{ steps.waitForVercel.outputs.url }}
-          CI: true
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report-preview
-          path: playwright-report/
-          retention-days: 7
+  # Preview deployment testing disabled - using AWS deployment instead of Vercel
+  # E2E tests run against localhost in the main test job above

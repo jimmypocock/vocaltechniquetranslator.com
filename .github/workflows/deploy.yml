@@ -1,8 +1,9 @@
 name: Deploy to AWS
 
 on:
-  push:
-    branches: [ main ]
+  # Disabled automatic deployment - enable via VTT-087 when ready
+  # push:
+  #   branches: [ main ]
   workflow_dispatch:
     inputs:
       environment:
