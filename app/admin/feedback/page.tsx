@@ -140,6 +140,7 @@ export default function FeedbackAdmin() {
     if (user) {
       loadFeedback();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const exportToJSON = () => {

@@ -31,7 +31,7 @@ export async function submitFeedback(feedback: FeedbackData): Promise<void> {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const result = await response.json();
+      await response.json();
       // Feedback submitted successfully
       return;
     } catch (error) {

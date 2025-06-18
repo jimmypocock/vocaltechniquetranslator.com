@@ -1,4 +1,3 @@
-import React from 'react'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 // Mock localStorage

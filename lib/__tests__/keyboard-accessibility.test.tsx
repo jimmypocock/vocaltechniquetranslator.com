@@ -202,7 +202,7 @@ describe('Keyboard Shortcuts and Accessibility', () => {
       renderHook(() => useKeyboardShortcuts(shortcuts))
       
       // Fire event with undefined key
-      fireEvent.keyDown(window, { key: undefined as any })
+      fireEvent.keyDown(window, { key: undefined as unknown as string })
       
       // Should not throw error and should not trigger action
       expect(mockAction).not.toHaveBeenCalled()

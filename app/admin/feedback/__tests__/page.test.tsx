@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock AWS Amplify before any imports that might use it
@@ -26,7 +26,7 @@ vi.mock('next/link', () => ({
 
 // Mock CognitoAuth to auto-authenticate
 vi.mock('../CognitoAuth', () => ({
-  default: ({ children, onAuthenticated }: any) => {
+  default: function MockCognitoAuth({ children, onAuthenticated }: { children: React.ReactNode; onAuthenticated: (user: { username: string }) => void }) {
     // Use a ref to ensure we only call onAuthenticated once
     const hasCalledRef = React.useRef(false)
     
@@ -38,7 +38,7 @@ vi.mock('../CognitoAuth', () => ({
           onAuthenticated({ username: 'testuser' })
         }, 0)
       }
-    }, []) // Remove onAuthenticated from deps to prevent loops
+    }, [onAuthenticated])
     
     return <>{children}</>
   },
