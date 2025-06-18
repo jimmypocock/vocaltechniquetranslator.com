@@ -13,6 +13,9 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled: boo
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (!enabled) return;
 
+    // Guard against undefined event.key
+    if (!event.key) return;
+
     // Always allow standard cut/copy/paste/select all commands
     const isModifierKey = event.ctrlKey || event.metaKey;
     const key = event.key.toLowerCase();
@@ -45,17 +48,21 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled: boo
       return;
     }
 
-    // Don't trigger shortcuts when typing in input fields
+    // Don't trigger shortcuts when typing in input fields, but allow some exceptions
     const target = event.target as HTMLElement;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-      // Only allow Ctrl/Cmd shortcuts in input fields
-      if (!event.ctrlKey && !event.metaKey) return;
+      // Allow certain shortcuts even in input fields
+      const allowedKeysInInputs = ['Escape', 'ArrowLeft', 'ArrowRight', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'v', 'u', '?'];
+      const isAllowedKey = allowedKeysInInputs.includes(event.key);
+      
+      // Only allow Ctrl/Cmd shortcuts or specifically allowed keys in input fields
+      if (!event.ctrlKey && !event.metaKey && !isAllowedKey) return;
     }
 
     shortcuts.forEach(shortcut => {
       const keyMatch = event.key.toLowerCase() === shortcut.key.toLowerCase();
       const ctrlMatch = shortcut.ctrl ? (event.ctrlKey || event.metaKey) : true;
-      const shiftMatch = shortcut.shift ? event.shiftKey : !event.shiftKey;
+      const shiftMatch = shortcut.shift ? event.shiftKey : true;
       const altMatch = shortcut.alt ? event.altKey : !event.altKey;
 
       if (keyMatch && ctrlMatch && shiftMatch && altMatch) {

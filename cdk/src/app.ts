@@ -9,6 +9,9 @@ import { WafStack } from './waf-stack';
 import { MonitoringStack } from './monitoring-stack';
 import { AppStack } from './app-stack';
 import { DnsStack } from './dns-stack';
+import { FeedbackStack } from './feedback-stack';
+import { FeedbackApiStack } from './feedback-api-stack';
+import { CognitoStack } from './cognito-stack';
 
 const app = new cdk.App();
 
@@ -101,6 +104,32 @@ const dnsStack = new DnsStack(app, 'VTT-DNS', {
 
 // Add dependency
 dnsStack.addDependency(cdnStack);
+
+// 9. Feedback Stack - S3 bucket for feedback storage
+const feedbackStack = new FeedbackStack(app, 'VTT-Feedback', {
+  env: usEast1Env,
+  description: 'Feedback storage for Vocal Technique Translator',
+});
+
+// 10. Feedback API Stack - API Gateway and Lambda for feedback
+const feedbackApiStack = new FeedbackApiStack(app, 'VTT-FeedbackAPI', {
+  feedbackBucket: feedbackStack.feedbackBucket,
+  domainName: domainName,
+  notificationEmail: notificationEmail,
+  env: usEast1Env,
+  description: 'Feedback API for Vocal Technique Translator',
+});
+
+// Add dependency
+feedbackApiStack.addDependency(feedbackStack);
+
+// 11. Cognito Stack - Admin authentication
+const cognitoStack = new CognitoStack(app, 'VTT-Cognito', {
+  domainName: domainName,
+  environment: 'prod',
+  env: usEast1Env,
+  description: 'Admin authentication for Vocal Technique Translator',
+});
 
 // Add tags to all stacks
 const tags = {

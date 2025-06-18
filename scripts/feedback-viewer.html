@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTT Feedback Viewer</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: #9436eb;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #7c2ed3;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+        .stat-card h3 {
+            margin: 0 0 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .suggestion {
+            color: #28a745;
+            font-weight: 500;
+        }
+        .current {
+            color: #dc3545;
+        }
+        .reason {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
+        .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            flex: 1;
+            max-width: 300px;
+        }
+        .intensity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #e9ecef;
+            color: #495057;
+        }
+        .error {
+            color: #dc3545;
+            padding: 20px;
+            text-align: center;
+        }
+        #dropZone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        #dropZone.dragover {
+            border-color: #9436eb;
+            background: #f8f2ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 VTT Feedback Viewer</h1>
+        
+        <div id="dropZone">
+            <p>Drag and drop your feedback JSON export here, or click to browse</p>
+            <input type="file" id="fileInput" accept=".json" />
+            <button onclick="document.getElementById('fileInput').click()">Choose File</button>
+        </div>
+        
+        <div class="controls" style="display: none;" id="controls">
+            <input type="text" placeholder="Filter by word..." class="filter-input" id="filterInput">
+            <select id="intensityFilter" class="filter-input">
+                <option value="">All Intensities</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+                <option value="5">Level 5</option>
+                <option value="6">Level 6</option>
+                <option value="7">Level 7</option>
+                <option value="8">Level 8</option>
+                <option value="9">Level 9</option>
+                <option value="10">Level 10</option>
+            </select>
+            <button onclick="exportFilteredCSV()">Export Filtered CSV</button>
+            <button onclick="location.reload()">Load New File</button>
+        </div>
+        
+        <div class="stats" id="stats" style="display: none;"></div>
+        
+        <div id="tableContainer"></div>
+    </div>
+
+    <script>
+        let allFeedback = [];
+        let filteredFeedback = [];
+
+        // File handling
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        
+        fileInput.addEventListener('change', handleFile);
+        
+        // Drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/json') {
+                processFile(file);
+            }
+        });
+
+        function handleFile(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        function processFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    allFeedback = Array.isArray(data) ? data : [data];
+                    filteredFeedback = [...allFeedback];
+                    displayData();
+                    document.getElementById('dropZone').style.display = 'none';
+                    document.getElementById('controls').style.display = 'flex';
+                    document.getElementById('stats').style.display = 'grid';
+                } catch (error) {
+                    alert('Error parsing JSON file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function displayData() {
+            displayStats();
+            displayTable();
+        }
+
+        function displayStats() {
+            const stats = calculateStats(filteredFeedback);
+            const statsHtml = `
+                <div class="stat-card">
+                    <h3>Total Feedback</h3>
+                    <div class="value">${stats.total}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unique Words</h3>
+                    <div class="value">${stats.uniqueWords}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Intensity</h3>
+                    <div class="value">${stats.avgIntensity}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Most Common Word</h3>
+                    <div class="value">${stats.mostCommon || 'N/A'}</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHtml;
+        }
+
+        function calculateStats(data) {
+            const words = {};
+            let totalIntensity = 0;
+            
+            data.forEach(item => {
+                const word = item.originalWord?.toLowerCase() || '';
+                words[word] = (words[word] || 0) + 1;
+                totalIntensity += item.intensity || 0;
+            });
+            
+            const sortedWords = Object.entries(words).sort((a, b) => b[1] - a[1]);
+            
+            return {
+                total: data.length,
+                uniqueWords: Object.keys(words).length,
+                avgIntensity: data.length ? (totalIntensity / data.length).toFixed(1) : 0,
+                mostCommon: sortedWords[0]?.[0] || null
+            };
+        }
+
+        function displayTable() {
+            const tableHtml = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Original</th>
+                            <th>Current</th>
+                            <th>Suggested</th>
+                            <th>Intensity</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredFeedback.map(item => `
+                            <tr>
+                                <td>${formatDate(item.submittedAt || item.timestamp)}</td>
+                                <td><strong>${escapeHtml(item.originalWord)}</strong></td>
+                                <td class="current">${escapeHtml(item.currentTransformation)}</td>
+                                <td class="suggestion">${escapeHtml(item.suggestedTransformation)}</td>
+                                <td><span class="intensity-badge">Level ${item.intensity}</span></td>
+                                <td class="reason">${escapeHtml(item.reason || '')}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('tableContainer').innerHTML = tableHtml;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+
+        // Filtering
+        document.getElementById('filterInput').addEventListener('input', applyFilters);
+        document.getElementById('intensityFilter').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const wordFilter = document.getElementById('filterInput').value.toLowerCase();
+            const intensityFilter = document.getElementById('intensityFilter').value;
+            
+            filteredFeedback = allFeedback.filter(item => {
+                const matchesWord = !wordFilter || 
+                    item.originalWord?.toLowerCase().includes(wordFilter) ||
+                    item.suggestedTransformation?.toLowerCase().includes(wordFilter);
+                
+                const matchesIntensity = !intensityFilter || 
+                    item.intensity == intensityFilter;
+                
+                return matchesWord && matchesIntensity;
+            });
+            
+            displayData();
+        }
+
+        function exportFilteredCSV() {
+            const csv = [
+                ['Date', 'Original', 'Current', 'Suggested', 'Intensity', 'Context', 'Reason'],
+                ...filteredFeedback.map(item => [
+                    item.submittedAt || item.timestamp || '',
+                    item.originalWord || '',
+                    item.currentTransformation || '',
+                    item.suggestedTransformation || '',
+                    item.intensity || '',
+                    item.context || '',
+                    item.reason || ''
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `feedback_filtered_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+    </script>
+</body>
+</html>

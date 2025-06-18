@@ -40,6 +40,52 @@
 - [x] **[Logic]** Translate: forever `[VTT-042]` ✓ 2025-05-31
 - [x] **[Logic]** Translate: lonely `[VTT-041]` ✓ 2025-05-30
 
+#### Testing Infrastructure & Test Suite
+
+- [ ] **[Testing]** Set up test infrastructure with Jest/Vitest and React Testing Library `[VTT-065]`
+- [ ] **[Testing]** Create unit tests for VocalTranslator class - core transformation logic `[VTT-066]`
+- [ ] **[Testing]** Create unit tests for SyllableSplitter class - syllabification logic `[VTT-067]`
+- [ ] **[Testing]** Create unit tests for exception dictionary data integrity `[VTT-068]`
+- [ ] **[Testing]** Create unit tests for phonetic patterns - vowel and consonant rules `[VTT-069]`
+- [ ] **[Testing]** Create integration tests for complete transformation pipeline `[VTT-070]`
+- [ ] **[Testing]** Create component tests for VocalTranslatorApp - main app logic `[VTT-071]`
+- [ ] **[Testing]** Create component tests for FormattedLyrics display component `[VTT-072]`
+- [ ] **[Testing]** Create component tests for IntensitySelector and IntensitySlider `[VTT-073]`
+- [ ] **[Testing]** Create tests for local storage functionality - persistence and retrieval `[VTT-074]`
+- [ ] **[Testing]** Create tests for keyboard shortcuts and accessibility features `[VTT-075]`
+- [ ] **[Testing]** Create tests for feedback submission API endpoint `[VTT-076]`
+- [ ] **[Testing]** Create E2E tests for critical user flows with Playwright/Cypress `[VTT-077]`
+- [ ] **[Testing]** Set up CI/CD test automation in GitHub Actions `[VTT-080]`
+
+#### Performance & Monitoring
+
+- [ ] **[Infrastructure]** Configure S3 Intelligent-Tiering for feedback bucket cost optimization `[VTT-081]`
+- [ ] **[Infrastructure]** Add static asset cache headers (365 days) in Next.js/CloudFront configuration `[VTT-082]`
+- [ ] **[Features]** Implement client-side error boundary and tracking `[VTT-083]`
+- [ ] **[Features]** Add Web Vitals monitoring and reporting to Google Analytics `[VTT-084]`
+- [x] **[Infrastructure]** Remove unused AdminAuth.tsx component (using Cognito instead) `[VTT-085]` ✓ 2025-06-17
+- [ ] **[Infrastructure]** Enable GitHub Actions AWS deployment workflow when ready for production `[VTT-087]`
+
+#### Genre-Specific Vocal Styles
+
+- [ ] **[Features]** Add genre selector for style-specific vocal transformations (Classical, Pop, Jazz, Musical Theater) `[VTT-086]`
+
+#### Scaling & AI Integration (Phase 1)
+
+- [ ] **[Features]** Implement user feedback system for pronunciation suggestions `[VTT-055]`
+- [ ] **[Features]** Create data model for extended PhoneticToken interface `[VTT-056]`
+- [ ] **[Features]** Add context selector (singing, speech therapy, ESL, etc.) `[VTT-057]`
+- [ ] **[Infrastructure]** Set up API endpoint for phonetic transformations `[VTT-058]`
+- [ ] **[Features]** Implement caching layer for generated transformations `[VTT-059]`
+
+#### Scaling & AI Integration (Phase 2)
+
+- [ ] **[Features]** Integrate LLM for vocabulary generation (OpenAI/Anthropic) `[VTT-060]`
+- [ ] **[Features]** Build human review queue for AI-generated transformations `[VTT-061]`
+- [ ] **[Features]** Create similarity matching algorithm for unknown words `[VTT-062]`
+- [ ] **[Features]** Implement progressive vocabulary loading based on context `[VTT-063]`
+- [ ] **[Infrastructure]** Set up monitoring and analytics for transformation quality `[VTT-064]`
+
 #### Local Storage Enhancements
 
 - [x] **[Features]** Save and restore theme preference (dark/light mode) in local storage `[VTT-047]` ✓ 2025-06-04
@@ -80,6 +126,8 @@
 
 ### P2 - Nice to Have
 
+- [ ] **[Testing]** Create performance tests for transformation speed (<50ms target) `[VTT-078]`
+- [ ] **[Testing]** Create visual regression tests for UI consistency `[VTT-079]`
 - [ ] **[Features]** Add simple waveform visualization during recording `[VTT-025]`
 - [ ] **[Infrastructure]** Add Progressive Web App functionality `[VTT-024]`
 - [ ] **[Features]** Implement language-specific IPA filtering `[VTT-023]`
@@ -181,3 +229,164 @@ npm run todo:add P1 Features "Add dark mode support"
 2. Update status immediately when starting or completing work
 3. Add new todos with appropriate priority and category
 4. Review and update priorities during planning sessions
+
+---
+
+## Implementation Ideas
+
+### Genre Selector Feature (VTT-086)
+
+#### Concept
+Add a genre selector that modifies the transformation rules based on vocal style requirements. Different genres have distinct vocal techniques and aesthetic preferences.
+
+#### UI Design
+```
+┌─────────────────────────────────────┐
+│ Genre: [Classical ▼]                │
+│ ○ Classical (Bel Canto)            │
+│ ○ Pop/Contemporary                 │
+│ ○ Jazz                             │
+│ ○ Musical Theater                  │
+│ ○ R&B/Soul                        │
+│ ○ Country                          │
+└─────────────────────────────────────┘
+```
+
+#### Implementation Approach
+
+1. **Create Genre Configuration Object**:
+```typescript
+const genreConfigs = {
+  classical: {
+    name: 'Classical (Bel Canto)',
+    description: 'Traditional operatic technique with pure vowels',
+    rules: {
+      // More aggressive vowel modification for resonance
+      vowelModification: 'aggressive',
+      // Maintain crisp consonants for diction
+      consonantSoftening: 'minimal',
+      // Favor Italian vowel sounds
+      vowelPreference: 'italian',
+      // Add more space in vowels
+      'i': 'ih', // More open
+      'e': 'eh', 
+      'a': 'ah', // Fuller, rounder
+      'o': 'aw', // More open
+      'u': 'oo', // Rounder
+    }
+  },
+  pop: {
+    name: 'Pop/Contemporary',
+    description: 'Modern commercial vocal style with speech-like delivery',
+    rules: {
+      vowelModification: 'moderate',
+      consonantSoftening: 'moderate',
+      // Maintain conversational quality
+      preserveContractions: true,
+      // Less formal vowel sounds
+      'ing': 'in', // Drop the 'g'
+      'er': 'uh', // More relaxed
+    }
+  },
+  jazz: {
+    name: 'Jazz',
+    description: 'Flexible style with unique vowel colors',
+    rules: {
+      vowelModification: 'stylistic',
+      // Jazz-specific vowel colors
+      'oo': 'uh', // Darker tone
+      'ee': 'ih', // More relaxed
+      // Allow for scatting syllables
+      enableScatSyllables: true,
+    }
+  },
+  musicalTheater: {
+    name: 'Musical Theater',
+    description: 'Clear diction with dramatic expression',
+    rules: {
+      // Balance between classical and contemporary
+      vowelModification: 'balanced',
+      consonantSoftening: 'selective',
+      // Emphasize story-telling clarity
+      maintainWordClarity: true,
+      // Character-voice flexibility
+      'r': 'r', // Keep R's for character
+    }
+  }
+};
+```
+
+2. **Modify VocalTranslator Class**:
+```typescript
+class VocalTranslator {
+  constructor(private genre: string = 'pop') {}
+  
+  transform(word: string, intensity: number): string {
+    const genreRules = genreConfigs[this.genre].rules;
+    // Apply genre-specific transformations
+    // ...
+  }
+}
+```
+
+3. **Add Genre Selector Component**:
+```typescript
+export function GenreSelector({ value, onChange }: Props) {
+  return (
+    <div className="genre-selector">
+      <label className="text-sm font-medium">
+        Vocal Style
+      </label>
+      <select 
+        value={value} 
+        onChange={(e) => onChange(e.target.value)}
+        className="rounded-lg border p-2"
+      >
+        {Object.entries(genreConfigs).map(([key, config]) => (
+          <option key={key} value={key}>
+            {config.name}
+          </option>
+        ))}
+      </select>
+      <p className="text-xs text-gray-600 mt-1">
+        {genreConfigs[value].description}
+      </p>
+    </div>
+  );
+}
+```
+
+4. **Store Genre in Local Storage**:
+```typescript
+// Save genre preference
+localStorage.setItem('vtt-genre', selectedGenre);
+
+// Load on app start
+const savedGenre = localStorage.getItem('vtt-genre') || 'pop';
+```
+
+5. **Genre-Specific Exception Dictionaries**:
+```typescript
+const genreExceptions = {
+  classical: {
+    'love': { 4: 'lah-veh', 8: 'lah-veh' }, // Italian-influenced
+    'heart': { 4: 'hahrt', 8: 'hahrt' }, // Open vowel
+  },
+  jazz: {
+    'love': { 4: 'luhv', 8: 'lahv' }, // Relaxed, stylized
+    'baby': { 4: 'bay-beh', 8: 'bah-beh' }, // Jazz inflection
+  }
+};
+```
+
+#### Benefits
+- Singers get style-appropriate transformations
+- Maintains genre authenticity
+- Educational tool for learning different vocal styles
+- Could expand to include ethnic/world music styles
+
+#### Future Enhancements
+- Add audio examples for each genre
+- Include famous singer examples (e.g., "Sing like Pavarotti" or "Sing like Beyoncé")
+- Genre-specific warm-up suggestions
+- Style-specific breathing marks
