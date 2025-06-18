@@ -27,6 +27,10 @@ Add these in **Settings → Secrets and variables → Actions → Variables tab*
 - `S3_BUCKET_NAME` - S3 bucket name  
 - `CLOUDFRONT_DISTRIBUTION_ID` - CloudFront distribution ID
 - `NEXT_PUBLIC_GA_ID` - Google Analytics ID
+- `NEXT_PUBLIC_COGNITO_USER_POOL_ID` - Cognito User Pool ID
+- `NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID` - Cognito User Pool Client ID
+- `NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID` - Cognito Identity Pool ID
+- `NEXT_PUBLIC_COGNITO_DOMAIN` - Cognito Domain
 
 **Optional:**
 - `AWS_REGION` - AWS region (defaults to us-east-1)
