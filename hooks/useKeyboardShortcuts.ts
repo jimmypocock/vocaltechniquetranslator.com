@@ -52,7 +52,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled: boo
     const target = event.target as HTMLElement;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
       // Allow certain shortcuts even in input fields
-      const allowedKeysInInputs = ['Escape', 'ArrowLeft', 'ArrowRight', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'v', 'u', '?'];
+      const allowedKeysInInputs = ['Escape', 'ArrowLeft', 'ArrowRight', '1', '2', '3', '4', '5', '6', '?'];
       const isAllowedKey = allowedKeysInInputs.includes(event.key);
       
       // Only allow Ctrl/Cmd shortcuts or specifically allowed keys in input fields

@@ -35,12 +35,12 @@ describe('Keyboard Shortcuts and Accessibility', () => {
       // Check for all shortcuts
       expect(screen.getByText('Focus on lyrics input')).toBeInTheDocument()
       expect(screen.getByText('Copy translated lyrics')).toBeInTheDocument()
-      expect(screen.getByText('Toggle view (continuous ↔ word-by-word)')).toBeInTheDocument()
-      expect(screen.getByText('Toggle uppercase')).toBeInTheDocument()
+      expect(screen.getByText('Toggle uppercase/regular case*')).toBeInTheDocument()
+      expect(screen.getByText('Toggle continuous/word-by-word view*')).toBeInTheDocument()
+      expect(screen.getByText('Toggle expanded/condensed view')).toBeInTheDocument()
       expect(screen.getByText('Set to Minimal intensity')).toBeInTheDocument()
       expect(screen.getByText('Set to Moderate intensity')).toBeInTheDocument()
-      expect(screen.getByText('Set to Full intensity')).toBeInTheDocument()
-      expect(screen.getByText('Go to How It Works')).toBeInTheDocument()
+      expect(screen.getByText('Set to Maximum intensity')).toBeInTheDocument()
       expect(screen.getByText('Show keyboard shortcuts')).toBeInTheDocument()
       expect(screen.getByText('Clear lyrics or close modals')).toBeInTheDocument()
     })
@@ -49,15 +49,15 @@ describe('Keyboard Shortcuts and Accessibility', () => {
       render(<KeyboardShortcutsModal isOpen={true} onClose={vi.fn()} />)
       
       // Check that keys are displayed (some may appear multiple times)
-      expect(screen.getAllByText('Ctrl').length).toBeGreaterThan(0)
-      expect(screen.getByText('K')).toBeInTheDocument()
+      expect(screen.getAllByText('Ctrl/Cmd').length).toBeGreaterThan(0)
+      expect(screen.getByText('L')).toBeInTheDocument()
       expect(screen.getByText('Enter')).toBeInTheDocument()
-      expect(screen.getByText('V')).toBeInTheDocument()
-      expect(screen.getByText('U')).toBeInTheDocument()
       expect(screen.getByText('1')).toBeInTheDocument()
       expect(screen.getByText('2')).toBeInTheDocument()
       expect(screen.getByText('3')).toBeInTheDocument()
-      expect(screen.getByText('H')).toBeInTheDocument()
+      expect(screen.getByText('4')).toBeInTheDocument()
+      expect(screen.getByText('5')).toBeInTheDocument()
+      expect(screen.getByText('6')).toBeInTheDocument()
       expect(screen.getAllByText('?').length).toBeGreaterThan(0)
       expect(screen.getByText('Esc')).toBeInTheDocument()
     })
@@ -107,12 +107,12 @@ describe('Keyboard Shortcuts and Accessibility', () => {
     it('should trigger shortcut action on key press', () => {
       const mockAction = vi.fn()
       const shortcuts = [
-        { key: 'k', ctrl: true, action: mockAction, description: 'Test shortcut' }
+        { key: 'l', ctrl: true, action: mockAction, description: 'Test shortcut' }
       ]
       
       renderHook(() => useKeyboardShortcuts(shortcuts))
       
-      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+      fireEvent.keyDown(window, { key: 'l', ctrlKey: true })
       
       expect(mockAction).toHaveBeenCalled()
     })
@@ -120,12 +120,12 @@ describe('Keyboard Shortcuts and Accessibility', () => {
     it('should support cmd key on Mac', () => {
       const mockAction = vi.fn()
       const shortcuts = [
-        { key: 'k', ctrl: true, action: mockAction, description: 'Test shortcut' }
+        { key: 'l', ctrl: true, action: mockAction, description: 'Test shortcut' }
       ]
       
       renderHook(() => useKeyboardShortcuts(shortcuts))
       
-      fireEvent.keyDown(window, { key: 'k', metaKey: true })
+      fireEvent.keyDown(window, { key: 'l', metaKey: true })
       
       expect(mockAction).toHaveBeenCalled()
     })
@@ -133,12 +133,12 @@ describe('Keyboard Shortcuts and Accessibility', () => {
     it('should not trigger shortcuts when disabled', () => {
       const mockAction = vi.fn()
       const shortcuts = [
-        { key: 'k', ctrl: true, action: mockAction, description: 'Test shortcut' }
+        { key: 'l', ctrl: true, action: mockAction, description: 'Test shortcut' }
       ]
       
       renderHook(() => useKeyboardShortcuts(shortcuts, false))
       
-      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+      fireEvent.keyDown(window, { key: 'l', ctrlKey: true })
       
       expect(mockAction).not.toHaveBeenCalled()
     })
@@ -179,24 +179,24 @@ describe('Keyboard Shortcuts and Accessibility', () => {
     it('should handle multiple modifiers correctly', () => {
       const mockAction = vi.fn()
       const shortcuts = [
-        { key: 'k', ctrl: true, shift: true, action: mockAction, description: 'Test' }
+        { key: 'l', ctrl: true, shift: true, action: mockAction, description: 'Test' }
       ]
       
       renderHook(() => useKeyboardShortcuts(shortcuts))
       
       // Without shift - should not trigger
-      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+      fireEvent.keyDown(window, { key: 'l', ctrlKey: true })
       expect(mockAction).not.toHaveBeenCalled()
       
       // With shift - should trigger
-      fireEvent.keyDown(window, { key: 'k', ctrlKey: true, shiftKey: true })
+      fireEvent.keyDown(window, { key: 'l', ctrlKey: true, shiftKey: true })
       expect(mockAction).toHaveBeenCalled()
     })
 
     it('should handle undefined event.key gracefully', () => {
       const mockAction = vi.fn()
       const shortcuts = [
-        { key: 'k', action: mockAction, description: 'Test shortcut' }
+        { key: '1', action: mockAction, description: 'Test shortcut' }
       ]
       
       renderHook(() => useKeyboardShortcuts(shortcuts))

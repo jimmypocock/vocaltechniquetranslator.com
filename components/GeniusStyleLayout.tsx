@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { VocalTranslator } from '@/lib/vocal-translator';
@@ -24,7 +23,6 @@ export default function GeniusStyleLayout() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const outputTextareaRef = useRef<HTMLTextAreaElement>(null);
   const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const router = useRouter();
   const shouldShowAds = useAdsVisibility();
   const [isHydrated, setIsHydrated] = useState(false);
   const [favorites, setFavorites] = useState<Array<{id: string, title: string, lyrics: string, intensity: number}>>([]);
@@ -55,6 +53,9 @@ export default function GeniusStyleLayout() {
 
         if (savedLyrics) {
           setInputLyrics(savedLyrics);
+          // Automatically translate saved lyrics
+          const translated = translator.translateLyrics(savedLyrics, savedIntensity ? parseInt(savedIntensity, 10) : intensity);
+          setOutputLyrics(translated);
         }
 
         if (savedFavorites) {
@@ -70,6 +71,7 @@ export default function GeniusStyleLayout() {
 
       setIsHydrated(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save intensity to local storage when it changes
@@ -258,72 +260,55 @@ export default function GeniusStyleLayout() {
       description: 'Copy translated lyrics'
     },
     {
-      key: 'v',
-      action: () => {
-        // This will be handled by FormattedLyrics component
-        const viewToggle = document.querySelector('[aria-label*="view"]') as HTMLButtonElement;
-        viewToggle?.click();
-      },
-      description: 'Toggle view'
-    },
-    {
-      key: 'u',
-      action: () => {
-        // Find and click the uppercase toggle button - look for both possible aria-labels
-        const uppercaseToggle = document.querySelector('[aria-label="Show uppercase"], [aria-label="Show original case"]') as HTMLButtonElement;
-        uppercaseToggle?.click();
-      },
-      description: 'Toggle uppercase'
-    },
-    {
       key: '1',
       action: () => setIntensity(1),
       description: 'Minimal intensity'
     },
     {
       key: '2',
-      action: () => setIntensity(2),
-      description: 'Set intensity to 2'
+      action: () => setIntensity(4),
+      description: 'Moderate intensity'
     },
     {
       key: '3',
-      action: () => setIntensity(3),
-      description: 'Set intensity to 3'
+      action: () => setIntensity(8),
+      description: 'Maximum intensity'
     },
     {
       key: '4',
-      action: () => setIntensity(4),
-      description: 'Set intensity to 4'
+      action: () => {
+        // Find buttons and click the one without the active indicator
+        const buttons = document.querySelectorAll('button[aria-label="Show uppercase"], button[aria-label="Show original mixed case"]');
+        buttons.forEach(button => {
+          // Check if this button does NOT contain the pulse indicator
+          if (!button.querySelector('.animate-pulse')) {
+            (button as HTMLButtonElement).click();
+          }
+        });
+      },
+      description: 'Toggle uppercase/regular case'
     },
     {
       key: '5',
-      action: () => setIntensity(5),
-      description: 'Set intensity to 5'
+      action: () => {
+        // Find buttons and click the one without the active indicator
+        const buttons = document.querySelectorAll('button[aria-label="Show continuous view"], button[aria-label="Show word-by-word view"]');
+        buttons.forEach(button => {
+          // Check if this button does NOT contain the pulse indicator
+          if (!button.querySelector('.animate-pulse')) {
+            (button as HTMLButtonElement).click();
+          }
+        });
+      },
+      description: 'Toggle continuous/word-by-word view'
     },
     {
       key: '6',
-      action: () => setIntensity(6),
-      description: 'Set intensity to 6'
-    },
-    {
-      key: '7',
-      action: () => setIntensity(7),
-      description: 'Set intensity to 7'
-    },
-    {
-      key: '8',
-      action: () => setIntensity(8),
-      description: 'Set intensity to 8'
-    },
-    {
-      key: '9',
-      action: () => setIntensity(9),
-      description: 'Set intensity to 9'
-    },
-    {
-      key: '0',
-      action: () => setIntensity(10),
-      description: 'Set intensity to 10'
+      action: () => {
+        const condensedToggle = document.querySelector('.view-toggle-button') as HTMLButtonElement;
+        condensedToggle?.click();
+      },
+      description: 'Toggle expanded/condensed view'
     },
     {
       key: 'ArrowLeft',
@@ -346,25 +331,10 @@ export default function GeniusStyleLayout() {
       description: 'Clear lyrics'
     },
     {
-      key: 'h',
-      action: () => router.push('/how-it-works'),
-      description: 'Go to How It Works'
-    },
-    {
       key: '?',
       shift: true,
       action: () => setShowShortcuts(true),
       description: 'Show keyboard shortcuts'
-    },
-    {
-      key: 'f',
-      action: () => setShowFavorites(true),
-      description: 'Show favorites'
-    },
-    {
-      key: 'r',
-      action: () => setShowHistory(true),
-      description: 'Show recent lyrics'
     },
     {
       key: 's',
@@ -374,11 +344,6 @@ export default function GeniusStyleLayout() {
       },
       description: 'Save to favorites'
     },
-    {
-      key: 'd',
-      action: () => loadRandomLyrics(),
-      description: 'Load random lyrics'
-    }
   ]);
 
   const testMode = !process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
@@ -760,6 +725,16 @@ export default function GeniusStyleLayout() {
             {outputLyrics && (
               <div className="flex items-center gap-2">
                 <button
+                  onClick={handleFeedbackClick}
+                  className="px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
+                    bg-gray-600 text-white hover:bg-gray-700 hover:shadow-md hover:scale-105"
+                  title="Suggest better pronunciation"
+                  aria-label="Suggest better pronunciation"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Feedback
+                </button>
+                <button
                   onClick={addToFavorites}
                   className={`
                     px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
@@ -786,16 +761,6 @@ export default function GeniusStyleLayout() {
                       Favorite
                     </>
                   )}
-                </button>
-                <button
-                  onClick={handleFeedbackClick}
-                  className="px-4 py-2 rounded-lg transition-all duration-100 flex items-center gap-2 text-sm font-semibold shadow-sm
-                    bg-gray-600 text-white hover:bg-gray-700 hover:shadow-md hover:scale-105"
-                  title="Suggest better pronunciation"
-                  aria-label="Suggest better pronunciation"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Feedback
                 </button>
                 <button
                   onClick={handleCopy}

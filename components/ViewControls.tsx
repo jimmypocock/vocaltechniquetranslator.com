@@ -23,7 +23,7 @@ export default function ViewControls({
             View Options
           </label>
           <span className="text-xs text-gray-500 dark:text-gray-500">
-            Press U or V
+            Press 4 or 5
           </span>
         </div>
       )}
